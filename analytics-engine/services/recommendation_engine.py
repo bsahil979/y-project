@@ -18,6 +18,7 @@ import pandas as pd
 from datetime import datetime
 from services.portfolio_score import get_asset_category, identify_portfolio_risks
 from services.stress_tester import get_stress_summary
+from services.portfolio_optimizer import get_profile_constraints
 
 
 def generate_recommendations(
@@ -34,6 +35,9 @@ def generate_recommendations(
     forecast_details: dict,
     marketmind_details: dict,
     benchmark_comparison: dict = None,
+    risk_preference: str = 'moderate',
+    personalized_allocation: dict = None,
+    ai_black_litterman_allocation: dict = None,
 ) -> list[dict]:
     """
     Generate evidence-backed portfolio recommendations.
@@ -45,6 +49,11 @@ def generate_recommendations(
     recommendations = []
     weights_arr = np.array(weights, dtype=float)
     weights_arr = weights_arr / weights_arr.sum()
+    allocation = personalized_allocation or {}
+    policy = get_profile_constraints(risk_preference, allocation.get('investment_horizon_years'),
+                                    n_assets=len(tickers), horizon_source=allocation.get('horizon_source'))
+    policy['objective_used'] = allocation.get('objective_used', policy['objective_used'])
+    cap = policy['max_weight_cap']
 
     # --- 1. Risk concentration / overweight position ---
     max_weight_idx = int(np.argmax(weights_arr))
@@ -52,7 +61,7 @@ def generate_recommendations(
     max_ticker = tickers[max_weight_idx]
     max_ticker_upper = max_ticker.upper().strip()
 
-    if max_weight > 0.20:
+    if max_weight > cap + 1e-7:
         rb = next((r for r in risk_budget.get("risk_contributions", [])
                     if r["ticker"] == max_ticker_upper), None)
         pct_risk = rb.get("percentage_contribution_to_risk", 0) if rb else 0
@@ -61,15 +70,16 @@ def generate_recommendations(
             "action": "reduce_position",
             "asset": max_ticker_upper,
             "reason": f"{max_ticker_upper} represents {max_weight*100:.0f}% of portfolio value "
-                      f"and {pct_risk:.0f}% of portfolio risk",
+                      f"and {pct_risk:.0f}% of portfolio risk; exceeds the {risk_preference} profile cap of {cap:.0%}",
             "supporting_metrics": {
                 "weight": round(max_weight, 4),
+                "applied_profile": risk_preference,
+                "max_weight_cap": cap,
                 "risk_contribution_pct": pct_risk,
                 "volatility": rb.get("volatility", 0) if rb else 0,
             },
             "supporting_models": ["Risk Budgeting", "Portfolio Scoring"],
-            "expected_impact": f"Reducing {max_ticker_upper} to {min(max_weight, 0.15)*100:.0f}% weight "
-                               f"would reduce portfolio volatility and concentration risk",
+            "expected_impact": f"Review reducing {max_ticker_upper} to at most {cap:.0%} to meet the profile limit; volatility impact depends on the replacement allocation",
             "confidence": "high" if pct_risk > 25 else "medium",
             "timestamp": now,
         })
@@ -82,7 +92,7 @@ def generate_recommendations(
 
     dominant_sector = max(sector_weights, key=sector_weights.get)
     dominant_pct = sector_weights[dominant_sector]
-    if dominant_pct > 0.40:
+    if dominant_pct > policy['sector_weight_cap']:
         sector_tkr = [t for t, w in zip(tickers, weights_arr)
                        if get_asset_category(t) == dominant_sector]
         recommendations.append({
@@ -90,9 +100,11 @@ def generate_recommendations(
             "action": "add_diversification",
             "asset": dominant_sector,
             "reason": f"Overconcentration in {dominant_sector} sector "
-                      f"({dominant_pct*100:.0f}% of portfolio)",
+                      f"({dominant_pct*100:.0f}% of portfolio), above the {risk_preference} review threshold of {policy['sector_weight_cap']:.0%}",
             "supporting_metrics": {
                 "sector_weight": round(dominant_pct, 4),
+                "sector_weight_cap": policy['sector_weight_cap'],
+                "applied_profile": risk_preference,
                 "sector_tickers": sector_tkr,
             },
             "supporting_models": ["Portfolio Scoring — Sector Risk", "Attribution Engine"],
@@ -126,7 +138,7 @@ def generate_recommendations(
 
     # --- 4. Stress test vulnerability ---
     worst_scenario = stress.get("worst_scenario", "Unknown")
-    worst_loss_pct = stress.get("worst_loss_pct", 0)
+    worst_loss_pct = max(0.0, -float(stress.get("worst_loss_pct") or 0))
     if worst_loss_pct > 25:
         recommendations.append({
             "id": "stress-test-risk",
@@ -249,4 +261,42 @@ def generate_recommendations(
             "timestamp": now,
         })
 
+    if personalized_allocation and personalized_allocation.get('success'):
+        for ticker, current in zip(tickers, weights_arr):
+            target = personalized_allocation['weights'][ticker]
+            difference = target - current
+            if abs(difference) > policy['rebalance_threshold']:
+                recommendations.append({
+                    'id': f'profile-rebalance-{ticker}', 'action': 'rebalance', 'asset': ticker,
+                    'reason': f"{risk_preference.capitalize()} profile uses {policy['objective_used']} with a {cap:.0%} position cap",
+                    'supporting_metrics': {'current_weight': float(current), 'target_weight': target,
+                        'weight_change': float(difference), 'indicative_value_change': float(difference * portfolio_value),
+                        'max_weight_cap': cap, 'applied_profile': risk_preference,
+                        'rebalance_threshold': policy['rebalance_threshold']},
+                    'supporting_models': ['Profile-constrained portfolio optimizer'],
+                    'expected_impact': 'Align allocation with the selected risk profile; historical estimates exclude execution costs',
+                    'confidence': 'model_estimate', 'timestamp': now,
+                })
+    ai_allocation = ai_black_litterman_allocation or {}
+    if ai_allocation.get('success'):
+        for ticker, view in ai_allocation.get('provenance', {}).items():
+            change = ai_allocation['weights'][ticker] - ai_allocation['prior_weights'][ticker]
+            if view['aligned_signals'] and change * view['composite_signal'] > 1e-6:
+                recommendations.append({
+                    'id': f'ai-view-{ticker}', 'action': 'review', 'asset': ticker,
+                    'reason': f"Aligned MarketMind + FinBERT views drive a {change:+.1%} weight tilt versus the constrained equilibrium allocation for {ticker}.",
+                    'supporting_metrics': {**view, 'prior_weight': ai_allocation['prior_weights'][ticker],
+                        'target_weight': ai_allocation['weights'][ticker], 'weight_change': change},
+                    'supporting_models': ['MarketMind', 'FinBERT', 'Black-Litterman'],
+                    'expected_impact': 'AI allocation comparison; heuristic confidence and in-sample estimates, excluding execution costs',
+                    'confidence': 'model_estimate', 'timestamp': now,
+                })
+    horizon_fields = {k: policy[k] for k in ('investment_horizon_years', 'horizon_source', 'horizon_modifier')}
+    years = policy['investment_horizon_years']
+    horizon_explanation = (f"Horizon: {years:g} years" if years is not None else 'Horizon: unspecified')
+    horizon_explanation += f" ({policy['horizon_source']}; {policy['horizon_modifier']}); objective {policy['objective_used']}, position cap {cap:.1%}."
+    for recommendation in recommendations:
+        recommendation['constraint_metadata'] = {**horizon_fields, 'max_weight_cap': cap,
+                                                   'objective_used': policy['objective_used']}
+        recommendation['reason'] += ' ' + horizon_explanation
     return recommendations

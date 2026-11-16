@@ -1,0 +1,83 @@
+{
+  "phase": "2E.1",
+  "status": "completed",
+  "generated_at_utc": "2026-08-31T06:43:56.338997+00:00",
+  "dataset": {
+    "path": "c:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\meta_model\\meta_dataset.csv",
+    "sha256": "07d1d87b7a5e54625a584f3e96077d512116cf78d69654b6d2131326df3c97df",
+    "rows": 211965
+  },
+  "phase_2d_report": {
+    "path": "c:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2d\\phase_2d_ab_report.json",
+    "sha256": "c22f34374181071c12dc4df79f69365784071921ee0adf0dca7b6cce57546c05"
+  },
+  "artifacts": {
+    "A_model": {
+      "path": "c:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2d\\experiment_a\\meta_model.pkl",
+      "sha256": "ce03e63b9d93a0b51d161f7338a6ee2e25148bc1889c0e5cf4c7e29af4476391"
+    },
+    "B_model": {
+      "path": "c:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2d\\experiment_b\\marketmind_b.pt",
+      "sha256": "0348202c624d9889928f38fa70e5b8fc0d997f514950c88295ca8e7bccc36e1b"
+    }
+  },
+  "split": {
+    "train_end": "2024-12-02",
+    "holdout_start": "2024-12-03",
+    "holdout_rows": 42568,
+    "holdout_tickers": 99
+  },
+  "feature_schema": [
+    "returns",
+    "rsi",
+    "macd",
+    "macd_signal",
+    "macd_diff",
+    "adx",
+    "volatility",
+    "ema_50",
+    "ema_200",
+    "trend_strength",
+    "momentum_5d",
+    "momentum_10d",
+    "sentiment_score",
+    "regime_code"
+  ],
+  "prediction_column_schema": [
+    "ticker",
+    "Date",
+    "actual_target",
+    "A_prediction",
+    "A_prob_-1",
+    "A_prob_0",
+    "A_prob_1",
+    "B_prediction",
+    "B_prob_-1",
+    "B_prob_0",
+    "B_prob_1",
+    "market",
+    "sector",
+    "regime_code",
+    "future_return"
+  ],
+  "prediction_file": {
+    "path": "c:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2e\\holdout_predictions.csv",
+    "sha256": "bd5d3fe75a3b6bd221f472486e99e64a745d3b40562b037918a991765960b9e2",
+    "rows": 42568,
+    "unique_ticker_date_keys": 42568
+  },
+  "preprocessing": {
+    "A": "training-block median imputation reconstructed from the fixed Phase 2D train block; medians were not serialized by A",
+    "B": "persisted numeric imputation and categorical mappings"
+  },
+  "evaluation_only_columns": [
+    "future_return"
+  ],
+  "assertions": {
+    "aligned_a_b_rows": true,
+    "matching_ticker_date_keys": true,
+    "no_duplicate_ticker_date": true,
+    "matching_actual_targets": true,
+    "probabilities_sum_to_one": true
+  }
+}

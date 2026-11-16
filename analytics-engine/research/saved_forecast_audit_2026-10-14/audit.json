@@ -1,0 +1,102 @@
+{
+  "ticker": "MSFT",
+  "price_start": "2020-01-02",
+  "price_end": "2026-10-13",
+  "checkpoints": [
+    {
+      "model": "Per-ticker price LSTM",
+      "weights": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\MSFT\\lstm.pt",
+      "scaler": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\MSFT\\scaler_lstm.pkl",
+      "weights_sha256": "4719aa0e8cfef458cc6a220d7d00108dac5e55d0aa4ecf601fabbe700067d6fd",
+      "scaler_sha256": "32ed23ac07039da83b68f4b63754cb884aa7b086e78aab0a3be12890cb6a7b81",
+      "artifact_modified": "2026-08-30",
+      "evaluation_origin_after": "2026-08-31",
+      "scaler_min": [
+        350.4460754394531
+      ],
+      "scaler_max": [
+        537.6464233398438
+      ],
+      "latest_close": 543.4500122070312,
+      "first_prediction": 477.2002180345007,
+      "session_30_prediction": 470.9688261746705,
+      "first_step_change_pct": -12.190595764913182
+    },
+    {
+      "model": "Universal return LSTM",
+      "weights": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\_universal\\lstm.pt",
+      "scaler": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\_universal\\scaler_returns.pkl",
+      "weights_sha256": "38c65b6da6c0ec53cf4945198c7a5cc0dbb2383917b5b6f2417c1606d5786af7",
+      "scaler_sha256": "a1650746cd9426291e8797a3cb88c6a4063b97b662e2e798444b6e9fb3eef297",
+      "artifact_modified": "2026-05-16",
+      "evaluation_origin_after": "2026-08-31",
+      "scaler_min": [
+        -0.3511660695075989
+      ],
+      "scaler_max": [
+        0.24432633817195892
+      ],
+      "latest_close": 543.4500122070312,
+      "first_prediction": 543.270043259628,
+      "session_30_prediction": 535.4256250500081,
+      "first_step_change_pct": -0.033116007610778375
+    }
+  ],
+  "metrics": [
+    {
+      "model": "Per-ticker price LSTM",
+      "horizon": 1,
+      "origins": 29,
+      "mae": 34.60863425186191,
+      "rmse": 37.53731465681554,
+      "baseline_mae": 5.772072627626605,
+      "baseline_rmse": 7.109598161190975
+    },
+    {
+      "model": "Per-ticker price LSTM",
+      "horizon": 5,
+      "origins": 25,
+      "mae": 37.62309889330219,
+      "rmse": 40.701387714038866,
+      "baseline_mae": 9.636402587890613,
+      "baseline_rmse": 11.627316943305743
+    },
+    {
+      "model": "Per-ticker price LSTM",
+      "horizon": 20,
+      "origins": 10,
+      "mae": 55.947823533443966,
+      "rmse": 56.88907241255406,
+      "baseline_mae": 28.58900451660154,
+      "baseline_rmse": 31.132279614370045
+    },
+    {
+      "model": "Universal return LSTM",
+      "horizon": 1,
+      "origins": 29,
+      "mae": 5.805774776497135,
+      "rmse": 7.164153163110342,
+      "baseline_mae": 5.772072627626605,
+      "baseline_rmse": 7.109598161190975
+    },
+    {
+      "model": "Universal return LSTM",
+      "horizon": 5,
+      "origins": 25,
+      "mae": 10.267242669688043,
+      "rmse": 12.370935255203209,
+      "baseline_mae": 9.636402587890613,
+      "baseline_rmse": 11.627316943305743
+    },
+    {
+      "model": "Universal return LSTM",
+      "horizon": 20,
+      "origins": 10,
+      "mae": 33.838682506636715,
+      "rmse": 36.03404396731088,
+      "baseline_mae": 28.58900451660154,
+      "baseline_rmse": 31.132279614370045
+    }
+  ],
+  "limitations": "Artifact timestamps are not verified training cutoffs. This is a diagnostic replay, not certified untouched out-of-sample validation. Long-horizon origins overlap and sample sizes are small. No checkpoint selection or retraining was performed."
+}

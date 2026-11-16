@@ -1,0 +1,22 @@
+{
+  "status": "input_snapshot_only_no_backtest_run",
+  "tickers": [
+    "RELIANCE.NS",
+    "TCS.NS",
+    "INFY.NS",
+    "HDFCBANK.NS",
+    "ICICIBANK.NS"
+  ],
+  "currency": "INR",
+  "requested_start_inclusive": "2018-01-01",
+  "requested_end_exclusive": "2026-01-01",
+  "provider": "Yahoo Finance",
+  "price_field": "auto-adjusted close (dividends and splits adjusted)",
+  "adjustment_verified": true,
+  "downloaded_at_utc": "2026-09-27T13:51:23.208236+00:00",
+  "price_start": "2018-01-01",
+  "price_end": "2025-12-31",
+  "price_observations": 1976,
+  "dropped_incomplete_rows": 0,
+  "snapshot_sha256": "ed367e3dce5a3c58fb856b02fd2b2ae109286256f1073c56bc4d325dea041ab9"
+}

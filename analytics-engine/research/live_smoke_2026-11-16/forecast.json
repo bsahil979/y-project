@@ -1,0 +1,42 @@
+{
+  "ticker": "MSFT",
+  "forecast": [
+    {
+      "step": 1,
+      "predicted_price": 523.7187242373693
+    },
+    {
+      "step": 2,
+      "predicted_price": 523.8504560465253
+    },
+    {
+      "step": 3,
+      "predicted_price": 523.9904641053661
+    },
+    {
+      "step": 4,
+      "predicted_price": 524.1851660483602
+    },
+    {
+      "step": 5,
+      "predicted_price": 524.2157225538255
+    }
+  ],
+  "raw_forecast": [],
+  "status": "experimental",
+  "currency": "USD",
+  "spot_price": 523.8800048828125,
+  "price_as_of": "2026-11-13",
+  "model": "TimesFM 2.5",
+  "requested_model": "TimesFM 2.5",
+  "fallback_reason": null,
+  "horizon": 5,
+  "horizon_unit": "sessions",
+  "warning": null,
+  "validation": null,
+  "output_version": 7,
+  "model_family": "TimesFM-2.5",
+  "fallback_triggered": false,
+  "is_pretrained_foundation_model": true,
+  "validation_status": "unverified_fallback"
+}

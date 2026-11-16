@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { normalizeInvestorProfile } from './investorProfile.js';
 import { API_BASE_URL, API_TIMEOUT, CHAT_TIMEOUT, ENDPOINTS } from '../config/api';
 
 const analyticsApi = axios.create({
@@ -24,24 +25,74 @@ export const ConnectionService = {
   },
 };
 
+const ANALYSIS_CACHE_TTL_MS = 15 * 60 * 1000;
+
+const getCacheKey = (prefix, payload) => {
+  try {
+    return `spa_cache_${prefix}_${JSON.stringify(payload)}`;
+  } catch {
+    return null;
+  }
+};
+
+const getFromSessionCache = (key) => {
+  if (!key) return null;
+  try {
+    const raw = sessionStorage.getItem(key);
+    if (!raw) return null;
+    const { data, timestamp } = JSON.parse(raw);
+    if (Date.now() - timestamp < ANALYSIS_CACHE_TTL_MS) {
+      return data;
+    }
+    sessionStorage.removeItem(key);
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+const setToSessionCache = (key, data) => {
+  if (!key || !data) return;
+  try {
+    sessionStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }));
+  } catch {
+    // sessionStorage full or unavailable
+  }
+};
+
 export const PortfolioService = {
-  getAnalysis: async (tickers, weights) => {
+  getQuotes: async (tickers) => {
+    const symbols = [...new Set((tickers || []).map((ticker) => String(ticker).toUpperCase().trim()).filter(Boolean))];
+    if (symbols.length === 0) return { quotes: {} };
+    const res = await analyticsApi.post(ENDPOINTS.quotes, { tickers: symbols }, { timeout: 30000 });
+    return res.data;
+  },
+
+  getAnalysis: async (tickers, weights, forceRefresh = false, portfolioValue = 100000) => {
     const payload = {
       tickers,
       weights: weights || tickers.map(() => 1 / tickers.length),
-      portfolio_value: 100000,
+      portfolio_value: portfolioValue,
       start: '2020-01-01',
       end: new Date().toISOString().split('T')[0],
     };
 
+    const cacheKey = getCacheKey('analyze', payload);
+    if (!forceRefresh) {
+      const cached = getFromSessionCache(cacheKey);
+      if (cached) return cached;
+    }
+
     try {
       const res = await analyticsApi.post(ENDPOINTS.analyze, payload, { timeout: 120000 });
       ConnectionService._setStatus('connected');
+      if (res.data) setToSessionCache(cacheKey, res.data);
       return res.data;
     } catch (err) {
       if (err?.code === 'ECONNABORTED' || String(err?.message || '').toLowerCase().includes('timeout')) {
         const retryRes = await analyticsApi.post(ENDPOINTS.analyze, payload, { timeout: 180000 });
         ConnectionService._setStatus('connected');
+        if (retryRes.data) setToSessionCache(cacheKey, retryRes.data);
         return retryRes.data;
       }
       ConnectionService._setStatus('disconnected');
@@ -111,13 +162,33 @@ export const PortfolioService = {
     }
   },
 
-  getPortfolioAnalysis: async (payload) => {
-    const res = await analyticsApi.post(ENDPOINTS.portfolioAnalyze, payload, { timeout: 180000 });
+  getPortfolioAnalysis: async (payload, forceRefresh = false) => {
+    payload = { ...payload, ...normalizeInvestorProfile(payload) };
+    const cacheKey = getCacheKey('portfolioAnalyze', payload);
+    if (!forceRefresh) {
+      const cached = getFromSessionCache(cacheKey);
+      if (cached) return { ...cached, cached: true };
+    }
+    const requestPayload = forceRefresh ? { ...payload, force_refresh: true } : payload;
+    const res = await analyticsApi.post(ENDPOINTS.portfolioAnalyze, requestPayload, { timeout: 180000 });
+    if (res.data) setToSessionCache(cacheKey, res.data);
     return res.data;
+  },
+
+  getCachedPortfolioAnalysis: (payload) => {
+    payload = { ...payload, ...normalizeInvestorProfile(payload) };
+    const cacheKey = getCacheKey('portfolioAnalyze', payload);
+    return getFromSessionCache(cacheKey);
   },
 
   getBenchmarkComparison: async (payload) => {
     const res = await analyticsApi.post(ENDPOINTS.portfolioBenchmark, payload, { timeout: 120000 });
+    return res.data;
+  },
+
+  optimizePortfolio: async (payload) => {
+    const res = await analyticsApi.post('/portfolio/optimize',
+      { ...payload, ...normalizeInvestorProfile(payload) }, { timeout: 120000 });
     return res.data;
   },
 
@@ -174,11 +245,13 @@ export const ChatService = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
+    if (!res.ok) throw new Error(`Advisor request failed (${res.status}).`);
     const reader = res.body?.getReader();
     if (!reader) throw new Error('Streaming not supported in this browser.');
 
     const decoder = new TextDecoder();
     let buffer = '';
+    let completed = false;
 
     while (true) {
       const { value, done } = await reader.read();
@@ -195,7 +268,10 @@ export const ChatService = {
             try {
               const data = JSON.parse(line.slice(6));
               if (data.content) onChunk(data.content);
-              if (data.done || data.error) onChunk(null, data);
+              if (data.done || data.error) {
+                if (!completed) onChunk(null, data);
+                completed = true;
+              }
             } catch (e) {
               console.error('SSE parse error:', e);
             }
@@ -203,7 +279,33 @@ export const ChatService = {
         }
       }
     }
+    if (!completed) throw new Error('Advisor stream ended before completing the response.');
+  },
+
+  evaluateTicker: async (payload) => {
+    const res = await analyticsApi.post(ENDPOINTS.evaluateTicker, payload, { timeout: 60000 });
+    return res.data;
+  },
+
+  getAdvancedLab: async (payload) => {
+    try {
+      const res = await analyticsApi.post(ENDPOINTS.advancedLab, payload, { timeout: 60000 });
+      return res.data;
+    } catch (err) {
+      const direct = await fetch('http://localhost:8000/portfolio/advanced-lab', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!direct.ok) throw err;
+      return await direct.json();
+    }
   },
 };
 
 export default analyticsApi;
+
+export async function getEvaluationSummary() {
+  const response = await analyticsApi.get("/research/evaluation-summary");
+  return response.data;
+}

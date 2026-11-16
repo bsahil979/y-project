@@ -3,11 +3,25 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 import joblib
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from hmmlearn.hmm import GaussianHMM
+from services.hmm_engine import fit_causal_hmm, final_regime
 import torch
 import torch.nn as nn
+import json
 import datetime
 import os
+
+INVALID_RF_EVALUATION = 'invalidated_in_sample_overlap'
+
+
+def rf_evaluation_status(metrics):
+    """Legacy evaluations with overlapping or undocumented splits cannot support confidence."""
+    if (metrics.get('evaluation_status') == INVALID_RF_EVALUATION
+            or metrics.get('accuracy') == 1.0
+            or 'chronological' not in str(metrics.get('evaluation', '')).lower()
+            or not metrics.get('train_rows') or not metrics.get('test_rows')):
+        return INVALID_RF_EVALUATION
+    return 'chronological_holdout'
+
 
 # --- LSTM Model Definition ---
 class LSTMModel(nn.Module):
@@ -27,6 +41,7 @@ class TradingModels:
         self.scaler_lstm = MinMaxScaler()
         self.scaler_rf = StandardScaler()
         self.rf_model = None
+        self.rf_evaluation_status = INVALID_RF_EVALUATION
         self.hmm_model = None
         self.lstm_model = None
 
@@ -199,6 +214,12 @@ class TradingModels:
         if not os.path.exists(rf_path) and os.path.exists(legacy_rf_path):
             rf_path = legacy_rf_path
         if os.path.exists(rf_path):
+            try:
+                with open(os.path.join(tgt, 'metadata.json'), encoding='utf-8') as metadata_file:
+                    metrics = json.load(metadata_file).get('metrics', {}).get('rf', {})
+                self.rf_evaluation_status = rf_evaluation_status(metrics)
+            except (OSError, ValueError, AttributeError):
+                self.rf_evaluation_status = INVALID_RF_EVALUATION
             self.rf_model = joblib.load(rf_path)
             loaded["rf"] = True
 
@@ -216,6 +237,13 @@ class TradingModels:
         if os.path.exists(scaler_lstm_path) and os.path.exists(scaler_rf_path):
             self.scaler_lstm = joblib.load(scaler_lstm_path)
             self.scaler_rf = joblib.load(scaler_rf_path)
+            loaded["scalers"] = True
+        else:
+            prices = self.df['Close'].values.reshape(-1, 1).astype(np.float32)
+            self.scaler_lstm.fit(prices)
+            features = ['rsi', 'macd', 'macd_signal', 'adx', 'returns', 'volatility']
+            if all(f in self.df.columns for f in features):
+                self.scaler_rf.fit(self.df[features])
             loaded["scalers"] = True
 
         return loaded
@@ -244,28 +272,26 @@ class TradingModels:
         X_last = self.df[features].tail(1)
         X_scaled = self.scaler_rf.transform(X_last)
         signal = self.rf_model.predict(X_scaled)[0]
+        if self.rf_evaluation_status == INVALID_RF_EVALUATION:
+            return signal, None
         prob = np.max(self.rf_model.predict_proba(X_scaled)[0])
         return signal, prob
 
     # --- HMM: Market Regime ---
     def train_hmm(self, n_regimes=3):
-        returns = self.df['returns'].values.reshape(-1, 1)
-        self.hmm_model = GaussianHMM(n_components=n_regimes, covariance_type="diag", n_iter=100)
-        self.hmm_model.fit(returns)
+        if n_regimes != 3:
+            raise ValueError('Canonical regime engine requires three states')
+        returns = self.df['returns'].dropna().tail(504).to_numpy()
+        self.hmm_model = fit_causal_hmm(returns)
         return self.hmm_model
 
     def detect_regime(self):
-        returns = self.df['returns'].values.reshape(-1, 1)
-        hidden_states = self.hmm_model.predict(returns)
-        
-        # Label regimes by mean returns
-        state_means = [returns[hidden_states == i].mean() for i in range(self.hmm_model.n_components)]
-        sorted_states = np.argsort(state_means)
-        
-        curr_state = hidden_states[-1]
-        if curr_state == sorted_states[0]: return "Bearish"
-        if curr_state == sorted_states[-1]: return "Bullish"
-        return "Sideways"
+        # Old pickles did not persist a scaler or canonical state map: refit.
+        if self.hmm_model is None or not hasattr(self.hmm_model, 'causal_scaler_'):
+            self.train_hmm()
+        returns = self.df['returns'].dropna().tail(504).to_numpy()
+        self.regime_metadata = final_regime(self.hmm_model, returns)
+        return self.regime_metadata['current_regime']
 
 if __name__ == "__main__":
     from data_manager import get_processed_data

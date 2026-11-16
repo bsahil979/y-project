@@ -1,0 +1,10 @@
+{
+  "llm_configured": true,
+  "provider": "groq",
+  "base_url": "https://api.groq.com/openai/v1",
+  "model": "openai/gpt-oss-120b",
+  "max_output_tokens": 512,
+  "input_budget_bytes": 6000,
+  "knowledge_base_path": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\data\\knowledge_base.json",
+  "rag_documents_available": 24
+}

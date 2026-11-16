@@ -1,0 +1,101 @@
+ticker,region,market,sector,final_rows,final_first_date,final_last_date,target_rows,feature_rows,raw_rows,raw_first_date,raw_last_date,train_rows,holdout_rows,dataset_rows,ohlcv_status,feature_status,target_status,metadata_status,sentiment_status,final_status,present,train_present,holdout_present
+AAPL,US,US,Information Technology,1152,2022-01-18T00:00:00,2026-08-20T00:00:00,1152,1152,1152,2022-01-18T00:00:00,2026-08-20T00:00:00,921,231,1152,available,available,available,available,neutral_fallback,included,True,True,True
+MSFT,US,US,Information Technology,1152,2022-01-18T00:00:00,2026-08-20T00:00:00,1152,1152,1152,2022-01-18T00:00:00,2026-08-20T00:00:00,921,231,1152,available,available,available,available,neutral_fallback,included,True,True,True
+GOOGL,US,US,Communication Services,1152,2022-01-18T00:00:00,2026-08-20T00:00:00,1152,1152,1152,2022-01-18T00:00:00,2026-08-20T00:00:00,921,231,1152,available,available,available,available,neutral_fallback,included,True,True,True
+AMZN,US,US,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+NVDA,US,US,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+META,US,US,Communication Services,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+TSLA,US,US,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+BRK-B,US,US,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+JPM,US,US,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+V,US,US,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+UNH,US,US,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+XOM,US,US,Energy,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+JNJ,US,US,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+PG,US,US,Consumer Staples,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+HD,US,US,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+MA,US,US,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+ABBV,US,US,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+LLY,US,US,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+CVX,US,US,Energy,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+AVGO,US,US,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+PEP,US,US,Consumer Staples,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+KO,US,US,Consumer Staples,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+COST,US,US,Consumer Staples,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+MRK,US,US,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+WMT,US,US,Consumer Staples,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+DIS,US,US,Communication Services,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+BAC,US,US,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+CRM,US,US,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+AMD,US,US,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+NFLX,US,US,Communication Services,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+INTC,US,US,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+CSCO,US,US,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+TMO,US,US,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+ACN,US,US,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+ADBE,US,US,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+TXN,US,US,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+CMCSA,US,US,Communication Services,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+NKE,US,US,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+PM,US,US,Consumer Staples,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+LIN,US,US,Materials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+HON,US,US,Industrials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+QCOM,US,US,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+AMGN,US,US,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+IBM,US,US,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+GE,US,US,Industrials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+CAT,US,US,Industrials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+SPY,US,US,Exchange Traded Fund,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+QQQ,US,US,Exchange Traded Fund,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+IWM,US,US,Exchange Traded Fund,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+DIA,US,US,Exchange Traded Fund,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+RELIANCE.NS,India,India,Energy,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+TCS.NS,India,India,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+HDFCBANK.NS,India,India,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+ICICIBANK.NS,India,India,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+INFY.NS,India,India,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+HINDUNILVR.NS,India,India,Consumer Staples,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+ITC.NS,India,India,Consumer Staples,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+SBIN.NS,India,India,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+BHARTIARTL.NS,India,India,Communication Services,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+KOTAKBANK.NS,India,India,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+LT.NS,India,India,Industrials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+AXISBANK.NS,India,India,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+ASIANPAINT.NS,India,India,Materials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+MARUTI.NS,India,India,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+TITAN.NS,India,India,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+BAJFINANCE.NS,India,India,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+HCLTECH.NS,India,India,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+WIPRO.NS,India,India,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+ULTRACEMCO.NS,India,India,Materials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+NTPC.NS,India,India,Utilities,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+SUNPHARMA.NS,India,India,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+ONGC.NS,India,India,Energy,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+POWERGRID.NS,India,India,Utilities,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+NESTLEIND.NS,India,India,Consumer Staples,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+TATAMOTORS.NS,India,India,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+M&M.NS,India,India,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+ADANIENT.NS,India,India,Industrials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+TECHM.NS,India,India,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+INDUSINDBK.NS,India,India,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+JSWSTEEL.NS,India,India,Materials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+TATASTEEL.NS,India,India,Materials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+HINDALCO.NS,India,India,Materials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+BAJAJFINSV.NS,India,India,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+DIVISLAB.NS,India,India,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+CIPLA.NS,India,India,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+DRREDDY.NS,India,India,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+HEROMOTOCO.NS,India,India,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+EICHERMOT.NS,India,India,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+GRASIM.NS,India,India,Materials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+BPCL.NS,India,India,Energy,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+COALINDIA.NS,India,India,Energy,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+ADANIPORTS.NS,India,India,Industrials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+APOLLOHOSP.NS,India,India,Health Care,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+TATACONSUM.NS,India,India,Consumer Staples,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+BEL.NS,India,India,Information Technology,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+SHRIRAMFIN.NS,India,India,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+HDFCLIFE.NS,India,India,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+SBILIFE.NS,India,India,Financials,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+BAJAJ-AUTO.NS,India,India,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False
+TRENT.NS,India,India,Consumer Discretionary,0,,,0,0,0,,,0,0,0,missing_ohlcv,not_reached,not_reached,available,neutral_fallback,filtered,False,False,False

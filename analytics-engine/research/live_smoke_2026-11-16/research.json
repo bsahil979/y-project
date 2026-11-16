@@ -1,0 +1,763 @@
+{
+  "schema_version": 1,
+  "read_only": true,
+  "sources": [
+    {
+      "path": "models/phase_2e/phase_2e_classification_report.json",
+      "sha256": "c3c260046dee0da371b38d67a7e13b8f7fa45763ad9d7b88166d71df7fae9731"
+    },
+    {
+      "path": "models/forecast_v2/MSFT/report.json",
+      "sha256": "d199ac3959fc40058b77c25bffa3beb017a1e53cf3551eb28ab4d0ee72b38698"
+    },
+    {
+      "path": "evaluations/timesfm_replay_2026-11-04.json",
+      "sha256": "8abf351b743efd7983ac5aa0ee4ab5451836e9a671e9a0d9c868bb2db477dff5"
+    }
+  ],
+  "regime": {
+    "status": "ready",
+    "stale": false,
+    "changed_sources": [],
+    "manifest": {
+      "created_at": "2026-11-15T15:44:32.455412+00:00",
+      "status": "completed_chronological_backtest",
+      "config": {
+        "lookback": 504,
+        "min_observations": 126,
+        "max_weight": 0.4,
+        "shrinkage": 0.5,
+        "seed": 42,
+        "rebalance_every": 21,
+        "cost_bps": 10,
+        "risk_free_rate": 0.02,
+        "execution": "Signal at close t; trade at close t+1; earn return through close t+2",
+        "cost_definition": "cost_bps per unit total absolute traded weight; initial purchase included",
+        "final_liquidation": false
+      },
+      "data": {
+        "type": "supplied_csv",
+        "path": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\research\\regime_holdout_2026-09-27_v2\\prices.csv",
+        "input_manifest_sha256": "924120a79f92f682528968cd5de32b1afb3e8953547cb4e00344b2be80227781",
+        "input_data_provenance": {
+          "type": "supplied_csv",
+          "path": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\research\\regime_data_v1\\prices.csv",
+          "input_manifest_sha256": "c377b0daa5e02c99a3aa1314a49c64cb038623d16c678221e4659e9101f6c2dc",
+          "input_data_provenance": {
+            "status": "input_snapshot_only_no_backtest_run",
+            "tickers": [
+              "RELIANCE.NS",
+              "TCS.NS",
+              "INFY.NS",
+              "HDFCBANK.NS",
+              "ICICIBANK.NS"
+            ],
+            "currency": "INR",
+            "requested_start_inclusive": "2018-01-01",
+            "requested_end_exclusive": "2026-01-01",
+            "provider": "Yahoo Finance",
+            "price_field": "auto-adjusted close (dividends and splits adjusted)",
+            "adjustment_verified": true,
+            "downloaded_at_utc": "2026-09-27T13:51:23.208236+00:00",
+            "price_start": "2018-01-01",
+            "price_end": "2025-12-31",
+            "price_observations": 1976,
+            "dropped_incomplete_rows": 0,
+            "snapshot_sha256": "ed367e3dce5a3c58fb856b02fd2b2ae109286256f1073c56bc4d325dea041ab9"
+          }
+        }
+      },
+      "tickers": [
+        "RELIANCE.NS",
+        "TCS.NS",
+        "INFY.NS",
+        "HDFCBANK.NS",
+        "ICICIBANK.NS"
+      ],
+      "snapshot_sha256": "ed367e3dce5a3c58fb856b02fd2b2ae109286256f1073c56bc4d325dea041ab9",
+      "source_sha256": {
+        "services/hmm_engine.py": "0edf4d6d33b25d053ce5fab0656bb4d92136b0099ebc8655213998864dbd88e3",
+        "services/regime_allocation.py": "fa6b60280c73cace227d7bb1c0b079014a3f46f20918bf58d8f4a3a5fbc74e53",
+        "services/data_fetcher.py": "875504d1a3dd86795974249f3148f150701b76e6861e63b4cb5dd44edf7560dd",
+        "research/regime_study.py": "7306ef7df7fdac8224dc6591a44acd219c0824a645fed8376a8469c9560252c4",
+        "research/run_regime_study.py": "6a50a007fe93a846d662b9d7dd7f1766888151ba099bd5f0604fca08d212f7e9"
+      },
+      "python": "3.10.11",
+      "versions": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "scipy": "1.15.3",
+        "hmmlearn": "0.3.3"
+      },
+      "price_start": "2018-01-01",
+      "price_end": "2025-12-31",
+      "price_observations": 1976,
+      "holdout": {
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "return_observations": 249,
+        "minimum_return_observations": 200,
+        "status": "ready",
+        "primary_metric": "net annualized Sharpe difference: HMM minimum variance minus Minimum variance",
+        "metrics_file": "holdout_metrics.csv",
+        "bootstrap_file": "holdout_sharpe_bootstrap.json",
+        "bootstrap": {
+          "comparison": "HMM minimum variance minus Minimum variance",
+          "metric": "net annualized Sharpe difference",
+          "point_estimate": 0.01598291620823597,
+          "confidence": 0.95,
+          "lower": -0.010547957332955214,
+          "upper": 0.04170265499365712,
+          "method": "paired moving-block bootstrap; non-circular blocks sampled from shared dates",
+          "block_length_sessions": 21,
+          "replicates_requested": 10000,
+          "replicates_valid": 10000,
+          "seed": 20260927,
+          "observation_count": 249,
+          "risk_free_rate_annual": 0.02,
+          "annualization_sessions": 252,
+          "interpretation": "Exploratory uncertainty for one year and one convenience universe; not broad evidence of effectiveness."
+        }
+      },
+      "sensitivity": {
+        "file": "sensitivity.csv",
+        "seed_values": [
+          7,
+          42,
+          123,
+          2026
+        ],
+        "cost_bps_values": [
+          0,
+          10,
+          25
+        ],
+        "scenario_count": 6,
+        "rows": 24,
+        "primary_scenario_included": true
+      },
+      "protocol_id": "regime_allocation_v1_2026-09-27",
+      "protocol_sha256": "27568024a609fea2154dc4e06ef2a384510bdc40f73fd611a9660d5d226e4785",
+      "test_start": "2020-01-24",
+      "test_end": "2025-12-31",
+      "rebalances": 70,
+      "limitations": [
+        "Convenience universe; survivorship/selection bias not eliminated",
+        "One development period and seed; no statistical significance claim",
+        "Fixed cost approximation; no intraday spread or market-impact model",
+        "Adjusted-close research returns, not executable price quotes"
+      ]
+    },
+    "reproduction": {
+      "scope": "archived_original_and_replay",
+      "status": "matched"
+    },
+    "convergence": {
+      "fits": 70,
+      "converged": 70,
+      "iteration_cap_failures": 0
+    },
+    "holdout_metrics": [
+      {
+        "strategy": "Buy and hold",
+        "period_start": "2025-01-01",
+        "period_end": "2025-12-31",
+        "total_return": 0.0153331011185759,
+        "annualized_return": 0.0155192634464538,
+        "annualized_volatility": 0.1365637782270388,
+        "sharpe": 0.0355426172350981,
+        "max_drawdown": -0.128328460459516,
+        "annualized_traded_notional": 0.0,
+        "cumulative_cost_fraction": 0.0,
+        "cost_drag_on_one_unit": 0.0,
+        "observation_count": 249
+      },
+      {
+        "strategy": "Equal weight",
+        "period_start": "2025-01-01",
+        "period_end": "2025-12-31",
+        "total_return": 0.0315557917175137,
+        "annualized_return": 0.0319419907372404,
+        "annualized_volatility": 0.1352286820739707,
+        "sharpe": 0.1531920765866457,
+        "max_drawdown": -0.1169522735611114,
+        "annualized_traded_notional": 0.3607672636746423,
+        "cumulative_cost_fraction": 0.0003564724152975,
+        "cost_drag_on_one_unit": 0.0003677947050264,
+        "observation_count": 249
+      },
+      {
+        "strategy": "Minimum variance",
+        "period_start": "2025-01-01",
+        "period_end": "2025-12-31",
+        "total_return": 0.0287528644954557,
+        "annualized_return": 0.0291042777824215,
+        "annualized_volatility": 0.1259140353177298,
+        "sharpe": 0.1331110404752977,
+        "max_drawdown": -0.0963708865587131,
+        "annualized_traded_notional": 0.555373490298734,
+        "cumulative_cost_fraction": 0.0005487619011285,
+        "cost_drag_on_one_unit": 0.0005647116788138,
+        "observation_count": 249
+      },
+      {
+        "strategy": "HMM minimum variance",
+        "period_start": "2025-01-01",
+        "period_end": "2025-12-31",
+        "total_return": 0.0308060894362949,
+        "annualized_return": 0.0311829751633445,
+        "annualized_volatility": 0.1261694079778099,
+        "sharpe": 0.1490939566835337,
+        "max_drawdown": -0.0968461565717824,
+        "annualized_traded_notional": 0.7834096925189471,
+        "cumulative_cost_fraction": 0.0007740833866556,
+        "cost_drag_on_one_unit": 0.0007982699170321,
+        "observation_count": 249
+      }
+    ],
+    "metrics": [
+      {
+        "strategy": "Buy and hold",
+        "total_return": 1.1326864090184947,
+        "annualized_return": 0.1386427518460846,
+        "annualized_volatility": 0.1980530757584071,
+        "sharpe": 0.6552649455626367,
+        "max_drawdown": -0.3681348334800192,
+        "annualized_traded_notional": 0.1714285714285714,
+        "observation_count": 1470
+      },
+      {
+        "strategy": "Equal weight",
+        "total_return": 1.2864894077952127,
+        "annualized_return": 0.1523167154944835,
+        "annualized_volatility": 0.1985890058684537,
+        "sharpe": 0.7141545026855197,
+        "max_drawdown": -0.3675402591804081,
+        "annualized_traded_notional": 0.6273014080822061,
+        "observation_count": 1470
+      },
+      {
+        "strategy": "Minimum variance",
+        "total_return": 1.0445069133739362,
+        "annualized_return": 0.1304302150273149,
+        "annualized_volatility": 0.1938678444550985,
+        "sharpe": 0.6277991781368425,
+        "max_drawdown": -0.3510779950550295,
+        "annualized_traded_notional": 0.932818932065112,
+        "observation_count": 1470
+      },
+      {
+        "strategy": "HMM minimum variance",
+        "total_return": 1.019755923366303,
+        "annualized_return": 0.128072345372608,
+        "annualized_volatility": 0.1931213237493277,
+        "sharpe": 0.6187033429735593,
+        "max_drawdown": -0.3520852879232569,
+        "annualized_traded_notional": 1.1702867413901934,
+        "observation_count": 1470
+      }
+    ]
+  },
+  "personalized": {
+    "evaluation_status": "completed_retrospective_walk_forward",
+    "holdout": {
+      "metrics": [
+        {
+          "strategy": "Aggressive AI Black-Litterman",
+          "annualized_return": 0.012464963942371288,
+          "annualized_volatility": 0.13749619029535606,
+          "sharpe": 0.014393388995962689,
+          "max_drawdown": -0.1296596192868218,
+          "average_turnover": 0.4902250031091968,
+          "average_daily_turnover": 0.021656526241771747,
+          "annualized_traded_notional": 5.45744461292648,
+          "cumulative_cost_fraction": 0.005392475034201165,
+          "rebalance_count": 11,
+          "observation_count": 249
+        },
+        {
+          "strategy": "Aggressive target return",
+          "annualized_return": -0.00011655464762416745,
+          "annualized_volatility": 0.1275382873966236,
+          "sharpe": -0.09283533022851423,
+          "max_drawdown": -0.10514948116684475,
+          "average_turnover": 0.27686674560669006,
+          "average_daily_turnover": 0.012231061050897954,
+          "annualized_traded_notional": 3.0822273848262842,
+          "cumulative_cost_fraction": 0.0030455342016735905,
+          "rebalance_count": 11,
+          "observation_count": 249
+        },
+        {
+          "strategy": "Conservative",
+          "annualized_return": 0.03194199073724002,
+          "annualized_volatility": 0.13522868207397076,
+          "sharpe": 0.15319207658664408,
+          "max_drawdown": -0.1169522735611116,
+          "average_turnover": 0.03240658320886929,
+          "average_daily_turnover": 0.001431616125693021,
+          "annualized_traded_notional": 0.3607672636746413,
+          "cumulative_cost_fraction": 0.0003564724152975623,
+          "rebalance_count": 11,
+          "observation_count": 249
+        },
+        {
+          "strategy": "Equal weight",
+          "annualized_return": 0.03194199073724757,
+          "annualized_volatility": 0.13522868207397012,
+          "sharpe": 0.15319207658664616,
+          "max_drawdown": -0.11695227356111015,
+          "average_turnover": 0.03240658320886934,
+          "average_daily_turnover": 0.0014316161256930228,
+          "annualized_traded_notional": 0.36076726367464174,
+          "cumulative_cost_fraction": 0.0003564724152975632,
+          "rebalance_count": 11,
+          "observation_count": 249
+        },
+        {
+          "strategy": "Minimum variance",
+          "annualized_return": 0.029104277782428634,
+          "annualized_volatility": 0.1259140353177293,
+          "sharpe": 0.13311104047529795,
+          "max_drawdown": -0.0963708865587104,
+          "average_turnover": 0.04988744555713731,
+          "average_daily_turnover": 0.002203863056741006,
+          "annualized_traded_notional": 0.5553734902987335,
+          "cumulative_cost_fraction": 0.0005487619011285109,
+          "rebalance_count": 11,
+          "observation_count": 249
+        },
+        {
+          "strategy": "Moderate",
+          "annualized_return": 0.0009041622399630356,
+          "annualized_volatility": 0.13507414330919829,
+          "sharpe": -0.07277672459901795,
+          "max_drawdown": -0.13601107497768217,
+          "average_turnover": 0.27245334323295095,
+          "average_daily_turnover": 0.01203609146812233,
+          "annualized_traded_notional": 3.0330950499668274,
+          "cumulative_cost_fraction": 0.0029969867755624603,
+          "rebalance_count": 11,
+          "observation_count": 249
+        }
+      ],
+      "sharpe_intervals": [
+        {
+          "strategy": "Conservative",
+          "baseline": "Minimum variance",
+          "metric": "net_sharpe_difference",
+          "point_estimate": 0.020081036111346123,
+          "lower": -0.6108498084466509,
+          "upper": 0.46795934212315093
+        },
+        {
+          "strategy": "Conservative",
+          "baseline": "Equal weight",
+          "metric": "net_sharpe_difference",
+          "point_estimate": -2.0816681711721685e-15,
+          "lower": -1.2878587085651816e-14,
+          "upper": 7.216449660063518e-15
+        },
+        {
+          "strategy": "Moderate",
+          "baseline": "Minimum variance",
+          "metric": "net_sharpe_difference",
+          "point_estimate": -0.2058877650743159,
+          "lower": -0.8401156085688709,
+          "upper": 0.3918987332535317
+        },
+        {
+          "strategy": "Moderate",
+          "baseline": "Equal weight",
+          "metric": "net_sharpe_difference",
+          "point_estimate": -0.2259688011856641,
+          "lower": -0.6341100353072143,
+          "upper": 0.28436989410977986
+        },
+        {
+          "strategy": "Aggressive target return",
+          "baseline": "Minimum variance",
+          "metric": "net_sharpe_difference",
+          "point_estimate": -0.22594637070381218,
+          "lower": -0.5230008790071813,
+          "upper": 0.029931454423041386
+        },
+        {
+          "strategy": "Aggressive target return",
+          "baseline": "Equal weight",
+          "metric": "net_sharpe_difference",
+          "point_estimate": -0.2460274068151604,
+          "lower": -0.7945618912166679,
+          "upper": 0.48628491338235497
+        },
+        {
+          "strategy": "Aggressive AI Black-Litterman",
+          "baseline": "Minimum variance",
+          "metric": "net_sharpe_difference",
+          "point_estimate": -0.11871765147933526,
+          "lower": -0.8782585971415291,
+          "upper": 0.4533302972521276
+        },
+        {
+          "strategy": "Aggressive AI Black-Litterman",
+          "baseline": "Equal weight",
+          "metric": "net_sharpe_difference",
+          "point_estimate": -0.13879868759068348,
+          "lower": -0.4045407198131874,
+          "upper": 0.08176420951194449
+        }
+      ],
+      "risk_comparisons": [
+        {
+          "comparison": "Conservative minus Aggressive target return",
+          "metric": "annualized_volatility",
+          "difference": 0.007690394677347168,
+          "lower": 0.0031381529788653524,
+          "upper": 0.012092193920066394,
+          "observed_risk_reduction": false,
+          "interval_supports_reduction": false
+        },
+        {
+          "comparison": "Conservative minus Aggressive target return",
+          "metric": "max_drawdown",
+          "difference": -0.011802792394266848,
+          "lower": -0.04242046477273387,
+          "upper": 0.03571980624898014,
+          "observed_risk_reduction": false,
+          "interval_supports_reduction": false
+        },
+        {
+          "comparison": "Conservative minus Aggressive AI Black-Litterman",
+          "metric": "annualized_volatility",
+          "difference": -0.0022675082213853004,
+          "lower": -0.007956681885730612,
+          "upper": 0.0031907062847460754,
+          "observed_risk_reduction": true,
+          "interval_supports_reduction": false
+        },
+        {
+          "comparison": "Conservative minus Aggressive AI Black-Litterman",
+          "metric": "max_drawdown",
+          "difference": 0.012707345725710195,
+          "lower": -0.0011607267047858995,
+          "upper": 0.03837298893182094,
+          "observed_risk_reduction": true,
+          "interval_supports_reduction": false
+        },
+        {
+          "comparison": "Conservative minus Equal weight",
+          "metric": "annualized_volatility",
+          "difference": 6.38378239159465e-16,
+          "lower": 5.273559366969494e-16,
+          "upper": 6.661338147750939e-16,
+          "observed_risk_reduction": false,
+          "interval_supports_reduction": false
+        },
+        {
+          "comparison": "Conservative minus Equal weight",
+          "metric": "max_drawdown",
+          "difference": -1.4432899320127035e-15,
+          "lower": -5.773159728050814e-15,
+          "upper": -2.220446049250313e-16,
+          "observed_risk_reduction": false,
+          "interval_supports_reduction": false
+        }
+      ],
+      "evaluation_status": "completed_retrospective_walk_forward",
+      "holdout_start": "2025-01-01",
+      "holdout_end": "2025-12-31",
+      "observations": 249,
+      "sentiment_coverage": "unavailable_in_historical_replay",
+      "horizon_years": 10,
+      "cost_bps": 10,
+      "rebalance_sessions": 21,
+      "lookback_sessions": 504,
+      "bootstrap": {
+        "method": "paired non-circular moving-block",
+        "block_sessions": 21,
+        "replicates": 10000,
+        "seed": 20260927,
+        "confidence": 0.95
+      },
+      "scope": "Retrospective causal replay on five Indian stocks and an already inspected 2025 window. Fixed ten-year horizon. Aggressive AI Black-Litterman is the production personalized path; aggressive target return is a no-AI control. Not a confirmatory untouched test or a validation of every horizon or live model.",
+      "limitations": "Conservative 20% caps force equal weight with five stocks. Historical FinBERT is unavailable. The newly retrained five-stock MarketMind RF is not the saved 99-stock classifier. ADX uses a frozen trailing-feature snapshot; retrospectively adjusted inputs are not vintage-certified. No parameter tuning on results.",
+      "model": "MarketMind A architecture: 250-tree balanced Random Forest, seed 42, 14 features, causal HMM, five-session matured labels; refit each rebalance",
+      "turnover_definition": "Mean total absolute traded weight per scheduled holdout rebalance; costs 10bps per total absolute traded weight. Drift between rebalances; no final liquidation.",
+      "risk_interpretation": "Lower volatility requires a negative difference; smaller drawdown loss requires a positive difference because max drawdown is signed. Intervals are exploratory, unadjusted for multiple comparisons.",
+      "stale": false,
+      "changed_sources": [],
+      "changed_inputs": [],
+      "manifest": {
+        "created_at": "2026-11-16T03:20:30.606033+00:00",
+        "source_sha256": {
+          "research/personalized_study.py": "e3930319cf1a682bf7955caa825670dac7f282043cb2b63dc2fa1668784c74f4",
+          "research/PHASE8_PROTOCOL.md": "81304e7eceec52fc0dfc5630786b217dc4a842f03fd25490cee62b52270f1b2c",
+          "services/portfolio_optimizer.py": "629ba6b186196e0352ab228ef50853a913be709dc6c3d4b785502844b71b18e0",
+          "services/hmm_engine.py": "0edf4d6d33b25d053ce5fab0656bb4d92136b0099ebc8655213998864dbd88e3",
+          "trading_engine/meta_model.py": "7b35b58a85b747be5891d50ee7468e67a9bf71893a4d8be9a5b933c5cb85ef91",
+          "trading_engine/data_manager.py": "ae0e824a482a442fbaaf2566628d012668bade8dd52a97c3d9042e383da65fd0"
+        },
+        "input_sha256": {
+          "research/regime_phase4_2026-11-15/prices.csv": "ed367e3dce5a3c58fb856b02fd2b2ae109286256f1073c56bc4d325dea041ab9",
+          "research/regime_phase4_2026-11-15/daily_ledger.csv": "0fd9fc6e8dd189cb9160d5ac3e44cceb6b60a0b266ac2504bec62e366a203000",
+          "models/meta_model/meta_dataset.csv": "07d1d87b7a5e54625a584f3e96077d512116cf78d69654b6d2131326df3c97df"
+        },
+        "output_sha256": {
+          "causal_features.csv": "b6c2caa5ed14e9b2073d6c365f7910a5f65e566c5ad3efc1264448cbec3d9ae3",
+          "daily_ledger.csv": "a8e5cfe0671fc8184e4c6791db77fdebc41c67b135bc52f7b87ff5e6825407b2",
+          "decisions.json": "14f9fcc8c34f6b4cb9584c4603f34945dea4481ab09c287c956fa6d8601efa12",
+          "holdout_metrics.csv": "21358878dba46c9acb2ce146b1e18b95714385434c62e2509ed6b03d9e575728",
+          "predictions.json": "034c1aaaaf9b0c29a867d5843fbf6782233c32ccf49d652a32340d747d935d96",
+          "summary.json": "c55ffa598aa86b5d57577e12a2dbecb821949dce7fde381676b7a4ce19085fbc",
+          "report.md": "7a49185e7f01846b8d6bbd71cf308c8db018a8a10bff1bb117a9f5fee8cebb72"
+        },
+        "protocol": "research/PHASE8_PROTOCOL.md",
+        "model_refits": 70,
+        "python": "3.10.11",
+        "versions": {
+          "numpy": "2.2.6",
+          "pandas": "2.3.3",
+          "scipy": "1.15.3",
+          "scikit-learn": "1.7.2",
+          "hmmlearn": "0.3.3",
+          "ta": "0.11.0"
+        }
+      }
+    },
+    "scope": "Retrospective causal replay on five Indian stocks and an already inspected 2025 window. Fixed ten-year horizon. Aggressive AI Black-Litterman is the production personalized path; aggressive target return is a no-AI control. Not a confirmatory untouched test or a validation of every horizon or live model.",
+    "constraints": [
+      {
+        "applied_profile": "conservative",
+        "effective_profile": "conservative",
+        "investment_horizon_years": 1,
+        "horizon_source": "explicit",
+        "horizon_modifier": "short_term_protection",
+        "baseline_max_weight_cap": 0.2,
+        "feasibility_floor": 0.2,
+        "feasibility_floor_applied": true,
+        "volatility_penalty": 1.25,
+        "max_weight_cap": 0.2,
+        "objective_used": "minimum_volatility",
+        "sector_weight_cap": 0.3,
+        "rebalance_threshold": 0.02,
+        "beta_penalty": 0.0625
+      },
+      {
+        "applied_profile": "conservative",
+        "effective_profile": "conservative",
+        "investment_horizon_years": 5,
+        "horizon_source": "explicit",
+        "horizon_modifier": "baseline_medium_term",
+        "baseline_max_weight_cap": 0.2,
+        "feasibility_floor": 0.2,
+        "feasibility_floor_applied": false,
+        "volatility_penalty": 1.0,
+        "max_weight_cap": 0.2,
+        "objective_used": "minimum_volatility",
+        "sector_weight_cap": 0.3,
+        "rebalance_threshold": 0.02,
+        "beta_penalty": 0.05
+      },
+      {
+        "applied_profile": "conservative",
+        "effective_profile": "conservative",
+        "investment_horizon_years": 10,
+        "horizon_source": "explicit",
+        "horizon_modifier": "long_term_growth",
+        "baseline_max_weight_cap": 0.2,
+        "feasibility_floor": 0.2,
+        "feasibility_floor_applied": false,
+        "volatility_penalty": 1.0,
+        "max_weight_cap": 0.2,
+        "objective_used": "minimum_volatility",
+        "sector_weight_cap": 0.3,
+        "rebalance_threshold": 0.02,
+        "beta_penalty": 0.05
+      },
+      {
+        "applied_profile": "moderate",
+        "effective_profile": "moderate",
+        "investment_horizon_years": 1,
+        "horizon_source": "explicit",
+        "horizon_modifier": "short_term_protection",
+        "baseline_max_weight_cap": 0.3,
+        "feasibility_floor": 0.2,
+        "feasibility_floor_applied": false,
+        "volatility_penalty": 1.0,
+        "max_weight_cap": 0.25,
+        "objective_used": "maximum_sharpe",
+        "sector_weight_cap": 0.4,
+        "rebalance_threshold": 0.04,
+        "beta_penalty": 0.0
+      },
+      {
+        "applied_profile": "moderate",
+        "effective_profile": "moderate",
+        "investment_horizon_years": 5,
+        "horizon_source": "explicit",
+        "horizon_modifier": "baseline_medium_term",
+        "baseline_max_weight_cap": 0.3,
+        "feasibility_floor": 0.2,
+        "feasibility_floor_applied": false,
+        "volatility_penalty": 1.0,
+        "max_weight_cap": 0.3,
+        "objective_used": "maximum_sharpe",
+        "sector_weight_cap": 0.4,
+        "rebalance_threshold": 0.04,
+        "beta_penalty": 0.0
+      },
+      {
+        "applied_profile": "moderate",
+        "effective_profile": "moderate",
+        "investment_horizon_years": 10,
+        "horizon_source": "explicit",
+        "horizon_modifier": "long_term_growth",
+        "baseline_max_weight_cap": 0.3,
+        "feasibility_floor": 0.2,
+        "feasibility_floor_applied": false,
+        "volatility_penalty": 1.0,
+        "max_weight_cap": 0.3,
+        "objective_used": "maximum_sharpe",
+        "sector_weight_cap": 0.4,
+        "rebalance_threshold": 0.04,
+        "beta_penalty": 0.0
+      },
+      {
+        "applied_profile": "aggressive",
+        "effective_profile": "moderate",
+        "investment_horizon_years": 1,
+        "horizon_source": "explicit",
+        "horizon_modifier": "short_term_protection",
+        "baseline_max_weight_cap": 0.4,
+        "feasibility_floor": 0.2,
+        "feasibility_floor_applied": false,
+        "volatility_penalty": 1.0,
+        "max_weight_cap": 0.35000000000000003,
+        "objective_used": "maximum_sharpe",
+        "sector_weight_cap": 0.5,
+        "rebalance_threshold": 0.05,
+        "beta_penalty": 0.0
+      },
+      {
+        "applied_profile": "aggressive",
+        "effective_profile": "aggressive",
+        "investment_horizon_years": 5,
+        "horizon_source": "explicit",
+        "horizon_modifier": "baseline_medium_term",
+        "baseline_max_weight_cap": 0.4,
+        "feasibility_floor": 0.2,
+        "feasibility_floor_applied": false,
+        "volatility_penalty": 1.0,
+        "max_weight_cap": 0.4,
+        "objective_used": "target_return",
+        "sector_weight_cap": 0.5,
+        "rebalance_threshold": 0.05,
+        "beta_penalty": 0.0
+      },
+      {
+        "applied_profile": "aggressive",
+        "effective_profile": "aggressive",
+        "investment_horizon_years": 10,
+        "horizon_source": "explicit",
+        "horizon_modifier": "long_term_growth",
+        "baseline_max_weight_cap": 0.4,
+        "feasibility_floor": 0.2,
+        "feasibility_floor_applied": false,
+        "volatility_penalty": 1.0,
+        "max_weight_cap": 0.4,
+        "objective_used": "target_return",
+        "sector_weight_cap": 0.5,
+        "rebalance_threshold": 0.05,
+        "beta_penalty": 0.0
+      }
+    ],
+    "constraint_scope": "Five-asset illustration; actual caps depend on asset count and feasibility.",
+    "ai_views": "Q = pi + 0.50 * annual volatility * signal. Signal = 0.65 * (P_buy - P_sell) + 0.35 * FinBERT when both exist; otherwise the available source. Missing both retains the prior. VADER is excluded.",
+    "objective_note": "Effective aggressive profiles use AI Black-Litterman in the pipeline; short horizons use maximum Sharpe. Standalone aggressive optimization without AI views uses target return.",
+    "provenance_fields": [
+      "marketmind_net_prob",
+      "finbert_score",
+      "composite_signal",
+      "implied_view_return_q",
+      "view_confidence",
+      "fallback_to_prior"
+    ],
+    "confidence_note": "View confidence is a policy coefficient, not calibrated prediction accuracy."
+  },
+  "marketmind": {
+    "evaluation_status": "archived_holdout_before_causal_hmm_integration",
+    "rows": 42568,
+    "models": {
+      "A": {
+        "accuracy": 0.38068502161247886,
+        "macro_f1": 0.30681875405343295,
+        "balanced_accuracy": 0.34043137528479184
+      },
+      "B": {
+        "accuracy": 0.38474910731065587,
+        "macro_f1": 0.29057348893893914,
+        "balanced_accuracy": 0.33986037707739997
+      }
+    },
+    "majority_baseline": {
+      "accuracy": 0.39268934410825035,
+      "macro_f1": 0.18797651980298224
+    },
+    "regime_integration": "Current features use causal HMM filtering with canonical states 0/1/2 and legacy shape compatibility. Archived Phase 2E scores do not evaluate this change; the Phase 8 allocation replay separately retrains the RF with causal HMM features on five stocks. It does not replace this archived classifier accuracy audit."
+  },
+  "forecasting": {
+    "lstm": {
+      "ticker": "MSFT",
+      "trained_through": "2026-10-13",
+      "model": "Last-close baseline",
+      "lookback": 60,
+      "horizon": 30,
+      "input_scale": 1.994365930557251,
+      "selection_rule": "Lowest validation MAE versus last-close baseline; test data never selects weights or model.",
+      "metric": "Mean absolute cumulative log-return error in percentage points, averaged over forecast steps.",
+      "validation_lstm_mae": 4.590214729309082,
+      "validation_baseline_mae": 4.577944755554199,
+      "test_lstm_mae": 5.727871417999268,
+      "test_baseline_mae": 5.5733160972595215,
+      "train_origins": 1017,
+      "validation_origins": 260,
+      "test_origins": 277,
+      "limitations": "One chronological split, overlapping forecast windows, no calibrated uncertainty intervals. This is an experimental forecast, not established predictive superiority."
+    },
+    "timesfm": {
+      "method": "chronological historical replay of serving-time TimesFM versus unchanged last close",
+      "limitation": "TimesFM pretraining cutoff is unverified; these dates are not an untouched model holdout. Two chosen symbols and overlapping forecast windows are not enough to establish general predictive skill.",
+      "horizon_sessions": 30,
+      "summary": {
+        "MSFT": {
+          "origins": 12,
+          "model_mean_mae_pct_of_spot": 6.793885496883012,
+          "baseline_mean_mae_pct_of_spot": 6.450124693878639,
+          "model_better_origins": 5,
+          "terminal_direction_accuracy": 0.4166666666666667
+        },
+        "RELIANCE.NS": {
+          "origins": 12,
+          "model_mean_mae_pct_of_spot": 3.766978265634077,
+          "baseline_mean_mae_pct_of_spot": 3.841373821439271,
+          "model_better_origins": 8,
+          "terminal_direction_accuracy": 0.8333333333333334
+        },
+        "ALL": {
+          "origins": 24,
+          "model_mean_mae_pct_of_spot": 5.2804318812585445,
+          "baseline_mean_mae_pct_of_spot": 5.145749257658955,
+          "model_better_origins": 13,
+          "terminal_direction_accuracy": 0.625
+        }
+      }
+    },
+    "interpretation": "Short-horizon price forecasts in these experiments cluster near the last-close random-walk baseline. The evidence does not establish predictive superiority. The architecture prioritizes constrained allocation and explicit Black-Litterman views; the separate Phase 8 walk-forward allocation replay measures its risk and cost tradeoffs on the five-stock 2025 window."
+  },
+  "integrity": {
+    "quarantined_rf_count": 100,
+    "ppo_status": "experimental_disabled",
+    "ppo_preprocessing": "Causal expanding-window HMM filtering; causal_preprocessing=true.",
+    "advisor": "Hybrid local MiniLM and TF-IDF with offline TF-IDF fallback. Labeled numerical claims are checked against canonical portfolio facts and mismatches receive deterministic corrections. This does not verify every prose claim."
+  }
+}

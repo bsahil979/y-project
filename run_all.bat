@@ -11,16 +11,12 @@ echo.
 
 REM Start Analytics Engine (Python FastAPI)
 echo [1/2] Starting Analytics Engine on port 8000...
-if exist "analytics-engine\venv\Scripts\python.exe" (
-    start "Analytics Engine" cmd /k "cd analytics-engine && venv\Scripts\python.exe -m uvicorn api:app --port 8000 --reload"
-) else (
-    start "Analytics Engine" cmd /k "cd analytics-engine && pip install -r requirements.txt && uvicorn api:app --port 8000 --reload"
-)
+start "Analytics Engine" cmd /c call "%~dp0run_analytics.bat"
 timeout /t 3 /nobreak
 
 REM Start Frontend (React/Vite)
 echo [2/2] Starting Frontend on port 5173...
-start "Frontend" cmd /k "cd frontend && npm install --legacy-peer-deps && npm run dev"
+start "Frontend" cmd /c call "%~dp0run_frontend.bat"
 
 echo.
 echo All services are starting...

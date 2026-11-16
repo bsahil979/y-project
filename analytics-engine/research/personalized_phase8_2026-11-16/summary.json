@@ -1,0 +1,225 @@
+{
+  "metrics": [
+    {
+      "strategy": "Aggressive AI Black-Litterman",
+      "annualized_return": 0.012464963942371288,
+      "annualized_volatility": 0.13749619029535606,
+      "sharpe": 0.014393388995962689,
+      "max_drawdown": -0.1296596192868218,
+      "average_turnover": 0.4902250031091968,
+      "average_daily_turnover": 0.021656526241771747,
+      "annualized_traded_notional": 5.45744461292648,
+      "cumulative_cost_fraction": 0.005392475034201165,
+      "rebalance_count": 11,
+      "observation_count": 249
+    },
+    {
+      "strategy": "Aggressive target return",
+      "annualized_return": -0.00011655464762416745,
+      "annualized_volatility": 0.1275382873966236,
+      "sharpe": -0.09283533022851423,
+      "max_drawdown": -0.10514948116684475,
+      "average_turnover": 0.27686674560669006,
+      "average_daily_turnover": 0.012231061050897954,
+      "annualized_traded_notional": 3.0822273848262842,
+      "cumulative_cost_fraction": 0.0030455342016735905,
+      "rebalance_count": 11,
+      "observation_count": 249
+    },
+    {
+      "strategy": "Conservative",
+      "annualized_return": 0.03194199073724002,
+      "annualized_volatility": 0.13522868207397076,
+      "sharpe": 0.15319207658664408,
+      "max_drawdown": -0.1169522735611116,
+      "average_turnover": 0.03240658320886929,
+      "average_daily_turnover": 0.001431616125693021,
+      "annualized_traded_notional": 0.3607672636746413,
+      "cumulative_cost_fraction": 0.0003564724152975623,
+      "rebalance_count": 11,
+      "observation_count": 249
+    },
+    {
+      "strategy": "Equal weight",
+      "annualized_return": 0.03194199073724757,
+      "annualized_volatility": 0.13522868207397012,
+      "sharpe": 0.15319207658664616,
+      "max_drawdown": -0.11695227356111015,
+      "average_turnover": 0.03240658320886934,
+      "average_daily_turnover": 0.0014316161256930228,
+      "annualized_traded_notional": 0.36076726367464174,
+      "cumulative_cost_fraction": 0.0003564724152975632,
+      "rebalance_count": 11,
+      "observation_count": 249
+    },
+    {
+      "strategy": "Minimum variance",
+      "annualized_return": 0.029104277782428634,
+      "annualized_volatility": 0.1259140353177293,
+      "sharpe": 0.13311104047529795,
+      "max_drawdown": -0.0963708865587104,
+      "average_turnover": 0.04988744555713731,
+      "average_daily_turnover": 0.002203863056741006,
+      "annualized_traded_notional": 0.5553734902987335,
+      "cumulative_cost_fraction": 0.0005487619011285109,
+      "rebalance_count": 11,
+      "observation_count": 249
+    },
+    {
+      "strategy": "Moderate",
+      "annualized_return": 0.0009041622399630356,
+      "annualized_volatility": 0.13507414330919829,
+      "sharpe": -0.07277672459901795,
+      "max_drawdown": -0.13601107497768217,
+      "average_turnover": 0.27245334323295095,
+      "average_daily_turnover": 0.01203609146812233,
+      "annualized_traded_notional": 3.0330950499668274,
+      "cumulative_cost_fraction": 0.0029969867755624603,
+      "rebalance_count": 11,
+      "observation_count": 249
+    }
+  ],
+  "sharpe_intervals": [
+    {
+      "strategy": "Conservative",
+      "baseline": "Minimum variance",
+      "metric": "net_sharpe_difference",
+      "point_estimate": 0.020081036111346123,
+      "lower": -0.6108498084466509,
+      "upper": 0.46795934212315093
+    },
+    {
+      "strategy": "Conservative",
+      "baseline": "Equal weight",
+      "metric": "net_sharpe_difference",
+      "point_estimate": -2.0816681711721685e-15,
+      "lower": -1.2878587085651816e-14,
+      "upper": 7.216449660063518e-15
+    },
+    {
+      "strategy": "Moderate",
+      "baseline": "Minimum variance",
+      "metric": "net_sharpe_difference",
+      "point_estimate": -0.2058877650743159,
+      "lower": -0.8401156085688709,
+      "upper": 0.3918987332535317
+    },
+    {
+      "strategy": "Moderate",
+      "baseline": "Equal weight",
+      "metric": "net_sharpe_difference",
+      "point_estimate": -0.2259688011856641,
+      "lower": -0.6341100353072143,
+      "upper": 0.28436989410977986
+    },
+    {
+      "strategy": "Aggressive target return",
+      "baseline": "Minimum variance",
+      "metric": "net_sharpe_difference",
+      "point_estimate": -0.22594637070381218,
+      "lower": -0.5230008790071813,
+      "upper": 0.029931454423041386
+    },
+    {
+      "strategy": "Aggressive target return",
+      "baseline": "Equal weight",
+      "metric": "net_sharpe_difference",
+      "point_estimate": -0.2460274068151604,
+      "lower": -0.7945618912166679,
+      "upper": 0.48628491338235497
+    },
+    {
+      "strategy": "Aggressive AI Black-Litterman",
+      "baseline": "Minimum variance",
+      "metric": "net_sharpe_difference",
+      "point_estimate": -0.11871765147933526,
+      "lower": -0.8782585971415291,
+      "upper": 0.4533302972521276
+    },
+    {
+      "strategy": "Aggressive AI Black-Litterman",
+      "baseline": "Equal weight",
+      "metric": "net_sharpe_difference",
+      "point_estimate": -0.13879868759068348,
+      "lower": -0.4045407198131874,
+      "upper": 0.08176420951194449
+    }
+  ],
+  "risk_comparisons": [
+    {
+      "comparison": "Conservative minus Aggressive target return",
+      "metric": "annualized_volatility",
+      "difference": 0.007690394677347168,
+      "lower": 0.0031381529788653524,
+      "upper": 0.012092193920066394,
+      "observed_risk_reduction": false,
+      "interval_supports_reduction": false
+    },
+    {
+      "comparison": "Conservative minus Aggressive target return",
+      "metric": "max_drawdown",
+      "difference": -0.011802792394266848,
+      "lower": -0.04242046477273387,
+      "upper": 0.03571980624898014,
+      "observed_risk_reduction": false,
+      "interval_supports_reduction": false
+    },
+    {
+      "comparison": "Conservative minus Aggressive AI Black-Litterman",
+      "metric": "annualized_volatility",
+      "difference": -0.0022675082213853004,
+      "lower": -0.007956681885730612,
+      "upper": 0.0031907062847460754,
+      "observed_risk_reduction": true,
+      "interval_supports_reduction": false
+    },
+    {
+      "comparison": "Conservative minus Aggressive AI Black-Litterman",
+      "metric": "max_drawdown",
+      "difference": 0.012707345725710195,
+      "lower": -0.0011607267047858995,
+      "upper": 0.03837298893182094,
+      "observed_risk_reduction": true,
+      "interval_supports_reduction": false
+    },
+    {
+      "comparison": "Conservative minus Equal weight",
+      "metric": "annualized_volatility",
+      "difference": 6.38378239159465e-16,
+      "lower": 5.273559366969494e-16,
+      "upper": 6.661338147750939e-16,
+      "observed_risk_reduction": false,
+      "interval_supports_reduction": false
+    },
+    {
+      "comparison": "Conservative minus Equal weight",
+      "metric": "max_drawdown",
+      "difference": -1.4432899320127035e-15,
+      "lower": -5.773159728050814e-15,
+      "upper": -2.220446049250313e-16,
+      "observed_risk_reduction": false,
+      "interval_supports_reduction": false
+    }
+  ],
+  "evaluation_status": "completed_retrospective_walk_forward",
+  "holdout_start": "2025-01-01",
+  "holdout_end": "2025-12-31",
+  "observations": 249,
+  "sentiment_coverage": "unavailable_in_historical_replay",
+  "horizon_years": 10,
+  "cost_bps": 10,
+  "rebalance_sessions": 21,
+  "lookback_sessions": 504,
+  "bootstrap": {
+    "method": "paired non-circular moving-block",
+    "block_sessions": 21,
+    "replicates": 10000,
+    "seed": 20260927,
+    "confidence": 0.95
+  },
+  "scope": "Retrospective causal replay on five Indian stocks and an already inspected 2025 window. Fixed ten-year horizon. Aggressive AI Black-Litterman is the production personalized path; aggressive target return is a no-AI control. Not a confirmatory untouched test or a validation of every horizon or live model.",
+  "limitations": "Conservative 20% caps force equal weight with five stocks. Historical FinBERT is unavailable. The newly retrained five-stock MarketMind RF is not the saved 99-stock classifier. ADX uses a frozen trailing-feature snapshot; retrospectively adjusted inputs are not vintage-certified. No parameter tuning on results.",
+  "model": "MarketMind A architecture: 250-tree balanced Random Forest, seed 42, 14 features, causal HMM, five-session matured labels; refit each rebalance",
+  "turnover_definition": "Mean total absolute traded weight per scheduled holdout rebalance; costs 10bps per total absolute traded weight. Drift between rebalances; no final liquidation.",
+  "risk_interpretation": "Lower volatility requires a negative difference; smaller drawdown loss requires a positive difference because max drawdown is signed. Intervals are exploratory, unadjusted for multiple comparisons."
+}

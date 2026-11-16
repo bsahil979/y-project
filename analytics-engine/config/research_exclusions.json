@@ -1,0 +1,16 @@
+{
+  "dataset_version": "marketmind-v1",
+  "exclusions": [
+    {
+      "ticker": "TATAMOTORS.NS",
+      "status": "excluded",
+      "reason": "No historical OHLCV data was available from the configured Yahoo Finance or Stooq providers during the Phase 2C.2 diagnostic build.",
+      "provider_evidence": {
+        "yahoo": "HTTP 404 / Quote not found",
+        "stooq": "HTTP 404 / Not Found"
+      },
+      "impact": "One of 100 configured instruments is unavailable; the approved research universe contains 99 instruments (50 US, 49 India).",
+      "review_required": "Verify a provider-supported historical symbol or adjusted-security mapping before removing this exclusion. Do not substitute another ticker."
+    }
+  ]
+}

@@ -1,75 +1,106 @@
 """
 Portfolio return attribution engine.
 
-Computes security-level, sector-level, and asset-class-level contribution to
-total portfolio returns.  All numbers are mathematically derived from the
-portfolio's actual returns, weights, and price changes — no fabrication.
+Computes security-level, sector-level, and asset-class-level return contribution
+to portfolio performance using canonical daily constant-weight returns.
+
+Methodology:
+- Daily security contribution: c_i,t = weight_i * asset_return_i,t
+- Cumulative security contribution: C_i = sum_t(c_i,t)
+- Sum of contributions: sum_i(C_i) = sum_t(r_p,t)
+- Geometric compounded portfolio return: R_p = prod(1 + r_p,t) - 1
+- Compounding residual: R_p - sum_i(C_i)
 """
+from typing import Optional, List, Dict, Any
 import numpy as np
 import pandas as pd
-from typing import Optional
 from services.portfolio_score import get_asset_category
+from services.financial_metrics import WEIGHT_SUM_TOLERANCE, compute_cumulative_return
 
 
 def compute_attribution(
-    tickers: list[str],
-    weights: list[float],
+    tickers: List[str],
+    weights: List[float],
     prices: pd.DataFrame,
     portfolio_value: float = 100000,
     currency_symbol: str = "$",
 ) -> dict:
     """
-    Compute portfolio return attribution across multiple dimensions.
-
-    All contribution values are derived from actual price changes and weights.
+    Compute portfolio return attribution across multiple dimensions using
+    daily constant-weight security return contributions.
     """
-    weights = np.array(weights, dtype=float)
-    tickers_clean = [t.upper().strip() for t in tickers]
+    weights_arr = np.asarray(weights, dtype=float)
+    if len(weights_arr) != len(tickers):
+        return {"error": "Length of tickers and weights must match"}
+
+    w_sum = float(np.sum(weights_arr))
+    if abs(w_sum - 1.0) > WEIGHT_SUM_TOLERANCE:
+        return {"error": f"Weights must sum to 1.0 (current sum: {w_sum})"}
+
+    normalized_weights = weights_arr / w_sum
+    tickers_clean = [str(t).upper().strip() for t in tickers]
 
     # Align prices with tickers
-    prices_aligned = prices.copy()
-    col_map = {str(c).upper(): c for c in prices_aligned.columns}
-    ticker_cols = []
-    for t in tickers_clean:
+    col_map = {str(c).upper().strip(): c for c in prices.columns}
+    usable_tickers = []
+    usable_weights = []
+    usable_cols = []
+
+    for t, w in zip(tickers_clean, normalized_weights):
         if t in col_map:
-            ticker_cols.append(col_map[t])
-        elif len(prices_aligned.columns) == 1 and t == tickers_clean[0]:
-            ticker_cols.append(prices_aligned.columns[0])
+            usable_tickers.append(t)
+            usable_weights.append(w)
+            usable_cols.append(col_map[t])
 
-    usable_tickers = [t for t, c in zip(tickers_clean, ticker_cols) if c is not None]
-    usable_weights = [w for w, c in zip(weights, ticker_cols) if c is not None]
-    usable_prices = prices_aligned[ticker_cols] if ticker_cols else prices_aligned.iloc[:, :1]
-
-    if len(usable_tickers) == 0:
+    if not usable_cols:
         return {"error": "No usable price data for any tickers"}
+
+    usable_prices = prices[usable_cols].dropna()
+    if len(usable_prices) < 2:
+        return {"error": "Insufficient price history for return attribution"}
 
     # Daily returns
     daily_returns = usable_prices.pct_change().dropna()
+    if daily_returns.empty:
+        return {"error": "Insufficient return observations for return attribution"}
 
-    # Period return for each asset (from first to last date)
-    first_prices = usable_prices.iloc[0]
-    last_prices = usable_prices.iloc[-1]
-    total_returns = (last_prices / first_prices - 1)
+    w_vec = np.asarray(usable_weights, dtype=float)
+
+    # Daily security contributions: c_i,t = w_i * r_i,t
+    daily_contribs = daily_returns.values * w_vec  # (T, N)
+    daily_port_return = daily_contribs.sum(axis=1)
+
+    port_cum_return = compute_cumulative_return(pd.Series(daily_port_return, index=daily_returns.index))
+    if port_cum_return is None:
+        port_cum_return = 0.0
+
+    sum_arithmetic_port_return = float(np.sum(daily_port_return))
+    sec_contributions = daily_contribs.sum(axis=0)  # (N,)
+    sum_contributions = float(np.sum(sec_contributions))
+    compounding_residual = port_cum_return - sum_contributions
+
+    # Asset compounded and arithmetic returns
+    asset_compounded = (np.prod(1.0 + daily_returns.values, axis=0) - 1.0)
+    asset_arithmetic = daily_returns.values.sum(axis=0)
 
     # Position values
-    position_values = portfolio_value * np.array(usable_weights)
-    position_returns = position_values * total_returns.values
-
-    # Portfolio total return
-    port_total_return = float(np.average(total_returns.values, weights=usable_weights))
+    position_values = portfolio_value * w_vec
+    position_returns = portfolio_value * sec_contributions
 
     # --- Security Contribution ---
     security_contrib = []
     for i, ticker in enumerate(usable_tickers):
-        w = usable_weights[i]
-        r = float(total_returns.iloc[i]) if hasattr(total_returns, 'iloc') else float(total_returns[i])
-        contrib = w * r
+        w = float(usable_weights[i])
+        r_comp = float(asset_compounded[i])
+        r_arith = float(asset_arithmetic[i])
+        contrib = float(sec_contributions[i])
         security_contrib.append({
             "ticker": ticker,
-            "weight": round(float(w), 4),
-            "return": round(r, 4),
+            "weight": round(w, 4),
+            "return": round(r_comp, 4),
+            "arithmetic_return": round(r_arith, 4),
             "contribution": round(contrib, 4),
-            "contribution_pct": round(contrib / port_total_return * 100, 2) if port_total_return != 0 else 0,
+            "contribution_pct": round(contrib / sum_contributions * 100.0, 2) if sum_contributions != 0 else 0.0,
             "position_value": round(float(position_values[i]), 2),
             "dollar_pnl": round(float(position_returns[i]), 2),
             "category": get_asset_category(ticker),
@@ -80,28 +111,28 @@ def compute_attribution(
     for i, ticker in enumerate(usable_tickers):
         cat = get_asset_category(ticker)
         if cat not in sector_data:
-            sector_data[cat] = {"weight": 0, "return": 0, "contrib": 0, "tickers": []}
-        sector_data[cat]["weight"] += usable_weights[i]
-        sector_data[cat]["return"] += usable_weights[i] * (
-            float(total_returns.iloc[i]) if hasattr(total_returns, 'iloc') else float(total_returns[i])
-        )
-        sector_data[cat]["contrib"] += usable_weights[i] * (
-            float(total_returns.iloc[i]) if hasattr(total_returns, 'iloc') else float(total_returns[i])
-        )
+            sector_data[cat] = {"weight": 0.0, "return_weighted_sum": 0.0, "contrib": 0.0, "tickers": []}
+        w = float(usable_weights[i])
+        contrib = float(sec_contributions[i])
+        sector_data[cat]["weight"] += w
+        sector_data[cat]["contrib"] += contrib
+        sector_data[cat]["return_weighted_sum"] += w * float(asset_compounded[i])
         sector_data[cat]["tickers"].append(ticker)
 
     sector_contrib = []
     for cat, data in sorted(sector_data.items(), key=lambda x: -x[1]["contrib"]):
+        cat_weight = data["weight"]
+        cat_contrib = data["contrib"]
         sector_contrib.append({
             "category": cat,
-            "weight": round(data["weight"], 4),
-            "return": round(data["return"] / data["weight"], 4) if data["weight"] > 0 else 0,
-            "contribution": round(data["contrib"], 4),
-            "contribution_pct": round(data["contrib"] / port_total_return * 100, 2) if port_total_return != 0 else 0,
+            "weight": round(cat_weight, 4),
+            "return": round(data["return_weighted_sum"] / cat_weight, 4) if cat_weight > 0 else 0.0,
+            "contribution": round(cat_contrib, 4),
+            "contribution_pct": round(cat_contrib / sum_contributions * 100.0, 2) if sum_contributions != 0 else 0.0,
             "tickers": data["tickers"],
         })
 
-    # --- Asset Class Contribution (broad buckets) ---
+    # --- Asset Class Contribution ---
     def _asset_class(cat: str) -> str:
         if "ETF" in cat or cat in ("Equity", "Technology", "Communication", "Consumer", "Financial", "Healthcare", "Energy", "Utilities", "Industrials", "Basic Materials"):
             if "Cash" in cat or cat == "Other":
@@ -128,24 +159,22 @@ def compute_attribution(
         cat = get_asset_category(ticker)
         ac = _asset_class(cat)
         if ac not in asset_class_data:
-            asset_class_data[ac] = {"weight": 0, "contrib": 0, "tickers": []}
-        asset_class_data[ac]["weight"] += usable_weights[i]
-        asset_class_data[ac]["contrib"] += usable_weights[i] * (
-            float(total_returns.iloc[i]) if hasattr(total_returns, 'iloc') else float(total_returns[i])
-        )
+            asset_class_data[ac] = {"weight": 0.0, "contrib": 0.0, "tickers": []}
+        asset_class_data[ac]["weight"] += float(usable_weights[i])
+        asset_class_data[ac]["contrib"] += float(sec_contributions[i])
         asset_class_data[ac]["tickers"].append(ticker)
 
     asset_class_contrib = []
     for ac, data in sorted(asset_class_data.items(), key=lambda x: -x[1]["contrib"]):
+        ac_contrib = data["contrib"]
         asset_class_contrib.append({
             "asset_class": ac,
             "weight": round(data["weight"], 4),
-            "contribution": round(data["contrib"], 4),
-            "contribution_pct": round(data["contrib"] / port_total_return * 100, 2) if port_total_return != 0 else 0,
+            "contribution": round(ac_contrib, 4),
+            "contribution_pct": round(ac_contrib / sum_contributions * 100.0, 2) if sum_contributions != 0 else 0.0,
             "tickers": data["tickers"],
         })
 
-    # --- Period info ---
     first_date = usable_prices.index[0]
     last_date = usable_prices.index[-1]
 
@@ -154,7 +183,12 @@ def compute_attribution(
             "start": first_date.strftime('%Y-%m-%d') if hasattr(first_date, 'strftime') else str(first_date),
             "end": last_date.strftime('%Y-%m-%d') if hasattr(last_date, 'strftime') else str(last_date),
         },
-        "portfolio_total_return": round(port_total_return, 4),
+        "model": "daily_constant_weight_contribution",
+        "methodology": "return_contribution",
+        "portfolio_total_return": round(port_cum_return, 4),
+        "sum_of_security_contributions": round(sum_contributions, 4),
+        "compounding_residual": round(compounding_residual, 4),
+        "reconciled": bool(abs(sum_contributions - sum_arithmetic_port_return) < 1e-9),
         "portfolio_value": float(portfolio_value),
         "currency": currency_symbol,
         "security_contribution": security_contrib,

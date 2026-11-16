@@ -3,7 +3,7 @@ from api import app
 import sys
 
 if __name__ == "__main__":
-    port = 8002
+    port = 8000
     if len(sys.argv) > 1 and sys.argv[1] == "--port":
         port = int(sys.argv[2])
     

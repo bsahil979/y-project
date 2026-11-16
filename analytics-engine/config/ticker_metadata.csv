@@ -1,0 +1,101 @@
+ticker,market,sector
+AAPL,US,Information Technology
+MSFT,US,Information Technology
+GOOGL,US,Communication Services
+AMZN,US,Consumer Discretionary
+NVDA,US,Information Technology
+META,US,Communication Services
+TSLA,US,Consumer Discretionary
+BRK-B,US,Financials
+JPM,US,Financials
+V,US,Financials
+UNH,US,Health Care
+XOM,US,Energy
+JNJ,US,Health Care
+PG,US,Consumer Staples
+HD,US,Consumer Discretionary
+MA,US,Financials
+ABBV,US,Health Care
+LLY,US,Health Care
+CVX,US,Energy
+AVGO,US,Information Technology
+PEP,US,Consumer Staples
+KO,US,Consumer Staples
+COST,US,Consumer Staples
+MRK,US,Health Care
+WMT,US,Consumer Staples
+DIS,US,Communication Services
+BAC,US,Financials
+CRM,US,Information Technology
+AMD,US,Information Technology
+NFLX,US,Communication Services
+INTC,US,Information Technology
+CSCO,US,Information Technology
+TMO,US,Health Care
+ACN,US,Information Technology
+ADBE,US,Information Technology
+TXN,US,Information Technology
+CMCSA,US,Communication Services
+NKE,US,Consumer Discretionary
+PM,US,Consumer Staples
+LIN,US,Materials
+HON,US,Industrials
+QCOM,US,Information Technology
+AMGN,US,Health Care
+IBM,US,Information Technology
+GE,US,Industrials
+CAT,US,Industrials
+SPY,US,Exchange Traded Fund
+QQQ,US,Exchange Traded Fund
+IWM,US,Exchange Traded Fund
+DIA,US,Exchange Traded Fund
+RELIANCE.NS,India,Energy
+TCS.NS,India,Information Technology
+HDFCBANK.NS,India,Financials
+ICICIBANK.NS,India,Financials
+INFY.NS,India,Information Technology
+HINDUNILVR.NS,India,Consumer Staples
+ITC.NS,India,Consumer Staples
+SBIN.NS,India,Financials
+BHARTIARTL.NS,India,Communication Services
+KOTAKBANK.NS,India,Financials
+LT.NS,India,Industrials
+AXISBANK.NS,India,Financials
+ASIANPAINT.NS,India,Materials
+MARUTI.NS,India,Consumer Discretionary
+TITAN.NS,India,Consumer Discretionary
+BAJFINANCE.NS,India,Financials
+HCLTECH.NS,India,Information Technology
+WIPRO.NS,India,Information Technology
+ULTRACEMCO.NS,India,Materials
+NTPC.NS,India,Utilities
+SUNPHARMA.NS,India,Health Care
+ONGC.NS,India,Energy
+POWERGRID.NS,India,Utilities
+NESTLEIND.NS,India,Consumer Staples
+TATAMOTORS.NS,India,Consumer Discretionary
+M&M.NS,India,Consumer Discretionary
+ADANIENT.NS,India,Industrials
+TECHM.NS,India,Information Technology
+INDUSINDBK.NS,India,Financials
+JSWSTEEL.NS,India,Materials
+TATASTEEL.NS,India,Materials
+HINDALCO.NS,India,Materials
+BAJAJFINSV.NS,India,Financials
+DIVISLAB.NS,India,Health Care
+CIPLA.NS,India,Health Care
+DRREDDY.NS,India,Health Care
+HEROMOTOCO.NS,India,Consumer Discretionary
+EICHERMOT.NS,India,Consumer Discretionary
+GRASIM.NS,India,Materials
+BPCL.NS,India,Energy
+COALINDIA.NS,India,Energy
+ADANIPORTS.NS,India,Industrials
+APOLLOHOSP.NS,India,Health Care
+TATACONSUM.NS,India,Consumer Staples
+BEL.NS,India,Information Technology
+SHRIRAMFIN.NS,India,Financials
+HDFCLIFE.NS,India,Financials
+SBILIFE.NS,India,Financials
+BAJAJ-AUTO.NS,India,Consumer Discretionary
+TRENT.NS,India,Consumer Discretionary

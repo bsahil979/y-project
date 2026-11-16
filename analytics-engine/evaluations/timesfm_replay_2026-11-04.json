@@ -1,0 +1,305 @@
+{
+  "method": "chronological historical replay of serving-time TimesFM versus unchanged last close",
+  "limitation": "TimesFM pretraining cutoff is unverified; these dates are not an untouched model holdout. Two chosen symbols and overlapping forecast windows are not enough to establish general predictive skill.",
+  "horizon_sessions": 30,
+  "stride_sessions": 21,
+  "sources": {
+    "MSFT": {
+      "path": "models\\forecast_v2\\MSFT\\prices.csv",
+      "sha256": "e6964de0d5fda980088995c0993a55c684f577cd848310a5ffa056ca0cc9573d"
+    },
+    "RELIANCE.NS": {
+      "path": "research\\regime_data_v1\\prices.csv",
+      "sha256": "ed367e3dce5a3c58fb856b02fd2b2ae109286256f1073c56bc4d325dea041ab9"
+    }
+  },
+  "summary": {
+    "MSFT": {
+      "origins": 12,
+      "model_mean_mae_pct_of_spot": 6.793885496883012,
+      "baseline_mean_mae_pct_of_spot": 6.450124693878639,
+      "model_better_origins": 5,
+      "terminal_direction_accuracy": 0.4166666666666667
+    },
+    "RELIANCE.NS": {
+      "origins": 12,
+      "model_mean_mae_pct_of_spot": 3.766978265634077,
+      "baseline_mean_mae_pct_of_spot": 3.841373821439271,
+      "model_better_origins": 8,
+      "terminal_direction_accuracy": 0.8333333333333334
+    },
+    "ALL": {
+      "origins": 24,
+      "model_mean_mae_pct_of_spot": 5.2804318812585445,
+      "baseline_mean_mae_pct_of_spot": 5.145749257658955,
+      "model_better_origins": 13,
+      "terminal_direction_accuracy": 0.625
+    }
+  },
+  "rows": [
+    {
+      "ticker": "MSFT",
+      "origin": "2025-09-29",
+      "last_actual": "2025-11-10",
+      "spot": 510.4004821777344,
+      "actual_terminal": 501.8707580566406,
+      "predicted_terminal": 509.2378764024264,
+      "model_mae_pct_of_spot": 1.4318458963339842,
+      "baseline_mae_pct_of_spot": 1.490091891266721,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "MSFT",
+      "origin": "2025-10-28",
+      "last_actual": "2025-12-10",
+      "spot": 537.6463623046875,
+      "actual_terminal": 475.5430603027344,
+      "predicted_terminal": 565.4419041145155,
+      "model_mae_pct_of_spot": 11.20827010881911,
+      "baseline_mae_pct_of_spot": 8.271243893510404,
+      "model_terminal_direction_correct": false
+    },
+    {
+      "ticker": "MSFT",
+      "origin": "2025-11-26",
+      "last_actual": "2026-01-12",
+      "spot": 482.4393310546875,
+      "actual_terminal": 474.1717529296875,
+      "predicted_terminal": 479.9263188553315,
+      "model_mae_pct_of_spot": 0.9681689179843926,
+      "baseline_mae_pct_of_spot": 1.0600065584671396,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "MSFT",
+      "origin": "2025-12-29",
+      "last_actual": "2026-02-11",
+      "spot": 484.02923583984375,
+      "actual_terminal": 401.8207702636719,
+      "predicted_terminal": 485.0655712807001,
+      "model_mae_pct_of_spot": 7.412651648803091,
+      "baseline_mae_pct_of_spot": 7.301240111546359,
+      "model_terminal_direction_correct": false
+    },
+    {
+      "ticker": "MSFT",
+      "origin": "2026-01-29",
+      "last_actual": "2026-03-13",
+      "spot": 430.7671203613281,
+      "actual_terminal": 393.9534912109375,
+      "predicted_terminal": 429.74574967990884,
+      "model_mae_pct_of_spot": 5.823032992455651,
+      "baseline_mae_pct_of_spot": 6.7337825975175845,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "MSFT",
+      "origin": "2026-03-02",
+      "last_actual": "2026-04-14",
+      "spot": 396.9413757324219,
+      "actual_terminal": 391.5233459472656,
+      "predicted_terminal": 398.21660240427207,
+      "model_mae_pct_of_spot": 4.392628729111416,
+      "baseline_mae_pct_of_spot": 4.306525024714303,
+      "model_terminal_direction_correct": false
+    },
+    {
+      "ticker": "MSFT",
+      "origin": "2026-03-31",
+      "last_actual": "2026-05-13",
+      "spot": 368.6759643554688,
+      "actual_terminal": 403.5745239257813,
+      "predicted_terminal": 358.96745991253374,
+      "model_mae_pct_of_spot": 10.811261573268347,
+      "baseline_mae_pct_of_spot": 9.466637099024716,
+      "model_terminal_direction_correct": false
+    },
+    {
+      "ticker": "MSFT",
+      "origin": "2026-04-30",
+      "last_actual": "2026-06-12",
+      "spot": 406.1341552734375,
+      "actual_terminal": 390.00579833984375,
+      "predicted_terminal": 414.36981033348343,
+      "model_mae_pct_of_spot": 2.696315242932412,
+      "baseline_mae_pct_of_spot": 3.2481004449085216,
+      "model_terminal_direction_correct": false
+    },
+    {
+      "ticker": "MSFT",
+      "origin": "2026-06-01",
+      "last_actual": "2026-07-15",
+      "spot": 459.6546936035156,
+      "actual_terminal": 394.8866271972656,
+      "predicted_terminal": 466.11474914563985,
+      "model_mae_pct_of_spot": 16.670253348026247,
+      "baseline_mae_pct_of_spot": 15.25746341861769,
+      "model_terminal_direction_correct": false
+    },
+    {
+      "ticker": "MSFT",
+      "origin": "2026-07-01",
+      "last_actual": "2026-08-13",
+      "spot": 383.5579528808594,
+      "actual_terminal": 495.9463806152344,
+      "predicted_terminal": 380.32330354415933,
+      "model_mae_pct_of_spot": 11.382190833272974,
+      "baseline_mae_pct_of_spot": 11.092603712461395,
+      "model_terminal_direction_correct": false
+    },
+    {
+      "ticker": "MSFT",
+      "origin": "2026-07-31",
+      "last_actual": "2026-09-14",
+      "spot": 463.8468017578125,
+      "actual_terminal": 505.4100036621094,
+      "predicted_terminal": 467.29002407511183,
+      "model_mae_pct_of_spot": 6.033476872107857,
+      "baseline_mae_pct_of_spot": 6.709070284580052,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "MSFT",
+      "origin": "2026-08-31",
+      "last_actual": "2026-10-13",
+      "spot": 507.2900085449219,
+      "actual_terminal": 543.4500122070312,
+      "predicted_terminal": 536.8814952213745,
+      "model_mae_pct_of_spot": 2.6965297994806505,
+      "baseline_mae_pct_of_spot": 2.464731289928776,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2024-12-12",
+      "last_actual": "2025-01-24",
+      "spot": 1252.0870361328125,
+      "actual_terminal": 1235.6292724609375,
+      "predicted_terminal": 1221.3248805403553,
+      "model_mae_pct_of_spot": 1.8921103853627146,
+      "baseline_mae_pct_of_spot": 2.0066255913669657,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2025-01-13",
+      "last_actual": "2025-02-21",
+      "spot": 1229.234375,
+      "actual_terminal": 1217.634521484375,
+      "predicted_terminal": 1218.329246597308,
+      "model_mae_pct_of_spot": 1.8297038500181173,
+      "baseline_mae_pct_of_spot": 1.7746764743891226,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2025-02-10",
+      "last_actual": "2025-03-26",
+      "spot": 1242.916259765625,
+      "actual_terminal": 1262.150146484375,
+      "predicted_terminal": 1223.8615926045165,
+      "model_mae_pct_of_spot": 2.1013226541323466,
+      "baseline_mae_pct_of_spot": 2.5335368957742626,
+      "model_terminal_direction_correct": false
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2025-03-12",
+      "last_actual": "2025-04-30",
+      "spot": 1246.287109375,
+      "actual_terminal": 1392.9703369140625,
+      "predicted_terminal": 1242.084141464107,
+      "model_mae_pct_of_spot": 3.163950150186838,
+      "baseline_mae_pct_of_spot": 3.2364132890559825,
+      "model_terminal_direction_correct": false
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2025-04-16",
+      "last_actual": "2025-05-30",
+      "spot": 1228.689208984375,
+      "actual_terminal": 1408.7342529296875,
+      "predicted_terminal": 1254.212878729275,
+      "model_mae_pct_of_spot": 11.61989059666994,
+      "baseline_mae_pct_of_spot": 12.497368052063125,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2025-05-19",
+      "last_actual": "2025-06-30",
+      "spot": 1428.4638671875,
+      "actual_terminal": 1487.7518310546875,
+      "predicted_terminal": 1474.1050101435728,
+      "model_mae_pct_of_spot": 2.405688799080039,
+      "baseline_mae_pct_of_spot": 1.3473997895740002,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2025-06-17",
+      "last_actual": "2025-07-29",
+      "spot": 1418.9459228515625,
+      "actual_terminal": 1404.966796875,
+      "predicted_terminal": 1412.5663677875484,
+      "model_mae_pct_of_spot": 3.4651564278277536,
+      "baseline_mae_pct_of_spot": 3.64123839703556,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2025-07-16",
+      "last_actual": "2025-08-29",
+      "spot": 1472.8802490234375,
+      "actual_terminal": 1350.9537353515625,
+      "predicted_terminal": 1459.6936964559952,
+      "model_mae_pct_of_spot": 5.164066659328785,
+      "baseline_mae_pct_of_spot": 5.463409149332254,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2025-08-14",
+      "last_actual": "2025-09-29",
+      "spot": 1367.4774169921875,
+      "actual_terminal": 1366.48193359375,
+      "predicted_terminal": 1327.9820735233852,
+      "model_mae_pct_of_spot": 2.6643546876026556,
+      "baseline_mae_pct_of_spot": 1.367251438497045,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2025-09-16",
+      "last_actual": "2025-10-30",
+      "spot": 1398.8323974609375,
+      "actual_terminal": 1481.6494140625,
+      "predicted_terminal": 1403.6728507235396,
+      "model_mae_pct_of_spot": 2.369886359657589,
+      "baseline_mae_pct_of_spot": 2.5807057219206464,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2025-10-16",
+      "last_actual": "2025-12-01",
+      "spot": 1391.8646240234375,
+      "actual_terminal": 1558.892333984375,
+      "predicted_terminal": 1400.7538882874708,
+      "model_mae_pct_of_spot": 7.672465056739903,
+      "baseline_mae_pct_of_spot": 7.62973812114172,
+      "model_terminal_direction_correct": true
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "origin": "2025-11-18",
+      "last_actual": "2025-12-31",
+      "spot": 1512.4072265625,
+      "actual_terminal": 1563.172607421875,
+      "predicted_terminal": 1566.2235036590878,
+      "model_mae_pct_of_spot": 0.855143561002244,
+      "baseline_mae_pct_of_spot": 2.0181229371205833,
+      "model_terminal_direction_correct": true
+    }
+  ]
+}

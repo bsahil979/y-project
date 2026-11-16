@@ -5,15 +5,23 @@ import DashboardLayout from './pages/DashboardLayout';
 import PortfolioDashboard from './components/PortfolioDashboard';
 import ForecastingView from './components/ForecastingView';
 import SentimentView from './components/SentimentView';
-import ChatAdvisor from './components/ChatAdvisor';
 import TradingView from './components/TradingView';
+import EvaluationView from './pages/EvaluationView';
 import AuthPage from './pages/AuthPage';
 import PortfolioBuilderView from './components/PortfolioBuilderView';
+import HoldingsView from './components/HoldingsView';
+import TransactionsView from './components/TransactionsView';
+import GoalsView from './components/GoalsView';
 import SettingsView from './components/SettingsView';
-import ResearchView from './components/ResearchView';
 import FundamentalsView from './components/FundamentalsView';
-import ModelTrainingView from './components/ModelTrainingView';
-import { PortfolioStorageService } from './services/supabaseClient';
+import ModelExplainerView from './components/ModelExplainerView';
+import {
+  PortfolioDataService,
+  createEmptyWorkspace,
+  selectPortfolio,
+} from './services/portfolioData';
+import useOwnedPortfolio from './hooks/useOwnedPortfolio';
+import { PortfolioContext } from './contexts/PortfolioContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 function RequireAuth({ children }) {
@@ -40,50 +48,100 @@ function RequireAuth({ children }) {
 
 function AppContent() {
   const [portfolio, setPortfolio] = useState([]);
+  const [workspace, setWorkspace] = useState(createEmptyWorkspace());
+  const [syncStatus, setSyncStatus] = useState('loading');
   const { user } = useAuth();
   const userId = user?.id || user?.email || 'guest';
 
+  const [workspaceOwner, setWorkspaceOwner] = useState(null);
+  const emptyWorkspace = React.useMemo(() => createEmptyWorkspace(), []);
+  const currentWorkspace = workspaceOwner === userId ? workspace : emptyWorkspace;
+  const { snapshot, pricing } = useOwnedPortfolio(currentWorkspace);
+
   useEffect(() => {
-    const loadPortfolio = async () => {
-      const savedTickers = await PortfolioStorageService.getUserPortfolio(userId);
-      setPortfolio(savedTickers || ['AAPL', 'MSFT', 'GOOGL']);
+    let active = true;
+    const loadWorkspace = async () => {
+      setSyncStatus('loading');
+      const result = await PortfolioDataService.getWorkspaceResult(userId);
+      if (!active) return;
+      setWorkspace(result.workspace);
+      setWorkspaceOwner(userId);
+      setSyncStatus(result.status);
+      const nextPortfolio = result.workspace.watchlistTickers || [];
+      setPortfolio(nextPortfolio);
     };
-    loadPortfolio();
+    loadWorkspace();
+    return () => { active = false; };
+  }, [userId]);
+
+  const updateWorkspace = async (nextWorkspace) => {
+    const normalized = PortfolioDataService.normalizeWorkspace(nextWorkspace);
+    setWorkspace(normalized);
+    setWorkspaceOwner(userId);
+    setSyncStatus('saving');
+    const result = await PortfolioDataService.saveWorkspace(userId, normalized);
+    setSyncStatus(result.status);
+  };
+
+  useEffect(() => {
+    const updateProfile = ({ detail }) => {
+      if (detail.userId === userId) {
+        setWorkspace(current => ({ ...current, investorProfile: detail.profile }));
+      }
+    };
+    window.addEventListener('investor-profile-changed', updateProfile);
+    return () => window.removeEventListener('investor-profile-changed', updateProfile);
   }, [userId]);
 
   const setTickers = (updater) => {
     setPortfolio((prevState) => {
       const nextState = typeof updater === 'function' ? updater(prevState) : updater;
-      PortfolioStorageService.saveUserPortfolio(userId, nextState);
+      const nextWorkspace = { ...workspace, watchlistTickers: nextState };
+      setWorkspace(nextWorkspace);
+      setSyncStatus('saving');
+      PortfolioDataService.saveWorkspace(userId, nextWorkspace).then((result) => setSyncStatus(result.status));
       return nextState;
     });
   };
 
+  const portfolioState = {
+    snapshot, pricing, portfolios: currentWorkspace.portfolios,
+    selectPortfolio: (id) => updateWorkspace(selectPortfolio(currentWorkspace, id)),
+  };
+
   return (
+    <PortfolioContext.Provider value={portfolioState}>
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/research" element={<Navigate to="/dashboard/research" replace />} />
       <Route path="/auth" element={<AuthPage />} />
       <Route
         path="/dashboard/*"
         element={
           <RequireAuth>
-            <DashboardLayout tickers={portfolio} setTickers={setTickers} />
+            <DashboardLayout tickers={portfolio} setTickers={setTickers} syncStatus={syncStatus} workspace={workspace} />
           </RequireAuth>
         }
       >
-        <Route index element={<PortfolioDashboard tickers={portfolio} />} />
+        <Route index element={<PortfolioDashboard key={snapshot.portfolioId || userId} />} />
+        <Route path="advisor" element={<PortfolioDashboard key={snapshot.portfolioId || userId} advisor />} />
         <Route path="manage" element={<PortfolioBuilderView tickers={portfolio} setTickers={setTickers} />} />
+        <Route path="portfolio" element={<HoldingsView key={snapshot.portfolioId || userId} workspace={currentWorkspace} setWorkspace={updateWorkspace} />} />
+        <Route path="portfolio/transactions" element={<TransactionsView key={snapshot.portfolioId || userId} workspace={currentWorkspace} setWorkspace={updateWorkspace} />} />
+        <Route path="planning/goals" element={<GoalsView workspace={workspace} setWorkspace={updateWorkspace} />} />
+        <Route path="ai-architecture" element={<ModelExplainerView />} />
+        <Route path="research" element={<EvaluationView />} />
+        <Route path="training" element={<Navigate to="/dashboard" replace />} />
         <Route path="settings" element={<SettingsView tickers={portfolio} setTickers={setTickers} />} />
-        <Route path="research" element={<ResearchView tickers={portfolio} />} />
         <Route path="fundamentals" element={<FundamentalsView tickers={portfolio} />} />
-        <Route path="forecast" element={<ForecastingView tickers={portfolio} />} />
+        <Route path="forecast" element={<ForecastingView setTickers={setTickers} />} />
         <Route path="sentiment" element={<SentimentView tickers={portfolio} />} />
-        <Route path="chat" element={<ChatAdvisor tickers={portfolio} />} />
+        <Route path="chat" element={null} />
         <Route path="trading" element={<TradingView tickers={portfolio} />} />
-        <Route path="training" element={<ModelTrainingView tickers={portfolio} />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </PortfolioContext.Provider>
   );
 }
 

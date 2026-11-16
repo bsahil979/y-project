@@ -1,0 +1,16 @@
+[
+  "returns",
+  "rsi",
+  "macd",
+  "macd_signal",
+  "macd_diff",
+  "adx",
+  "volatility",
+  "ema_50",
+  "ema_200",
+  "trend_strength",
+  "momentum_5d",
+  "momentum_10d",
+  "sentiment_score",
+  "regime_code"
+]

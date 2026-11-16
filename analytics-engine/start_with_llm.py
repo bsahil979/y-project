@@ -11,8 +11,9 @@ Required environment variables:
 import os
 
 os.environ.setdefault("LLM_API_KEY", os.environ.get("LLM_API_KEY", ""))
-os.environ.setdefault("LLM_MODEL", os.environ.get("LLM_MODEL", "gpt-4o-mini"))
-os.environ.setdefault("LLM_PROVIDER", os.environ.get("LLM_PROVIDER", "openai"))
+from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv(Path(__file__).parent / '.env')
 os.environ.setdefault("LLM_MAX_TOKENS", os.environ.get("LLM_MAX_TOKENS", "1024"))
 
 if __name__ == "__main__":

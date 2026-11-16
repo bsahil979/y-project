@@ -1,0 +1,9 @@
+{
+  "trained_at": "2026-05-15T19:20:28.574744",
+  "type": "universal_hybrid",
+  "model_versions": {
+    "rf": "1.0",
+    "hmm": "1.0",
+    "lstm": "1.0"
+  }
+}

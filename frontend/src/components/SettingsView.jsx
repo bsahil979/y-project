@@ -4,7 +4,8 @@ import {
   CheckCircle2, RefreshCw, Layers, Zap, Globe, Coins, Lock 
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { AuthService, PortfolioStorageService } from '../services/supabaseClient';
+import { AuthService } from '../services/supabaseClient';
+import { PortfolioDataService } from '../services/portfolioData';
 
 const SettingsView = ({ tickers, setTickers }) => {
   const [user, setUser] = useState(null);
@@ -14,7 +15,12 @@ const SettingsView = ({ tickers, setTickers }) => {
   const [horizon, setHorizon] = useState('30');
   const [isLoading, setIsLoading] = useState(false);
   const [statusMsg, setStatusMsg] = useState(null);
+  const [onboardingRisk, setOnboardingRisk] = useState('moderate');
+  const [investmentYears, setInvestmentYears] = useState('');
+  const [onboardingFreq, setOnboardingFreq] = useState('weekly');
+  const [onboardingCountry, setOnboardingCountry] = useState('Other');
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -26,6 +32,22 @@ const SettingsView = ({ tickers, setTickers }) => {
           setFullName(usr.user_metadata.full_name);
         } else {
           setFullName(usr?.email?.split('@')[0] || 'Quantitative Investor');
+        }
+
+        // Load onboarding data for this specific user
+        const userId = usr?.id || usr?.email || 'guest';
+        const profile = PortfolioDataService.getInvestorProfile(userId);
+        setOnboardingRisk(profile.risk_preference);
+        setInvestmentYears(profile.investment_horizon_years ?? '');
+        const raw = localStorage.getItem(`onboarding_data_${userId}`);
+        if (raw) {
+          try {
+            const parsed = JSON.parse(raw);
+            setOnboardingFreq(parsed.frequency || 'weekly');
+            setOnboardingCountry(parsed.country || 'Other');
+          } catch (e) {
+            console.error(e);
+          }
         }
       } catch (err) {
         console.warn("Session check profile fallback:", err);
@@ -42,6 +64,7 @@ const SettingsView = ({ tickers, setTickers }) => {
     setHorizon(savedHor);
   }, []);
 
+
   const triggerStatus = (text, isErr = false) => {
     setStatusMsg({ text, isErr });
     setTimeout(() => setStatusMsg(null), 4000);
@@ -55,12 +78,60 @@ const SettingsView = ({ tickers, setTickers }) => {
       // If user active, we can update local metadata preferences
       localStorage.setItem('aura_pref_name', fullName);
       triggerStatus("Profile attributes updated successfully inside private ledger.");
-    } catch (err) {
+    } catch {
       triggerStatus("Ledger update blocked.", true);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Onboarding Preference Handlers
+  const handleSaveOnboarding = (e) => {
+    e.preventDefault();
+    const userId = user?.id || user?.email || 'guest';
+    const raw = localStorage.getItem(`onboarding_data_${userId}`);
+    let existing = {};
+    if (raw) {
+      try {
+        existing = JSON.parse(raw);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    const updated = {
+      ...existing,
+      risk: onboardingRisk,
+      risk_preference: onboardingRisk,
+      investment_horizon_years: investmentYears === '' ? null : Number(investmentYears),
+      frequency: onboardingFreq,
+      country: onboardingCountry,
+      updatedAt: new Date().toISOString()
+    };
+    PortfolioDataService.saveInvestorProfile(userId, updated);
+
+    // Auto-update currency preference if set to India or US
+    if (onboardingCountry.toLowerCase().includes('india') || onboardingCountry.toLowerCase() === 'in') {
+      localStorage.setItem('aura_pref_currency', 'INR');
+      setCurrency('INR');
+    } else if (onboardingCountry.toLowerCase().includes('united states') || onboardingCountry.toLowerCase() === 'us') {
+      localStorage.setItem('aura_pref_currency', 'USD');
+      setCurrency('USD');
+    } else if (onboardingCountry.toLowerCase().includes('canada') || onboardingCountry.toLowerCase() === 'ca') {
+      localStorage.setItem('aura_pref_currency', 'USD');
+      setCurrency('USD');
+    }
+
+    triggerStatus("Onboarding investment profile preferences successfully committed.");
+  };
+
+  const handleResetOnboarding = () => {
+    const userId = user?.id || user?.email || 'guest';
+    if (window.confirm("Are you sure you want to restart the onboarding process? This will clear your current settings and guide you through the setup wizard again.")) {
+      localStorage.setItem(`onboarding_completed_${userId}`, 'restart');
+      window.location.reload();
+    }
+  };
+
 
   // Preference engine triggers
   const handleSavePreferences = (e) => {
@@ -75,9 +146,6 @@ const SettingsView = ({ tickers, setTickers }) => {
   const handlePurgeSpace = async () => {
     if (window.confirm("Are you certain you wish to purge all custom assets from your active monitoring space?")) {
       setTickers([]);
-      if (user?.id || user?.email) {
-        await PortfolioStorageService.saveUserPortfolio(user.id || user.email, []);
-      }
       triggerStatus("Manifest ground cleared completely.");
     }
   };
@@ -85,9 +153,15 @@ const SettingsView = ({ tickers, setTickers }) => {
   // Auth exit handshake
   const handleSignOut = async () => {
     setIsLoading(true);
-    await AuthService.logout();
-    setUser(null);
-    navigate('/');
+    try {
+      await AuthService.logout();
+    } catch (e) {
+      console.warn('Sign out warning:', e);
+    } finally {
+      setUser(null);
+      setIsLoading(false);
+      navigate('/auth', { replace: true });
+    }
   };
 
   return (
@@ -161,9 +235,88 @@ const SettingsView = ({ tickers, setTickers }) => {
                </button>
              </div>
            </form>
-        </div>
+         </div>
 
-        {/* Security & Access Management Ground */}
+         {/* Investment Profile / Onboarding Preference Card */}
+         <div className="bg-[#11131a]/80 backdrop-blur-xl border border-gray-800/50 rounded-3xl p-8 shadow-xl">
+            <div className="flex items-center gap-3 mb-6">
+              <Sliders className="w-5 h-5 text-indigo-400" />
+              <span className="text-xs font-bold uppercase tracking-widest text-gray-400">Investment Profile</span>
+            </div>
+
+            <form onSubmit={handleSaveOnboarding} className="space-y-4">
+              <div>
+                <label className="block text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1.5">
+                  Portfolio Check-in Frequency
+                </label>
+                <select
+                  value={onboardingFreq}
+                  onChange={(e) => setOnboardingFreq(e.target.value)}
+                  className="w-full bg-[#161822] border border-gray-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                >
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="quarterly">Quarterly</option>
+                  <option value="yearly">Yearly</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1.5">
+                  Risk Tolerance Preference
+                </label>
+                <select
+                  value={onboardingRisk}
+                  onChange={(e) => setOnboardingRisk(e.target.value)}
+                  className="w-full bg-[#161822] border border-gray-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                >
+                  <option value="conservative">Conservative</option>
+                  <option value="moderate">Moderate</option>
+                  <option value="aggressive">Aggressive</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs text-gray-400 mb-2" htmlFor="investment-years">Investment horizon in years optional</label>
+                <input id="investment-years" type="number" min="0.01" step="any" value={investmentYears}
+                  onChange={event => setInvestmentYears(event.target.value)}
+                  className="w-full rounded-xl border border-gray-800 bg-[#161822] p-3 text-white" />
+                <p className="mt-2 text-xs text-gray-400">Leave blank to use the nearest unfinished goal in the portfolio currency.</p>
+              </div>
+
+              <div>
+                <label className="block text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1.5">
+                  Country of Residence
+                </label>
+                <input
+                  type="text"
+                  value={onboardingCountry}
+                  onChange={(e) => setOnboardingCountry(e.target.value)}
+                  placeholder="Enter country..."
+                  className="w-full bg-[#161822] border border-gray-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-colors"
+                />
+              </div>
+
+              <div className="flex justify-between items-center pt-2 gap-4">
+                <button
+                  type="button"
+                  onClick={handleResetOnboarding}
+                  className="px-4 py-2.5 bg-rose-600/10 hover:bg-rose-600/20 text-rose-400 border border-rose-500/20 rounded-xl text-xs font-bold transition-all active:scale-95 shrink-0"
+                >
+                  Rerun Setup Wizard
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-indigo-600/20 active:scale-95"
+                >
+                  Save Profile
+                </button>
+              </div>
+            </form>
+         </div>
+
+         {/* Security & Access Management Ground */}
         <div className="bg-[#11131a]/80 backdrop-blur-xl border border-gray-800/50 rounded-3xl p-8 shadow-xl">
            <div className="flex items-center gap-3 mb-6">
              <Shield className="w-5 h-5 text-emerald-400" />

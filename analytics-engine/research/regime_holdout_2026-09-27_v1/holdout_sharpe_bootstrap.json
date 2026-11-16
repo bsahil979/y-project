@@ -1,0 +1,17 @@
+{
+  "comparison": "HMM minimum variance minus Minimum variance",
+  "metric": "net annualized Sharpe difference",
+  "point_estimate": 0.017855325450735066,
+  "confidence": 0.95,
+  "lower": -0.009042624189893829,
+  "upper": 0.044190565752862225,
+  "method": "paired moving-block bootstrap; non-circular blocks sampled from shared dates",
+  "block_length_sessions": 21,
+  "replicates_requested": 10000,
+  "replicates_valid": 10000,
+  "seed": 20260927,
+  "observation_count": 249,
+  "risk_free_rate_annual": 0.02,
+  "annualization_sessions": 252,
+  "interpretation": "Exploratory uncertainty for one year and one convenience universe; not broad evidence of effectiveness."
+}

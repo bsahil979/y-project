@@ -3,14 +3,11 @@
   OFFLINE TRAINING PIPELINE  -  Smart Portfolio Advisor
 ==========================================================================
 
-This script trains ALL ML models on HISTORICAL data and saves them to disk.
+This legacy script trains per-ticker research artifacts on HISTORICAL data.
 It must be run ONCE before the app is deployed to production.
 
-Models trained:
-  1. LSTM  - Price forecasting (time-series)
-  2. RF    - Buy/Sell signal classifier (tabular)
-  3. HMM   - Market regime detector (unsupervised)
-  4. PPO   - Reinforcement Learning trading agent
+The production workflow is training.train_production. This script remains for
+legacy per-ticker research artifacts and is not used by production decisions.
 
 Usage:
   cd analytics-engine
@@ -36,6 +33,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from trading_engine.data_manager import get_processed_data
 from trading_engine.models_layer import TradingModels
 from trading_engine.rl_agent import train_and_save_ppo
+from config.ticker_universe import all_symbols
 
 logger = logging.getLogger('training')
 logging.basicConfig(
@@ -47,7 +45,7 @@ logging.basicConfig(
 # ──────────────────────────────────────────────────────────────
 #   DEFAULT TICKERS  -  The stocks we pre-train models for
 # ──────────────────────────────────────────────────────────────
-DEFAULT_TICKERS = ['AAPL', 'MSFT', 'GOOGL', 'TSLA', 'META', 'AMZN', 'SPY']
+DEFAULT_TICKERS = all_symbols()  # 50 US + 50 India (NSE) from config/ticker_universe.json
 
 # ──────────────────────────────────────────────────────────────
 #   TRAIN ONE TICKER
@@ -66,12 +64,12 @@ def train_ticker(
     ppo_resume=False,
 ):
     """
-    Complete training pipeline for a single ticker:
+    Legacy research pipeline for a single ticker:
       1. Fetch historical data with technical indicators
       2. Train LSTM on price series
       3. Train Random Forest on indicator features
       4. Train HMM on return series
-      5. Train PPO RL agent on simulated trading env
+      5. Train PPO RL agent on simulated trading env (research only)
       6. Save all artifacts + comprehensive metadata
     """
     if save_dir is None:
@@ -192,8 +190,10 @@ def train_ticker(
 
 
 def _evaluate_rf(tm, df):
-    """Evaluate Random Forest with a proper holdout evaluation."""
-    from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+    """Refit on the earlier block; keep the final block unseen by the fitted scaler and RF."""
+    from sklearn.base import clone
+    from sklearn.metrics import accuracy_score, balanced_accuracy_score, precision_score, recall_score, f1_score
+    from sklearn.preprocessing import StandardScaler
 
     features = ['rsi', 'macd', 'macd_signal', 'adx', 'returns', 'volatility']
     X = df[features].copy()
@@ -204,22 +204,32 @@ def _evaluate_rf(tm, df):
     X_valid = X[valid_idx]
     y_valid = y[valid_idx]
 
-    # Use last 20% as test set (time-series split)
+    # The last five training labels would use prices in the test period.
     split = int(len(X_valid) * 0.8)
+    X_train = X_valid.iloc[:max(0, split - 5)]
+    y_train = y_valid[:max(0, split - 5)]
     X_test = X_valid.iloc[split:]
     y_test = y_valid[split:]
 
-    if len(X_test) == 0:
-        return {'accuracy': 0.0, 'precision': 0.0, 'recall': 0.0, 'f1': 0.0}
+    if len(X_train) < 30 or len(X_test) < 10:
+        raise ValueError('Insufficient chronological RF train/test coverage')
 
-    X_test_scaled = tm.scaler_rf.transform(X_test)
-    preds = tm.rf_model.predict(X_test_scaled)
+    scaler = StandardScaler().fit(X_train)
+    model = clone(tm.rf_model)
+    model.fit(scaler.transform(X_train), y_train)
+    preds = model.predict(scaler.transform(X_test))
+    majority_class = np.unique(y_train, return_counts=True)[0][np.argmax(np.unique(y_train, return_counts=True)[1])]
 
     return {
         'accuracy': round(float(accuracy_score(y_test, preds)), 4),
         'precision': round(float(precision_score(y_test, preds, average='macro', zero_division=0)), 4),
         'recall': round(float(recall_score(y_test, preds, average='macro', zero_division=0)), 4),
         'f1': round(float(f1_score(y_test, preds, average='macro', zero_division=0)), 4),
+        'balanced_accuracy': round(float(balanced_accuracy_score(y_test, preds)), 4),
+        'majority_baseline_accuracy': round(float(accuracy_score(y_test, np.full(len(y_test), majority_class))), 4),
+        'train_rows': int(len(X_train)),
+        'test_rows': int(len(X_test)),
+        'evaluation': 'chronological 80/20 split; five-bar label embargo; scaler and RF refitted on train only',
     }
 
 
@@ -263,6 +273,8 @@ Examples:
                         help='Resume PPO from latest checkpoint if available')
     parser.add_argument('--save_dir', default=None,
                         help='Directory to save models (default: analytics-engine/models/)')
+    parser.add_argument('--skip_universal', action='store_true',
+                        help='Skip universal hybrid model training after per-ticker run')
     args = parser.parse_args()
 
     # Resolve save_dir
@@ -324,6 +336,25 @@ Examples:
         logger.info(f"  {icon} {t:6s} : {status}")
     logger.info(f"  Total time: {total_elapsed:.1f}s")
     logger.info("=" * 60)
+
+    if not args.skip_universal:
+        logger.info("")
+        logger.info("=" * 60)
+        logger.info("  UNIVERSAL HYBRID MODEL TRAINING")
+        logger.info("=" * 60)
+        try:
+            from training.train_universal import run_training
+            result = run_training(
+                tickers=args.tickers,
+                period=args.period,
+                interval=args.interval,
+                save_dir=save_dir,
+                lstm_epochs=min(args.lstm_epochs, 30),
+                rf_estimators=300,
+            )
+            logger.info("  Universal hybrid models saved -> %s", result['path'])
+        except Exception as e:
+            logger.exception("Universal training failed: %s", e)
 
 
 if __name__ == '__main__':

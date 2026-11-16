@@ -1,1 +1,81 @@
 @import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  font-family: Inter, "Segoe UI", sans-serif;
+  background-color: #f4f6fb;
+  color: #0f172a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #f4f6fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Shared light workspace treatment: the data views keep their behavior while
+   using the calm, card-led visual language of the reference product. */
+.portfolio-app {
+  --pp-ink: #101828;
+  --pp-muted: #667085;
+  --pp-border: #e7eaf0;
+  --pp-accent: #5b3df5;
+}
+
+.portfolio-app [class*="bg-[#11131a"],
+.portfolio-app [class*="bg-[#161822"],
+.portfolio-app [class*="bg-[#161720"],
+.portfolio-app [class*="bg-[#0a0c14"],
+.portfolio-app [class*="bg-[#0a0b10"],
+.portfolio-app [class*="bg-slate-900"],
+.portfolio-app [class*="bg-slate-950"],
+.portfolio-app [class*="from-slate-900"],
+.portfolio-app [class*="via-slate-900"] {
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border-color: var(--pp-border) !important;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.045);
+}
+
+.portfolio-app [class*="text-white"],
+.portfolio-app [class*="text-gray-200"],
+.portfolio-app [class*="text-gray-300"] {
+  color: var(--pp-ink) !important;
+}
+
+.portfolio-app [class*="text-gray-400"],
+.portfolio-app [class*="text-gray-500"],
+.portfolio-app [class*="text-slate-400"] {
+  color: var(--pp-muted) !important;
+}
+
+.portfolio-app [class*="border-gray-800"],
+.portfolio-app [class*="border-white/10"] {
+  border-color: var(--pp-border) !important;
+}
+
+.portfolio-app .text-amber-200,
+.portfolio-app .text-amber-300 {
+  color: #92400e;
+}
+
+.portfolio-app .text-rose-300 {
+  color: #be123c;
+}
+
+@media (max-width: 900px) {
+  .portfolio-app > aside { position: static; width: 100%; height: auto; }
+  .portfolio-app > div.ml-\[270px\] { margin-left: 0; }
+}

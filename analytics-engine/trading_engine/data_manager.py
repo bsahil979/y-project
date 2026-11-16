@@ -3,11 +3,15 @@ import pandas as pd
 import numpy as np
 import ta
 import datetime
+from services.data_fetcher import fetch_stooq_daily_ohlcv
 
-def fetch_asset_data(ticker="AAPL", period="60d", interval="5m"):
+def fetch_asset_data(ticker="AAPL", period="60d", interval="5m", allow_synthetic_fallback=False):
     """
-    Fetches historical asset data dynamically across multiple real-time data providers
-    (Source 1: Yahoo Finance API stream, Source 2: Stooq public alternative integration).
+    Fetches market data from Yahoo Finance, then Stooq.
+
+    Historical research must fail closed when both providers are unavailable.
+    ``allow_synthetic_fallback`` exists only for an explicitly opted-in live
+    continuity use case and must remain false for dataset construction.
     """
     try:
         # Source 1: Try primary yfinance granular feed
@@ -18,16 +22,16 @@ def fetch_asset_data(ticker="AAPL", period="60d", interval="5m"):
             raise ValueError("Primary yfinance return was empty.")
     except Exception as e:
         print(f"Primary fetch warning for {ticker} ({str(e)}). Falling back to Source 2 (Stooq integration)...")
-        # Source 2: Fallback to Stooq alternative gateway
+        # Source 2: Stooq CSV (daily bars) — avoids pandas_datareader
         try:
-            import pandas_datareader.data as web
-            stooq_sym = ticker.split('.')[0]
-            # Since Stooq returns daily bars, fetch past 60 business days
             start_date = datetime.date.today() - datetime.timedelta(days=90)
-            data = web.DataReader(stooq_sym, 'stooq', start=start_date, end=datetime.date.today())
-            # Reverse to ensure chronological sorting
-            data = data.iloc[::-1].copy()
+            data = fetch_stooq_daily_ohlcv(ticker, start_date, datetime.date.today())
         except Exception as stooq_err:
+            if not allow_synthetic_fallback:
+                raise RuntimeError(
+                    f"No provider data available for {ticker}: Yahoo failed and "
+                    f"Stooq failed ({stooq_err})."
+                ) from stooq_err
             print(f"Source 2 error: {str(stooq_err)}. Deploying static continuity baseline.")
             dates = pd.date_range(end=datetime.datetime.now(), periods=60, freq='H')
             data = pd.DataFrame({
@@ -88,11 +92,16 @@ def add_technical_indicators(df):
     df.dropna(inplace=True)
     return df
 
-def get_processed_data(ticker="AAPL", period="60d", interval="5m"):
+def get_processed_data(ticker="AAPL", period="60d", interval="5m", allow_synthetic_fallback=False):
     """
     Master function to get cleaned and featured asset data.
     """
-    raw_data = fetch_asset_data(ticker=ticker, period=period, interval=interval)
+    raw_data = fetch_asset_data(
+        ticker=ticker,
+        period=period,
+        interval=interval,
+        allow_synthetic_fallback=allow_synthetic_fallback,
+    )
     featured_data = add_technical_indicators(raw_data)
     return featured_data
 

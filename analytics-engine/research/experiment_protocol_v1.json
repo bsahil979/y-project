@@ -1,0 +1,89 @@
+{
+  "protocol_id": "regime_allocation_v1_2026-09-27",
+  "protocol_date": "2026-09-27",
+  "status": "primary_evaluation_completed",
+  "research_question": "Does a three-state Gaussian HMM-conditioned minimum-variance allocation improve net out-of-sample Sharpe over a matched minimum-variance optimizer without state conditioning?",
+  "scope": "Educational empirical comparison; no novel HMM claim, financial advice claim, or production strategy claim.",
+  "universe": {
+    "tickers": ["RELIANCE.NS", "TCS.NS", "INFY.NS", "HDFCBANK.NS", "ICICIBANK.NS"],
+    "currency": "INR",
+    "selection_rule": "Fixed current five-stock convenience universe; survivorship and selection bias are limitations."
+  },
+  "data": {
+    "provider": "Yahoo Finance",
+    "price_field": "auto_adjust=True Close",
+    "adjustment_verified_required": true,
+    "start_inclusive": "2018-01-01",
+    "end_exclusive": "2026-01-01",
+    "complete_common_rows_only": true,
+    "forward_fill": false,
+    "save_exact_snapshot": true,
+    "record_utc_download_time": true,
+    "record_sha256": true
+  },
+  "periods": {
+    "development_exploratory": {"start": "2020-01-24", "end": "2024-12-31"},
+    "final_holdout": {"start": "2025-01-01", "end": "2025-12-31"},
+    "training": "Rolling prior 504 observed daily returns at each decision; post-decision observations enter only future fits after they occur."
+  },
+  "minimum_holdout_return_observations": 200,
+  "strategies": ["Buy and hold equal-initial-weight", "Equal weight", "Minimum variance", "HMM minimum variance"],
+  "model": {
+    "hmm_type": "GaussianHMM",
+    "covariance_type": "diag",
+    "states": 3,
+    "observation": "Equal-weight mean of asset returns in percentage units",
+    "seed_primary": 42,
+    "max_iterations": 200,
+    "convergence_tolerance": 0.0001,
+    "lookback_returns": 504,
+    "minimum_observations": 126,
+    "state_covariance_shrinkage": 0.5,
+    "shrinkage_target": "Unconditional covariance",
+    "low_membership_mass_fallback_below": 2,
+    "covariance_ridge": "max(mean unconditional variance * 1e-6, 1e-12)",
+    "forecast_transition_steps": 2,
+    "long_only": true,
+    "max_weight_per_stock": 0.4
+  },
+  "execution": {
+    "decision": "After close t",
+    "trade": "At close t+1",
+    "first_earned_return": "Close t+1 to close t+2",
+    "rebalance_interval_sessions": 21,
+    "holdings_drift_between_trades": true,
+    "final_liquidation_charged": false
+  },
+  "transaction_cost": {
+    "primary_bps": 10,
+    "formula": "cost_bps * sum(abs(target_weight - pretrade_weight)) / 10000",
+    "initial_purchase_charged": true,
+    "spread_tax_market_impact_modeled": false
+  },
+  "metrics": {
+    "primary": "2025 net annualized Sharpe difference: HMM minimum variance minus minimum variance",
+    "risk_free_rate_annual": 0.02,
+    "annualization_sessions": 252,
+    "secondary": ["annualized volatility", "annualized return", "total return", "maximum drawdown", "turnover", "estimated costs"]
+  },
+  "uncertainty": {
+    "method": "Paired moving-block bootstrap on daily net returns",
+    "block_length_sessions": 21,
+    "replicates": 10000,
+    "seed": 20260927,
+    "interval_percent": 95,
+    "interpretation": "Exploratory uncertainty for one year and one convenience universe; not broad evidence of effectiveness."
+  },
+  "sensitivity": {
+    "primary_seed": 42,
+    "seeds_all_to_report": [7, 42, 123, 2026],
+    "primary_cost_bps": 10,
+    "cost_bps_all_to_report": [0, 10, 25],
+    "selection_rule": "Report all; do not select a favorable seed or cost result."
+  },
+  "artifact_policy": {
+    "new_versioned_output_directory": true,
+    "preserve_preliminary_artifacts": true,
+    "holdout_metrics_and_bootstrap_required_before_run": true
+  }
+}

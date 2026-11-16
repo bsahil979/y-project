@@ -1,0 +1,48 @@
+{
+  "ticker": "CRM",
+  "trained_at": "2026-08-24T12:56:04.631001",
+  "training_duration_seconds": 14.0,
+  "dataset": {
+    "period": "3y",
+    "interval": "1d",
+    "rows": 554,
+    "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+  },
+  "hyperparameters": {
+    "lstm_epochs": 15,
+    "lstm_lookback": 60,
+    "lstm_hidden_size": 64,
+    "lstm_num_layers": 2,
+    "rf_estimators": 200,
+    "hmm_n_regimes": 3,
+    "ppo_timesteps": 10000
+  },
+  "metrics": {
+    "lstm": {
+      "train_loss": 0.054816748946905136,
+      "val_rmse": 75.92053112121103,
+      "val_mae": 74.72090182949188
+    },
+    "rf": {
+      "evaluation_status": "invalidated_in_sample_overlap",
+      "quarantined_metrics": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "hmm": {
+      "n_components": 3,
+      "current_regime": "Sideways",
+      "converged": true,
+      "n_iter": 76
+    }
+  },
+  "model_versions": {
+    "lstm": "1.0",
+    "rf": "1.0",
+    "hmm": "1.0",
+    "ppo": "1.0"
+  }
+}

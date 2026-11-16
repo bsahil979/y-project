@@ -57,7 +57,7 @@ def recommend_allocations(
     end = datetime.date.today()
     start = end - datetime.timedelta(days=lookback_days)
     data = get_portfolio_data(universe, start.isoformat(), end.isoformat())
-    prices = data['prices'].ffill().bfill()
+    prices = data['prices'].ffill()
     returns = prices.pct_change(fill_method=None).dropna(how='any')
     prices = prices.loc[returns.index]
 

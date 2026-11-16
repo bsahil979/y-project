@@ -1,0 +1,86 @@
+[
+  {
+    "id": "kb-001",
+    "category": "risk_metrics",
+    "title": "Value at Risk (VaR)",
+    "content": "Value at Risk (VaR) measures the maximum expected loss over a given time horizon at a specific confidence level. A 95% VaR of -3% means that, with 95% confidence, the portfolio will not lose more than 3% in a single day. VaR is a backward-looking statistical measure based on historical returns."
+  },
+  {
+    "id": "kb-002",
+    "category": "risk_metrics",
+    "title": "Conditional Value at Risk (CVaR)",
+    "content": "Conditional Value at Risk (CVaR), also called Expected Shortfall, is the average of losses that exceed the VaR threshold in the worst-case scenarios. While VaR tells you the cutoff loss at a confidence level, CVaR tells you how bad things get when they go bad. CVaR is always <= VaR and is considered a more conservative risk measure."
+  },
+  {
+    "id": "kb-003",
+    "category": "risk_metrics",
+    "title": "Annualized Volatility",
+    "content": "Volatility is the standard deviation of returns, annualized by multiplying the daily standard deviation by the square root of 252 (trading days in a year). Higher volatility means greater price swings and higher risk. A stock with 35% annual volatility swings about 5x more than one with 15% volatility."
+  },
+  {
+    "id": "kb-004",
+    "category": "risk_metrics",
+    "title": "Maximum Drawdown",
+    "content": "Maximum Drawdown (MDD) is the largest peak-to-trough decline of a portfolio over a period. It measures the worst loss experienced from the highest point to the lowest point before a new peak is reached. MDD indicates downside risk unrelated to volatility and helps assess how long large losses may persist."
+  },
+  {
+    "id": "kb-005",
+    "category": "market_regime",
+    "title": "Hidden Markov Models for Regime Detection",
+    "content": "A Hidden Markov Model (HMM) treats market regimes as hidden states inferred from observable returns. By fitting a GaussianHMM with 3 components to return data, the model identifies states (Bullish/Low Volatility, Neutral, Bearish/High Volatility) based on the mean and variance of returns in each hidden state. The confidence is the model's predicted probability of the current state."
+  },
+  {
+    "id": "kb-006",
+    "category": "market_regime",
+    "title": "Bull vs Bear Market Regimes",
+    "content": "Bull market: rising prices, low volatility, positive returns, investor optimism. Bear market: declining prices, high volatility, negative returns, investor pessimism. Volatile regime: large price swings in both directions, often during market transitions or uncertainty. The HMM regime detector labels states by sorting the mean return of each hidden state."
+  },
+  {
+    "id": "kb-007",
+    "category": "lstm_forecast",
+    "title": "LSTM Price Forecasting",
+    "content": "The Long Short-Term Memory (LSTM) neural network is a type of recurrent neural network (RNN) designed to learn from sequences. In this system, the LSTM uses a 60-day lookback window of scaled daily closing prices to predict the next `horizon` days of prices. The model is trained with MSE loss and Adam optimizer. When a pre-trained per-ticker LSTM checkpoint exists, it is loaded directly for inference; otherwise a fresh model is trained on recent history."
+  },
+  {
+    "id": "kb-008",
+    "category": "sentiment_analysis",
+    "title": "VADER News Sentiment",
+    "content": "VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon-based sentiment analysis tool that returns a compound score between -1 (extremely negative) and +1 (extremely positive). News headlines are fetched from Yahoo Finance and Google News, then scored with VADER. The aggregate sentiment is classified as Bullish (>0.15), Slightly Bullish (>0.05), Neutral, Slightly Bearish (<-0.05), or Bearish (<-0.15)."
+  },
+  {
+    "id": "kb-009",
+    "category": "portfolio_theory",
+    "title": "Risk-Return Tradeoff",
+    "content": "The fundamental principle of investing: higher expected returns require accepting higher risk. The Conservative option reduces equity exposure and adds bonds/cash to lower downside. The Balanced option maintains core positions with moderate diversification. The Aggressive option keeps full equity exposure to maximize upside. Each option is generated based on portfolio risk level (High/Medium/Low), market regime, and worst-case stress scenario."
+  },
+  {
+    "id": "kb-010",
+    "category": "stress_testing",
+    "title": "Historical Stress Testing",
+    "content": "Stress testing simulates portfolio losses under extreme but plausible historical events. This system tests four scenarios: 2008 Financial Crisis (~40% shock), COVID Crash 2020 (~30% shock), Tech Sector Crash (~35% shock), and Rate Hike Shock (~15% shock). Each ticker receives a scenario-specific percentage shock, and the portfolio loss is computed as the weighted sum of position losses. The worst scenario identifies the maximum potential loss."
+  },
+  {
+    "id": "kb-011",
+    "category": "meta_model",
+    "title": "MarketMind Meta-Model",
+    "content": "MarketMind is a meta-model that combines multiple signals — returns, RSI, MACD, ADX, volatility, EMA crossovers, momentum, sentiment scores, regime codes, LSTM signals, and Random Forest signals — into a single classification (BUY/SELL/HOLD) using an ensemble of Logistic Regression, Random Forest, and Histogram Gradient Boosting classifiers. The best model is selected by macro-F1 score on a held-out test set."
+  },
+  {
+    "id": "kb-012",
+    "category": "portfolio_theory",
+    "title": "Diversification Principle",
+    "content": "Diversification reduces portfolio risk by holding assets that do not move in perfect correlation. By allocating capital across tickers in different sectors or regions, idiosyncratic (company-specific) risk is mitigated. The stress-test Conservative option explicitly adds a Bonds/Cash allocation to introduce low-correlation assets as a buffer during market shocks."
+  },
+  {
+    "id": "kb-013",
+    "category": "rl_portfolio",
+    "title": "PPO Portfolio Optimization",
+    "content": "The portfolio allocation uses Proximal Policy Optimization (PPO), a reinforcement learning algorithm, to recommend dynamic weight allocations and cash management. The RL agent is trained on a full universe of 100 tickers (50 US + 50 India) with a reward function that balances Sharpe ratio and drawdown. The learned policy suggests weight targets that adapt to market regime signals."
+  },
+  {
+    "id": "kb-014",
+    "category": "risk_metrics",
+    "title": "Risk Level Assessment",
+    "content": "Portfolio risk is classified as HIGH when two or more of these thresholds are breached: annualized volatility > 35%, VaR(95%) < -3%, or max drawdown < -30%. MEDIUM when one threshold is breached. LOW when none are breached. This classification drives the decision-option generation logic."
+  }
+]

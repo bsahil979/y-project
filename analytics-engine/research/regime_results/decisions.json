@@ -1,0 +1,3483 @@
+[
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-01-02",
+    "training_end": "2020-01-22",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.1308234694847399,
+        "training_mean_daily_return": -0.007251561078878959,
+        "training_membership_mass": 66.13503758497767
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.4182495115123672,
+        "training_mean_daily_return": 0.001148158481996957,
+        "training_membership_mass": 215.50964796881533
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.45092701900289284,
+        "training_mean_daily_return": 0.003485211548062845,
+        "training_membership_mass": 222.35531444620756
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.10559059621104445,
+      "TCS.NS": 0.21093379358074896,
+      "INFY.NS": 0.17469703625065486,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 0.10877857395755174
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1096654338864721,
+      "TCS.NS": 0.2083795579448022,
+      "INFY.NS": 0.17316214414864942,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 0.10879286402007636
+    },
+    "estimated_annual_volatility": 0.13470218502413464,
+    "baseline_annual_volatility": 0.13012823452821207,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0001884946826749001
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-01-23",
+    "first_return_date": "2020-01-24"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-02-01",
+    "training_end": "2020-02-20",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.06813711677212994,
+        "training_mean_daily_return": -0.0036202959476819923,
+        "training_membership_mass": 72.71016926030084
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.8860366872529989,
+        "training_mean_daily_return": 0.0013266163427683175,
+        "training_membership_mass": 358.64521035365556
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.0458261959748711,
+        "training_mean_daily_return": 0.0030926953111054573,
+        "training_membership_mass": 72.64462038604347
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.10505132418806926,
+      "TCS.NS": 0.22396676532663282,
+      "INFY.NS": 0.15891748091573174,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 0.11206442956956622
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.09735600353415393,
+      "TCS.NS": 0.22715272647824436,
+      "INFY.NS": 0.16606602886344626,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 0.10942524112415546
+    },
+    "estimated_annual_volatility": 0.12572091777594688,
+    "baseline_annual_volatility": 0.13091567263362558,
+    "convergence": {
+      "iterations": 167,
+      "last_log_likelihood_change": 9.606612741208664e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-02-24",
+    "first_return_date": "2020-02-25"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-03-06",
+    "training_end": "2020-03-24",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.6866745676151559,
+        "training_mean_daily_return": -0.01938525483011129,
+        "training_membership_mass": 18.783692446737792
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.1524987178331247,
+        "training_mean_daily_return": -6.259058679073751e-05,
+        "training_membership_mass": 249.14257351733437
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.16082671455171937,
+        "training_mean_daily_return": 0.0020537167395825355,
+        "training_membership_mass": 236.07373403592783
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 5.551115123125783e-17,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.20000000000000007,
+      "HDFCBANK.NS": 0.3999999999999999,
+      "ICICIBANK.NS": 2.7755575615628914e-17
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.06376078236303868,
+      "TCS.NS": 0.3183866722258435,
+      "INFY.NS": 0.13741406539304232,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 0.08043848001807553
+    },
+    "estimated_annual_volatility": 0.4229307021719661,
+    "baseline_annual_volatility": 0.18836439166731397,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0006752655764330484
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-03-25",
+    "first_return_date": "2020-03-26"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-04-06",
+    "training_end": "2020-04-28",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 1.0,
+        "training_mean_daily_return": -0.0031878536234454234,
+        "training_membership_mass": 37.79306418641335
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 1.588940443456317e-20,
+        "training_mean_daily_return": 0.00014398280842532052,
+        "training_membership_mass": 251.44372415083353
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 1.1278936173390964e-20,
+        "training_mean_daily_return": 0.00203808764506208,
+        "training_membership_mass": 214.76321166275443
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.0,
+      "TCS.NS": 0.39999999999999997,
+      "INFY.NS": 0.19999999999999998,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 1.0781557697656666e-16
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.06453857723171078,
+      "TCS.NS": 0.357060185607741,
+      "INFY.NS": 0.1573653914242579,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 0.021035845736290287
+    },
+    "estimated_annual_volatility": 0.4806286045811029,
+    "baseline_annual_volatility": 0.2236793757555802,
+    "convergence": {
+      "iterations": 179,
+      "last_log_likelihood_change": 9.990097782974772e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-04-29",
+    "first_return_date": "2020-04-30"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-05-08",
+    "training_end": "2020-05-29",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.4690227546409866,
+        "training_mean_daily_return": -0.0018611647938974298,
+        "training_membership_mass": 53.68945772089488
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.4050490007068846,
+        "training_mean_daily_return": 8.238098344883008e-05,
+        "training_membership_mass": 230.55642683037343
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.12592824465212882,
+        "training_mean_daily_return": 0.001806489125443069,
+        "training_membership_mass": 219.7541154487334
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.026878920414704566,
+      "TCS.NS": 0.39999999999999997,
+      "INFY.NS": 0.19128711932402576,
+      "HDFCBANK.NS": 0.3818339602612697,
+      "ICICIBANK.NS": 0.0
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.0676387612416057,
+      "TCS.NS": 0.39259229107325444,
+      "INFY.NS": 0.1397689476851399,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 9.822194056360867e-18
+    },
+    "estimated_annual_volatility": 0.3397893842574845,
+    "baseline_annual_volatility": 0.23292395608443794,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0005962102823104942
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-06-01",
+    "first_return_date": "2020-06-02"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-06-06",
+    "training_end": "2020-06-29",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.05906309573591672,
+        "training_mean_daily_return": -0.001454152581765322,
+        "training_membership_mass": 47.16938978095415
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.660296914175603,
+        "training_mean_daily_return": 0.000478623335760921,
+        "training_membership_mass": 216.21733312158588
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.28063999008848023,
+        "training_mean_daily_return": 0.001507223104065329,
+        "training_membership_mass": 240.61327709746087
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.08107013904810349,
+      "TCS.NS": 0.36698238448607584,
+      "INFY.NS": 0.15194747646582077,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 1.7110065534536867e-18
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.06776202584037844,
+      "TCS.NS": 0.39409098016441124,
+      "INFY.NS": 0.13814699399521035,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 2.0735366548785272e-18
+    },
+    "estimated_annual_volatility": 0.21845321918593263,
+    "baseline_annual_volatility": 0.23681824742436655,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.00026498037084365933
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-06-30",
+    "first_return_date": "2020-07-01"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-07-05",
+    "training_end": "2020-07-28",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.007769935396208904,
+        "training_mean_daily_return": -0.0021260836664729918,
+        "training_membership_mass": 39.31160435412947
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.47154872972704326,
+        "training_mean_daily_return": 0.0010182120667819028,
+        "training_membership_mass": 224.123754573716
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.5206813348767478,
+        "training_mean_daily_return": 0.0014104033478757308,
+        "training_membership_mass": 240.56464107215385
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.0990586098618111,
+      "TCS.NS": 0.3525601654963476,
+      "INFY.NS": 0.13760546489309053,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 0.010775759748750738
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.07607630681360522,
+      "TCS.NS": 0.3963526848573724,
+      "INFY.NS": 0.12757100832902243,
+      "HDFCBANK.NS": 0.4,
+      "ICICIBANK.NS": 8.267041565201971e-18
+    },
+    "estimated_annual_volatility": 0.20607444179979575,
+    "baseline_annual_volatility": 0.2396270830135334,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0011033475468593679
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-07-29",
+    "first_return_date": "2020-07-30"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-08-03",
+    "training_end": "2020-08-26",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.00377973058166281,
+        "training_mean_daily_return": -0.00690363089523454,
+        "training_membership_mass": 32.0754031547615
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.9933611707047463,
+        "training_mean_daily_return": 0.0011341285161240485,
+        "training_membership_mass": 442.73615938148004
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.0028590987135908748,
+        "training_mean_daily_return": 0.005272086049362083,
+        "training_membership_mass": 29.18843746375872
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.09111953472214307,
+      "TCS.NS": 0.35802491931237923,
+      "INFY.NS": 0.13899761215385004,
+      "HDFCBANK.NS": 0.39653865827729096,
+      "ICICIBANK.NS": 0.015319275534336768
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.07338711842415659,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.1349450257288335,
+      "HDFCBANK.NS": 0.39166785584700997,
+      "ICICIBANK.NS": 9.517262195349319e-18
+    },
+    "estimated_annual_volatility": 0.2032623017369295,
+    "baseline_annual_volatility": 0.24072382474473847,
+    "convergence": {
+      "iterations": 53,
+      "last_log_likelihood_change": 8.437222766133345e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-08-27",
+    "first_return_date": "2020-08-28"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-09-05",
+    "training_end": "2020-09-24",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.11662089861194486,
+        "training_mean_daily_return": -0.002437188220346538,
+        "training_membership_mass": 38.13268232912562
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.1409797125721552,
+        "training_mean_daily_return": 0.000280848457797166,
+        "training_membership_mass": 215.09160226437155
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.7423993888159,
+        "training_mean_daily_return": 0.0015245027101793195,
+        "training_membership_mass": 250.77571540650317
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.07072673811747937,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.1333898134975337,
+      "HDFCBANK.NS": 0.39588344838498685,
+      "ICICIBANK.NS": 2.1140248297572828e-17
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.07755201510169701,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.12863207109995417,
+      "HDFCBANK.NS": 0.3938159137983489,
+      "ICICIBANK.NS": 0.0
+    },
+    "estimated_annual_volatility": 0.2667431990812837,
+    "baseline_annual_volatility": 0.24290850250649004,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0005526257631345288
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-09-25",
+    "first_return_date": "2020-09-28"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-10-09",
+    "training_end": "2020-10-26",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.01151719109882499,
+        "training_mean_daily_return": -0.007205276339365584,
+        "training_membership_mass": 32.370181669109314
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.9823292091796237,
+        "training_mean_daily_return": 0.0013212996212327835,
+        "training_membership_mass": 442.2010027003105
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.006153599721551262,
+        "training_mean_daily_return": 0.005578508072813071,
+        "training_membership_mass": 29.428815630580083
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.11712528885103828,
+      "TCS.NS": 0.3550660638870735,
+      "INFY.NS": 0.13646794198148438,
+      "HDFCBANK.NS": 0.3913407052804039,
+      "ICICIBANK.NS": 6.79743940171576e-19
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.09473539648210663,
+      "TCS.NS": 0.3974222143767807,
+      "INFY.NS": 0.12780466921101838,
+      "HDFCBANK.NS": 0.38003771993009433,
+      "ICICIBANK.NS": 2.473336205982557e-18
+    },
+    "estimated_annual_volatility": 0.2118744934659995,
+    "baseline_annual_volatility": 0.2441436886648952,
+    "convergence": {
+      "iterations": 56,
+      "last_log_likelihood_change": 9.303889146394795e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-10-27",
+    "first_return_date": "2020-10-28"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-11-09",
+    "training_end": "2020-11-24",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.0060914224824808886,
+        "training_mean_daily_return": -0.007331362824403716,
+        "training_membership_mass": 32.82277027446304
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.9889638899605501,
+        "training_mean_daily_return": 0.0014645955893999518,
+        "training_membership_mass": 441.3109007615282
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.00494468755696903,
+        "training_mean_daily_return": 0.005767170370940961,
+        "training_membership_mass": 29.86632896400909
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.11862974072188621,
+      "TCS.NS": 0.36142617152703804,
+      "INFY.NS": 0.14651054967779034,
+      "HDFCBANK.NS": 0.37009143782629034,
+      "ICICIBANK.NS": 0.003342100246995068
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.09597929792476143,
+      "TCS.NS": 0.39999999999999997,
+      "INFY.NS": 0.13990043369573785,
+      "HDFCBANK.NS": 0.36412026837950073,
+      "ICICIBANK.NS": 4.991734564759043e-17
+    },
+    "estimated_annual_volatility": 0.20776487782263436,
+    "baseline_annual_volatility": 0.24363277274588582,
+    "convergence": {
+      "iterations": 55,
+      "last_log_likelihood_change": 9.073098203771224e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-11-25",
+    "first_return_date": "2020-11-26"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2018-12-11",
+    "training_end": "2020-12-24",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.005990247467009078,
+        "training_mean_daily_return": -0.0022334717097284846,
+        "training_membership_mass": 37.6044612708178
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.40803735996055424,
+        "training_mean_daily_return": 0.0011081762256838763,
+        "training_membership_mass": 193.1125302518979
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.5859723925724368,
+        "training_mean_daily_return": 0.0017706287305239948,
+        "training_membership_mass": 273.2830084772845
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1295336194652087,
+      "TCS.NS": 0.37155358117922277,
+      "INFY.NS": 0.14986122585523318,
+      "HDFCBANK.NS": 0.34905157350033544,
+      "ICICIBANK.NS": 1.3544056826596262e-18
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1047943115025025,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.1465855380949041,
+      "HDFCBANK.NS": 0.3486201504025935,
+      "ICICIBANK.NS": 1.54227759036063e-17
+    },
+    "estimated_annual_volatility": 0.2093707647608655,
+    "baseline_annual_volatility": 0.2429039510659243,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.017372633423406114
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2020-12-28",
+    "first_return_date": "2020-12-29"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-01-10",
+    "training_end": "2021-01-25",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.006516523661389622,
+        "training_mean_daily_return": -0.0073609484907981105,
+        "training_membership_mass": 32.78809402875655
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.9877681424843532,
+        "training_mean_daily_return": 0.0016266408001206975,
+        "training_membership_mass": 441.37521141586285
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.005715333854257186,
+        "training_mean_daily_return": 0.005733684959494372,
+        "training_membership_mass": 29.836694555380756
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.12881706936089085,
+      "TCS.NS": 0.36408959710307853,
+      "INFY.NS": 0.1500322902148685,
+      "HDFCBANK.NS": 0.3520303910176056,
+      "ICICIBANK.NS": 0.005030652303556474
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.10596103083342241,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.14403000312483935,
+      "HDFCBANK.NS": 0.35000896604173826,
+      "ICICIBANK.NS": 4.621411760219463e-18
+    },
+    "estimated_annual_volatility": 0.20815508555872236,
+    "baseline_annual_volatility": 0.24368518506634282,
+    "convergence": {
+      "iterations": 53,
+      "last_log_likelihood_change": 9.208154733642004e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2021-01-27",
+    "first_return_date": "2021-01-28"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-02-08",
+    "training_end": "2021-02-24",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.02901377016045737,
+        "training_mean_daily_return": 9.370792724320334e-05,
+        "training_membership_mass": 48.50322293327819
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.7351556442046239,
+        "training_mean_daily_return": 0.000872201958085771,
+        "training_membership_mass": 233.252490537757
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.23583058563491868,
+        "training_mean_daily_return": 0.0018697002114653365,
+        "training_membership_mass": 222.24428652896438
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1293904359329723,
+      "TCS.NS": 0.3925543393372929,
+      "INFY.NS": 0.14269993822186358,
+      "HDFCBANK.NS": 0.33535528650787133,
+      "ICICIBANK.NS": 0.0
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.11836074437632868,
+      "TCS.NS": 0.39999999999999997,
+      "INFY.NS": 0.15190577586919776,
+      "HDFCBANK.NS": 0.3297334797544736,
+      "ICICIBANK.NS": 4.1023499701420274e-17
+    },
+    "estimated_annual_volatility": 0.2238176536887021,
+    "baseline_annual_volatility": 0.24596169071636498,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0006225678607734153
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2021-02-25",
+    "first_return_date": "2021-02-26"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-03-13",
+    "training_end": "2021-03-26",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.02018982890629267,
+        "training_mean_daily_return": -0.005202587953862015,
+        "training_membership_mass": 32.935918458885844
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.9507447664603734,
+        "training_mean_daily_return": 0.0014000982607114466,
+        "training_membership_mass": 434.6300402311498
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.029065404633333864,
+        "training_mean_daily_return": 0.0043495953714271,
+        "training_membership_mass": 36.43404130996491
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1265593488061168,
+      "TCS.NS": 0.3929766009314775,
+      "INFY.NS": 0.1468881444402581,
+      "HDFCBANK.NS": 0.3335759058221477,
+      "ICICIBANK.NS": 9.2549069748271e-18
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.11439431845109707,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.15582949786414751,
+      "HDFCBANK.NS": 0.32977618368475553,
+      "ICICIBANK.NS": 0.0
+    },
+    "estimated_annual_volatility": 0.22107781806551144,
+    "baseline_annual_volatility": 0.24801808865453745,
+    "convergence": {
+      "iterations": 144,
+      "last_log_likelihood_change": 9.758646160662465e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2021-03-30",
+    "first_return_date": "2021-03-31"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-04-15",
+    "training_end": "2021-04-30",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.02772371923642652,
+        "training_mean_daily_return": -0.012705549057068406,
+        "training_membership_mass": 21.1276641244449
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.901430636040112,
+        "training_mean_daily_return": 0.0013211561555890904,
+        "training_membership_mass": 440.92437711443176
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.07084564472346143,
+        "training_mean_daily_return": 0.0061043306017815,
+        "training_membership_mass": 41.947958761123814
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.12262677792645331,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.15825686029293332,
+      "HDFCBANK.NS": 0.31911636178061326,
+      "ICICIBANK.NS": 1.7401444868392346e-17
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.11842758330541765,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.16552565388482782,
+      "HDFCBANK.NS": 0.3160467628097545,
+      "ICICIBANK.NS": 0.0
+    },
+    "estimated_annual_volatility": 0.24131008184844016,
+    "baseline_annual_volatility": 0.2501654045392256,
+    "convergence": {
+      "iterations": 171,
+      "last_log_likelihood_change": 9.384670420331531e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2021-05-03",
+    "first_return_date": "2021-05-04"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-05-20",
+    "training_end": "2021-06-01",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.01827321515522257,
+        "training_mean_daily_return": -0.0068331324898007195,
+        "training_membership_mass": 34.80875143968487
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.967178617002875,
+        "training_mean_daily_return": 0.0013897342568445045,
+        "training_membership_mass": 437.2910730566926
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.014548167841902467,
+        "training_mean_daily_return": 0.00833632593899435,
+        "training_membership_mass": 31.90017550362227
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.13666550470758249,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.15497733316659462,
+      "HDFCBANK.NS": 0.30835716212582287,
+      "ICICIBANK.NS": 1.3961220553119005e-18
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.12286860845445872,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.16819811162005588,
+      "HDFCBANK.NS": 0.3089332799254854,
+      "ICICIBANK.NS": 0.0
+    },
+    "estimated_annual_volatility": 0.22132740734803802,
+    "baseline_annual_volatility": 0.2502274582614553,
+    "convergence": {
+      "iterations": 156,
+      "last_log_likelihood_change": 9.813989436224801e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2021-06-02",
+    "first_return_date": "2021-06-03"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-06-19",
+    "training_end": "2021-06-30",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.0022821488054390483,
+        "training_mean_daily_return": -0.002314264662320594,
+        "training_membership_mass": 36.971531822543994
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.7632137382814788,
+        "training_mean_daily_return": 0.0012236888802213922,
+        "training_membership_mass": 311.03906864452614
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.23450411291308224,
+        "training_mean_daily_return": 0.002049090892101922,
+        "training_membership_mass": 155.98939953293072
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.14706486331523622,
+      "TCS.NS": 0.39510971895600083,
+      "INFY.NS": 0.15194994460922534,
+      "HDFCBANK.NS": 0.30587547311953767,
+      "ICICIBANK.NS": 3.589302113990098e-18
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.12651395694894266,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.1624596566843813,
+      "HDFCBANK.NS": 0.31102638636667596,
+      "ICICIBANK.NS": 1.49890950346121e-17
+    },
+    "estimated_annual_volatility": 0.21040217275151793,
+    "baseline_annual_volatility": 0.2489716254616671,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.1418845922831906
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2021-07-01",
+    "first_return_date": "2021-07-02"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-07-18",
+    "training_end": "2021-07-30",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.01778608659361685,
+        "training_mean_daily_return": -0.004871848037611729,
+        "training_membership_mass": 30.98250528295634
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.9549445337764183,
+        "training_mean_daily_return": 0.001446437760274024,
+        "training_membership_mass": 437.30359006388835
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.02726937962996477,
+        "training_mean_daily_return": 0.0034272355462654884,
+        "training_membership_mass": 35.71390465315619
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.13819104311671457,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.15612102454634694,
+      "HDFCBANK.NS": 0.30568793233693836,
+      "ICICIBANK.NS": 9.910497241112128e-18
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.12526019169765365,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.16836009598099094,
+      "HDFCBANK.NS": 0.3063797123213554,
+      "ICICIBANK.NS": 8.483881999699072e-18
+    },
+    "estimated_annual_volatility": 0.22054133022543992,
+    "baseline_annual_volatility": 0.24828268863905056,
+    "convergence": {
+      "iterations": 157,
+      "last_log_likelihood_change": 9.917230909195496e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2021-08-02",
+    "first_return_date": "2021-08-03"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-08-20",
+    "training_end": "2021-08-31",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.0046444538230984945,
+        "training_mean_daily_return": -0.002152921228765277,
+        "training_membership_mass": 36.817857666218075
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.344070608783784,
+        "training_mean_daily_return": 0.0008184022057138732,
+        "training_membership_mass": 160.5791062004619
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.6512849373931174,
+        "training_mean_daily_return": 0.002167241451597349,
+        "training_membership_mass": 306.6030361333199
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1419210412359113,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.15845055023691917,
+      "HDFCBANK.NS": 0.2996284085271696,
+      "ICICIBANK.NS": 5.082303562644209e-18
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.11993005443912524,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.1711010373263149,
+      "HDFCBANK.NS": 0.3089689082345599,
+      "ICICIBANK.NS": 1.9773137120704387e-17
+    },
+    "estimated_annual_volatility": 0.21526549494673156,
+    "baseline_annual_volatility": 0.24806598732953997,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0514273054656087
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2021-09-01",
+    "first_return_date": "2021-09-02"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-09-20",
+    "training_end": "2021-09-30",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.011932245320982662,
+        "training_mean_daily_return": -0.011937574940868874,
+        "training_membership_mass": 22.18563548142784
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.9555608378693721,
+        "training_mean_daily_return": 0.0017682827005018934,
+        "training_membership_mass": 435.8643799092089
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.03250691680964526,
+        "training_mean_daily_return": 0.005532632242724318,
+        "training_membership_mass": 45.949984609363796
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1350149000226206,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.1519324931335064,
+      "HDFCBANK.NS": 0.313052606843873,
+      "ICICIBANK.NS": 4.722843955653165e-18
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.12123497302501898,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.16670271819363847,
+      "HDFCBANK.NS": 0.3120623087813426,
+      "ICICIBANK.NS": 0.0
+    },
+    "estimated_annual_volatility": 0.21990450351844823,
+    "baseline_annual_volatility": 0.24803931620960196,
+    "convergence": {
+      "iterations": 138,
+      "last_log_likelihood_change": 9.302482885686914e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2021-10-01",
+    "first_return_date": "2021-10-04"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-10-24",
+    "training_end": "2021-11-01",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.024729310324448507,
+        "training_mean_daily_return": -0.006576559714095747,
+        "training_membership_mass": 36.98859924636952
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.9578527178302642,
+        "training_mean_daily_return": 0.0017384329082682413,
+        "training_membership_mass": 433.49284268973724
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.01741797184528723,
+        "training_mean_daily_return": 0.006454675872377995,
+        "training_membership_mass": 33.51855806389189
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.13160127117868137,
+      "TCS.NS": 0.3743621880543455,
+      "INFY.NS": 0.17929306413768104,
+      "HDFCBANK.NS": 0.3147434766292922,
+      "ICICIBANK.NS": 0.0
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1136522618216159,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.17317725360577424,
+      "HDFCBANK.NS": 0.3131704845726099,
+      "ICICIBANK.NS": 8.627877600732303e-18
+    },
+    "estimated_annual_volatility": 0.22222857290215273,
+    "baseline_annual_volatility": 0.24849373690016544,
+    "convergence": {
+      "iterations": 123,
+      "last_log_likelihood_change": 9.538897870697838e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2021-11-02",
+    "first_return_date": "2021-11-03"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-11-25",
+    "training_end": "2021-12-02",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.007376327584833873,
+        "training_mean_daily_return": -0.0017181991508413588,
+        "training_membership_mass": 38.29772390379021
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.4094934449402725,
+        "training_mean_daily_return": 0.0002643789038419785,
+        "training_membership_mass": 197.2414372803664
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.5831302274748936,
+        "training_mean_daily_return": 0.002480402466476516,
+        "training_membership_mass": 268.4608388158433
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.12927608710113608,
+      "TCS.NS": 0.38990076208788804,
+      "INFY.NS": 0.17184132408642677,
+      "HDFCBANK.NS": 0.3089818267245492,
+      "ICICIBANK.NS": 6.451002926288751e-18
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.10782821820705589,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.17880891883396238,
+      "HDFCBANK.NS": 0.31336286295898175,
+      "ICICIBANK.NS": 0.0
+    },
+    "estimated_annual_volatility": 0.21619416783449516,
+    "baseline_annual_volatility": 0.24817484852732716,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.032840295851997325
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2021-12-03",
+    "first_return_date": "2021-12-06"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2019-12-24",
+    "training_end": "2021-12-31",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.01009723839310955,
+        "training_mean_daily_return": -0.000988997359011729,
+        "training_membership_mass": 40.719018257743066
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.4330902554455385,
+        "training_mean_daily_return": 0.00041110707305689915,
+        "training_membership_mass": 232.61761323552082
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.5568125061613518,
+        "training_mean_daily_return": 0.002393041690656889,
+        "training_membership_mass": 230.6633685067356
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.12152465961577939,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.1702142856868357,
+      "HDFCBANK.NS": 0.30826105469738496,
+      "ICICIBANK.NS": 0.0
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.10437640306384549,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.18522164946429598,
+      "HDFCBANK.NS": 0.31040194747185856,
+      "ICICIBANK.NS": 1.0299920638612292e-17
+    },
+    "estimated_annual_volatility": 0.21624759341590855,
+    "baseline_annual_volatility": 0.24881792939166872,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.002063175450189192
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-01-03",
+    "first_return_date": "2022-01-04"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-01-23",
+    "training_end": "2022-02-01",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.009984719830083177,
+        "training_mean_daily_return": -0.0015050502168054722,
+        "training_membership_mass": 39.05201665676117
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.33397173751533477,
+        "training_mean_daily_return": 0.0006015650415070175,
+        "training_membership_mass": 239.3842542153917
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.656043542654582,
+        "training_mean_daily_return": 0.002437264824890791,
+        "training_membership_mass": 225.56372912784676
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.12486567432780443,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.16111254182066503,
+      "HDFCBANK.NS": 0.31402178385153057,
+      "ICICIBANK.NS": 0.0
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1071057146681295,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.17733023368452128,
+      "HDFCBANK.NS": 0.3155640516473492,
+      "ICICIBANK.NS": 0.0
+    },
+    "estimated_annual_volatility": 0.21614366877096158,
+    "baseline_annual_volatility": 0.2509172251683556,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0009975538545177187
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-02-02",
+    "first_return_date": "2022-02-03"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-02-24",
+    "training_end": "2022-03-03",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.23034005378415157,
+        "training_mean_daily_return": -0.007525722451307505,
+        "training_membership_mass": 37.34169621433708
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.6750667061305834,
+        "training_mean_daily_return": 0.0015357410591916134,
+        "training_membership_mass": 432.6984384638274
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.09459324008526515,
+        "training_mean_daily_return": 0.00544706678066737,
+        "training_membership_mass": 33.959865321834684
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.07517444884938387,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.22632282189991096,
+      "HDFCBANK.NS": 0.2985027292507051,
+      "ICICIBANK.NS": 1.7306577178299865e-17
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.11573050706400675,
+      "TCS.NS": 0.4,
+      "INFY.NS": 0.17907764133843365,
+      "HDFCBANK.NS": 0.30519185159755946,
+      "ICICIBANK.NS": 8.78881386071062e-18
+    },
+    "estimated_annual_volatility": 0.3174104572767225,
+    "baseline_annual_volatility": 0.2550044708411846,
+    "convergence": {
+      "iterations": 75,
+      "last_log_likelihood_change": 8.65171497252959e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-03-04",
+    "first_return_date": "2022-03-07"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-03-25",
+    "training_end": "2022-04-04",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.3716490194108742,
+        "training_mean_daily_return": 4.712712494768263e-05,
+        "training_membership_mass": 173.926741839172
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.6283509805891256,
+        "training_mean_daily_return": 0.002713037871918854,
+        "training_membership_mass": 305.1986753495589
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 2.569767393418044e-62,
+        "training_mean_daily_return": 0.009041828857001912,
+        "training_membership_mass": 24.874582811269587
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.18432032226815429,
+      "TCS.NS": 0.36037129310324445,
+      "INFY.NS": 0.21452314486286703,
+      "HDFCBANK.NS": 0.21682873312191034,
+      "ICICIBANK.NS": 0.02395650664382382
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.18392611923502633,
+      "TCS.NS": 0.37308846676378976,
+      "INFY.NS": 0.22751341463037672,
+      "HDFCBANK.NS": 0.21547199937080716,
+      "ICICIBANK.NS": 0.0
+    },
+    "estimated_annual_volatility": 0.20030224732938987,
+    "baseline_annual_volatility": 0.2175074500250987,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.026380190829399908
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-04-05",
+    "first_return_date": "2022-04-06"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-04-29",
+    "training_end": "2022-05-06",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.6537976173190276,
+        "training_mean_daily_return": 0.00015626393129976177,
+        "training_membership_mass": 215.61192008559362
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.05741709154138945,
+        "training_mean_daily_return": 0.0013923910701400114,
+        "training_membership_mass": 26.16431794983499
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.28878529113958296,
+        "training_mean_daily_return": 0.002491810599913546,
+        "training_membership_mass": 262.2237619645716
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.22668623965090193,
+      "TCS.NS": 0.37923711623490597,
+      "INFY.NS": 0.15319978061766554,
+      "HDFCBANK.NS": 0.1634819172112021,
+      "ICICIBANK.NS": 0.07739494628532449
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.22283488687699887,
+      "TCS.NS": 0.3703237750692368,
+      "INFY.NS": 0.15427069834123597,
+      "HDFCBANK.NS": 0.17140651157219894,
+      "ICICIBANK.NS": 0.08116412814032946
+    },
+    "estimated_annual_volatility": 0.1945357553401868,
+    "baseline_annual_volatility": 0.18812635378687914,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0009460250903430278
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-05-09",
+    "first_return_date": "2022-05-10"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-06-01",
+    "training_end": "2022-06-06",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.047546658929891426,
+        "training_mean_daily_return": -0.006895747269643806,
+        "training_membership_mass": 35.8931869735106
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.5891543494464652,
+        "training_mean_daily_return": 0.0019644112691987385,
+        "training_membership_mass": 234.1360360941515
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.3632989916236434,
+        "training_mean_daily_return": 0.002210586860291053,
+        "training_membership_mass": 233.97077693233825
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1841897784972985,
+      "TCS.NS": 0.3507256981253979,
+      "INFY.NS": 0.152043942657161,
+      "HDFCBANK.NS": 0.209630304272704,
+      "ICICIBANK.NS": 0.10341027644743865
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.18874573467499015,
+      "TCS.NS": 0.3530756956812032,
+      "INFY.NS": 0.1531594397642057,
+      "HDFCBANK.NS": 0.20576026958250637,
+      "ICICIBANK.NS": 0.09925886029709458
+    },
+    "estimated_annual_volatility": 0.17788490302442683,
+    "baseline_annual_volatility": 0.18192820059070128,
+    "convergence": {
+      "iterations": 172,
+      "last_log_likelihood_change": 9.952207017249748e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-06-07",
+    "first_return_date": "2022-06-08"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-06-30",
+    "training_end": "2022-07-05",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.34705384724339416,
+        "training_mean_daily_return": -0.0008001514762519163,
+        "training_membership_mass": 213.0363373466251
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.33375669926588747,
+        "training_mean_daily_return": 0.0019018214222620536,
+        "training_membership_mass": 98.06520695621766
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.3191894534907184,
+        "training_mean_daily_return": 0.0029373752757122585,
+        "training_membership_mass": 192.89845569715672
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1870419137449144,
+      "TCS.NS": 0.3316975147560813,
+      "INFY.NS": 0.1573864880155238,
+      "HDFCBANK.NS": 0.23105616304234128,
+      "ICICIBANK.NS": 0.09281792044113907
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.18799601524778647,
+      "TCS.NS": 0.3398108841691245,
+      "INFY.NS": 0.15380668763664704,
+      "HDFCBANK.NS": 0.2240845618508218,
+      "ICICIBANK.NS": 0.09430185109562024
+    },
+    "estimated_annual_volatility": 0.17582954098876166,
+    "baseline_annual_volatility": 0.18013539558923822,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.00645079906155388
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-07-06",
+    "first_return_date": "2022-07-07"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-07-29",
+    "training_end": "2022-08-03",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.1083812412235328,
+        "training_mean_daily_return": -0.001829650259358259,
+        "training_membership_mass": 118.956290233218
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.13089678960751006,
+        "training_mean_daily_return": 0.0014472474333179005,
+        "training_membership_mass": 136.25872899713164
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.7607219691689571,
+        "training_mean_daily_return": 0.0021803862204265935,
+        "training_membership_mass": 248.78498076965053
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1871863941341418,
+      "TCS.NS": 0.3091816460669065,
+      "INFY.NS": 0.1658880124398918,
+      "HDFCBANK.NS": 0.24643292642134684,
+      "ICICIBANK.NS": 0.0913110209377131
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.18914902049188922,
+      "TCS.NS": 0.32206253570690174,
+      "INFY.NS": 0.16977208562868962,
+      "HDFCBANK.NS": 0.22890101426295553,
+      "ICICIBANK.NS": 0.09011534390956386
+    },
+    "estimated_annual_volatility": 0.16816303460217344,
+    "baseline_annual_volatility": 0.17924912386303907,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.00522879389609443
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-08-04",
+    "first_return_date": "2022-08-05"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-08-27",
+    "training_end": "2022-09-06",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.7678252309947574,
+        "training_mean_daily_return": -0.00010755916697135472,
+        "training_membership_mass": 265.1925154026629
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.10154919294196385,
+        "training_mean_daily_return": 0.0020694834558168877,
+        "training_membership_mass": 119.7188948258522
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.13062557606327868,
+        "training_mean_daily_return": 0.0023684343508386285,
+        "training_membership_mass": 119.0885897714856
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.2110984196896959,
+      "TCS.NS": 0.32198014273843695,
+      "INFY.NS": 0.1570720438624711,
+      "HDFCBANK.NS": 0.23062465243671165,
+      "ICICIBANK.NS": 0.07922474127268452
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.2080917970945946,
+      "TCS.NS": 0.31048189919091435,
+      "INFY.NS": 0.15651805275493968,
+      "HDFCBANK.NS": 0.2420632200454788,
+      "ICICIBANK.NS": 0.08284503091407251
+    },
+    "estimated_annual_volatility": 0.18917789966539827,
+    "baseline_annual_volatility": 0.17928629170718602,
+    "convergence": {
+      "iterations": 117,
+      "last_log_likelihood_change": 9.564622757807228e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-09-07",
+    "first_return_date": "2022-09-08"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-09-25",
+    "training_end": "2022-10-06",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.4195069521856577,
+        "training_mean_daily_return": -0.004155220369691595,
+        "training_membership_mass": 187.66157412291415
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.16589282057111973,
+        "training_mean_daily_return": -0.004058596108070623,
+        "training_membership_mass": 95.49592543768173
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.41460022724322243,
+        "training_mean_daily_return": 0.00758152649153236,
+        "training_membership_mass": 220.84250043940273
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.2045315764813707,
+      "TCS.NS": 0.345352868046324,
+      "INFY.NS": 0.13259746104695336,
+      "HDFCBANK.NS": 0.22366445349544656,
+      "ICICIBANK.NS": 0.09385364092990547
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.2097082142499845,
+      "TCS.NS": 0.3269064658706583,
+      "INFY.NS": 0.14383245320288718,
+      "HDFCBANK.NS": 0.21884287063298385,
+      "ICICIBANK.NS": 0.10070999604348617
+    },
+    "estimated_annual_volatility": 0.18855424553952307,
+    "baseline_annual_volatility": 0.17965813362352953,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0003934966864562739
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-10-07",
+    "first_return_date": "2022-10-10"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-10-27",
+    "training_end": "2022-11-07",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.14698851434346452,
+        "training_mean_daily_return": -0.006980748170228506,
+        "training_membership_mass": 66.06623030113981
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.18139198452197897,
+        "training_mean_daily_return": 0.0004926906496419053,
+        "training_membership_mass": 205.45743022032286
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.6716195011345566,
+        "training_mean_daily_return": 0.0034686148992731005,
+        "training_membership_mass": 232.4763394785362
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.19213191340788405,
+      "TCS.NS": 0.3423572803747073,
+      "INFY.NS": 0.12217910140609033,
+      "HDFCBANK.NS": 0.22476928327900791,
+      "ICICIBANK.NS": 0.11856242153231047
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.19334416020378578,
+      "TCS.NS": 0.3626510401115431,
+      "INFY.NS": 0.11818251260526287,
+      "HDFCBANK.NS": 0.21161464296623977,
+      "ICICIBANK.NS": 0.11420764411316847
+    },
+    "estimated_annual_volatility": 0.16781734185240624,
+    "baseline_annual_volatility": 0.17551056311902327,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.1391149520320596
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-11-09",
+    "first_return_date": "2022-11-10"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-11-25",
+    "training_end": "2022-12-07",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.17442649145403588,
+        "training_mean_daily_return": -0.006811172977627234,
+        "training_membership_mass": 60.49486514241421
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.6233976304627424,
+        "training_mean_daily_return": 0.00048497596956625276,
+        "training_membership_mass": 227.94664259731803
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.2021758780832216,
+        "training_mean_daily_return": 0.003292898948205395,
+        "training_membership_mass": 215.55849226026714
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.2079277772644751,
+      "TCS.NS": 0.3800622306322734,
+      "INFY.NS": 0.09226435844574284,
+      "HDFCBANK.NS": 0.19711821739563087,
+      "ICICIBANK.NS": 0.12262741626187788
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.20839271784741387,
+      "TCS.NS": 0.3560002773533597,
+      "INFY.NS": 0.10674009904362407,
+      "HDFCBANK.NS": 0.1996474100450255,
+      "ICICIBANK.NS": 0.12921949571057686
+    },
+    "estimated_annual_volatility": 0.18774733624494896,
+    "baseline_annual_volatility": 0.17546473772826476,
+    "convergence": {
+      "iterations": 196,
+      "last_log_likelihood_change": 9.898019402498903e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2022-12-08",
+    "first_return_date": "2022-12-09"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2020-12-28",
+    "training_end": "2023-01-05",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.2595610639020742,
+        "training_mean_daily_return": -0.0006702896488648459,
+        "training_membership_mass": 259.6689170000191
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.47044074742141034,
+        "training_mean_daily_return": 0.0014300082516837574,
+        "training_membership_mass": 130.80203745551182
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.2699981886765154,
+        "training_mean_daily_return": 0.002736474025929015,
+        "training_membership_mass": 113.52904554446906
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.2065492995144931,
+      "TCS.NS": 0.33557833520222713,
+      "INFY.NS": 0.10213068194453012,
+      "HDFCBANK.NS": 0.2153872306306932,
+      "ICICIBANK.NS": 0.1403544527080564
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.2040472510021099,
+      "TCS.NS": 0.3597801714317317,
+      "INFY.NS": 0.10241205170554858,
+      "HDFCBANK.NS": 0.20102355960210655,
+      "ICICIBANK.NS": 0.13273696625850326
+    },
+    "estimated_annual_volatility": 0.16327317712018213,
+    "baseline_annual_volatility": 0.17433851530588348,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0005714938673690995
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-01-06",
+    "first_return_date": "2023-01-09"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2021-01-27",
+    "training_end": "2023-02-06",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.34298015346761707,
+        "training_mean_daily_return": -0.0006977115720192655,
+        "training_membership_mass": 242.5380037528957
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.40495016013389823,
+        "training_mean_daily_return": 0.0011016110342479681,
+        "training_membership_mass": 143.58884117021526
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.2520696863984847,
+        "training_mean_daily_return": 0.002470313819804973,
+        "training_membership_mass": 117.87315507688876
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.2164708848297849,
+      "TCS.NS": 0.3511076573367531,
+      "INFY.NS": 0.10210352980377904,
+      "HDFCBANK.NS": 0.19931780776294644,
+      "ICICIBANK.NS": 0.1310001202667364
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.21558777766087878,
+      "TCS.NS": 0.36336080882900335,
+      "INFY.NS": 0.10263813644257135,
+      "HDFCBANK.NS": 0.1912144464179248,
+      "ICICIBANK.NS": 0.1271988306496217
+    },
+    "estimated_annual_volatility": 0.1689028999182621,
+    "baseline_annual_volatility": 0.17452943966672246,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.001380510163812687
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-02-07",
+    "first_return_date": "2023-02-08"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2021-02-25",
+    "training_end": "2023-03-08",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.05357864318653461,
+        "training_mean_daily_return": -0.002979958793850044,
+        "training_membership_mass": 115.30229222678673
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.9036663999238127,
+        "training_mean_daily_return": 0.001429376185834563,
+        "training_membership_mass": 295.1634443667483
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.04275495688965273,
+        "training_mean_daily_return": 0.0016965800833325093,
+        "training_membership_mass": 93.53426340646493
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.19963957735058294,
+      "TCS.NS": 0.3229277877841153,
+      "INFY.NS": 0.08533528807240987,
+      "HDFCBANK.NS": 0.22510687349288735,
+      "ICICIBANK.NS": 0.16699047330000463
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.19723475445459343,
+      "TCS.NS": 0.34589006817626383,
+      "INFY.NS": 0.08699687981847073,
+      "HDFCBANK.NS": 0.20173915788829141,
+      "ICICIBANK.NS": 0.16813913966238045
+    },
+    "estimated_annual_volatility": 0.1568630231545644,
+    "baseline_annual_volatility": 0.1701267042255432,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.00026681254541927046
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-03-09",
+    "first_return_date": "2023-03-10"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2021-03-30",
+    "training_end": "2023-04-11",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.0804690526005282,
+        "training_mean_daily_return": -0.0009374664880901951,
+        "training_membership_mass": 189.98062225815514
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.6140445390200188,
+        "training_mean_daily_return": 0.000773452208843058,
+        "training_membership_mass": 175.21296391783747
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.3054864083794531,
+        "training_mean_daily_return": 0.002007447007528943,
+        "training_membership_mass": 138.8064138240075
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.19265336866044677,
+      "TCS.NS": 0.3287716135927563,
+      "INFY.NS": 0.0768315931109404,
+      "HDFCBANK.NS": 0.22664732552731348,
+      "ICICIBANK.NS": 0.17509609910854307
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.19504876617504438,
+      "TCS.NS": 0.35143966263299975,
+      "INFY.NS": 0.07330413016798644,
+      "HDFCBANK.NS": 0.19923661410356505,
+      "ICICIBANK.NS": 0.18097082692040442
+    },
+    "estimated_annual_volatility": 0.1528685757195831,
+    "baseline_annual_volatility": 0.16644239185936524,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0016086849543626158
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-04-12",
+    "first_return_date": "2023-04-13"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2021-05-03",
+    "training_end": "2023-05-12",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.01470438934714257,
+        "training_mean_daily_return": -0.004315583165396103,
+        "training_membership_mass": 57.43929416711522
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.01698358645767586,
+        "training_mean_daily_return": 0.0010704836542121822,
+        "training_membership_mass": 86.52884965913177
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.9683120241951815,
+        "training_mean_daily_return": 0.0011081394780467209,
+        "training_membership_mass": 360.031856173752
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.18932241618879853,
+      "TCS.NS": 0.36410080545121865,
+      "INFY.NS": 0.018541708067796703,
+      "HDFCBANK.NS": 0.22592623049881236,
+      "ICICIBANK.NS": 0.20210883979337388
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.18857227336329555,
+      "TCS.NS": 0.3772040032169091,
+      "INFY.NS": 0.01265490592132633,
+      "HDFCBANK.NS": 0.2071728519746828,
+      "ICICIBANK.NS": 0.21439596552378623
+    },
+    "estimated_annual_volatility": 0.14973925802177174,
+    "baseline_annual_volatility": 0.16103385324408037,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.000834717779980565
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-05-15",
+    "first_return_date": "2023-05-16"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2021-06-02",
+    "training_end": "2023-06-12",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.04818380009995172,
+        "training_mean_daily_return": -0.0009366832870812301,
+        "training_membership_mass": 182.87254564918317
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.4750233067402581,
+        "training_mean_daily_return": 0.0004649448190628933,
+        "training_membership_mass": 152.0061571963299
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.47679289315979023,
+        "training_mean_daily_return": 0.0016637791716081964,
+        "training_membership_mass": 169.1212971544867
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1859506555025353,
+      "TCS.NS": 0.33356242395946983,
+      "INFY.NS": 0.011452928513359028,
+      "HDFCBANK.NS": 0.24067218479453292,
+      "ICICIBANK.NS": 0.22836180723010274
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1813163759868577,
+      "TCS.NS": 0.3573957970168863,
+      "INFY.NS": 0.007766123205758607,
+      "HDFCBANK.NS": 0.2213858898996802,
+      "ICICIBANK.NS": 0.23213581389081733
+    },
+    "estimated_annual_volatility": 0.14474827593354303,
+    "baseline_annual_volatility": 0.15873974803721597,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.00039347998415451
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-06-13",
+    "first_return_date": "2023-06-14"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2021-07-01",
+    "training_end": "2023-07-12",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.03881729603827129,
+        "training_mean_daily_return": -0.000999112628916829,
+        "training_membership_mass": 157.78016778776168
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.020475582490816255,
+        "training_mean_daily_return": 0.0001395303531648328,
+        "training_membership_mass": 174.4512900426301
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.9407071214709125,
+        "training_mean_daily_return": 0.0018852216070633892,
+        "training_membership_mass": 171.76854216960837
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1850407917376547,
+      "TCS.NS": 0.30925896183511525,
+      "INFY.NS": 0.020082637974327782,
+      "HDFCBANK.NS": 0.2528691445494688,
+      "ICICIBANK.NS": 0.2327484639034336
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1755663735289132,
+      "TCS.NS": 0.3671828841095172,
+      "INFY.NS": 0.002129899483026582,
+      "HDFCBANK.NS": 0.21275280374210673,
+      "ICICIBANK.NS": 0.24236803913643626
+    },
+    "estimated_annual_volatility": 0.14440125145559135,
+    "baseline_annual_volatility": 0.1585221880291585,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0003046935988777477
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-07-13",
+    "first_return_date": "2023-07-14"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2021-08-02",
+    "training_end": "2023-08-10",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.1419513540814861,
+        "training_mean_daily_return": -0.0017693159301591598,
+        "training_membership_mass": 130.14711006480988
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.11370299608281799,
+        "training_mean_daily_return": -0.0004278310611558649,
+        "training_membership_mass": 116.80440324319382
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.7443456498356958,
+        "training_mean_daily_return": 0.0019597281931944418,
+        "training_membership_mass": 257.0484866919964
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.18062967567829077,
+      "TCS.NS": 0.3353018140327686,
+      "INFY.NS": 7.538593230563273e-19,
+      "HDFCBANK.NS": 0.2265971806442402,
+      "ICICIBANK.NS": 0.25747132964470043
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1791739374381888,
+      "TCS.NS": 0.34642144009364134,
+      "INFY.NS": 2.8578891640360093e-18,
+      "HDFCBANK.NS": 0.21955055195372639,
+      "ICICIBANK.NS": 0.25485407051444325
+    },
+    "estimated_annual_volatility": 0.15061739593197024,
+    "baseline_annual_volatility": 0.15955287147598085,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0004422324951747214
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-08-11",
+    "first_return_date": "2023-08-14"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2021-09-01",
+    "training_end": "2023-09-11",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.14098363361932034,
+        "training_mean_daily_return": -0.0010177745997297053,
+        "training_membership_mass": 232.64827518725954
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.5537008301324994,
+        "training_mean_daily_return": 0.0006208572328791714,
+        "training_membership_mass": 131.2606226395405
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.30531553624818025,
+        "training_mean_daily_return": 0.002090843495826339,
+        "training_membership_mass": 140.09110217319957
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.18115806443359928,
+      "TCS.NS": 0.33539867900406367,
+      "INFY.NS": 0.0,
+      "HDFCBANK.NS": 0.22063563325917304,
+      "ICICIBANK.NS": 0.2628076233031641
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1776645619101149,
+      "TCS.NS": 0.34900773720314937,
+      "INFY.NS": 1.3637230450794235e-18,
+      "HDFCBANK.NS": 0.21740013497175387,
+      "ICICIBANK.NS": 0.25592756591498184
+    },
+    "estimated_annual_volatility": 0.14366885144592229,
+    "baseline_annual_volatility": 0.15822146409994928,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0035272748075385607
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-09-12",
+    "first_return_date": "2023-09-13"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2021-10-01",
+    "training_end": "2023-10-12",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.2741205219461086,
+        "training_mean_daily_return": -0.0007026394468866165,
+        "training_membership_mass": 259.9098094947963
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.23177571136932495,
+        "training_mean_daily_return": 0.0002021294222738511,
+        "training_membership_mass": 124.57084732391918
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.49410376668456646,
+        "training_mean_daily_return": 0.0021375882540608368,
+        "training_membership_mass": 119.519343181285
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.18349348130963516,
+      "TCS.NS": 0.34176182610792566,
+      "INFY.NS": 0.0,
+      "HDFCBANK.NS": 0.21068464133817416,
+      "ICICIBANK.NS": 0.2640600512442649
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.18174942835954197,
+      "TCS.NS": 0.3513052839097424,
+      "INFY.NS": 4.811147140404426e-18,
+      "HDFCBANK.NS": 0.20628929768059467,
+      "ICICIBANK.NS": 0.260655990050121
+    },
+    "estimated_annual_volatility": 0.14783955649320765,
+    "baseline_annual_volatility": 0.15791385653434317,
+    "convergence": {
+      "iterations": 151,
+      "last_log_likelihood_change": 9.752364837822824e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-10-13",
+    "first_return_date": "2023-10-16"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2021-11-02",
+    "training_end": "2023-11-13",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.7725676687038374,
+        "training_mean_daily_return": -0.0009432570707655723,
+        "training_membership_mass": 158.6779813397465
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.06917334291295088,
+        "training_mean_daily_return": -0.0004961025393316794,
+        "training_membership_mass": 187.61666513517008
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.1582589883832116,
+        "training_mean_daily_return": 0.0017862754689473603,
+        "training_membership_mass": 157.70535352508267
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.15159306616971469,
+      "TCS.NS": 0.3576441075963791,
+      "INFY.NS": 0.0,
+      "HDFCBANK.NS": 0.17353860939506605,
+      "ICICIBANK.NS": 0.31722421683884017
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.16325192034417185,
+      "TCS.NS": 0.3590708769960973,
+      "INFY.NS": 0.0,
+      "HDFCBANK.NS": 0.16338946256633044,
+      "ICICIBANK.NS": 0.3142877400934005
+    },
+    "estimated_annual_volatility": 0.14078188651291906,
+    "baseline_annual_volatility": 0.15534164017180063,
+    "convergence": {
+      "iterations": 168,
+      "last_log_likelihood_change": 9.81918046818464e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-11-15",
+    "first_return_date": "2023-11-16"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2021-12-03",
+    "training_end": "2023-12-14",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.12089423242737525,
+        "training_mean_daily_return": -0.006021933481861983,
+        "training_membership_mass": 93.73412528948114
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.5163225920578511,
+        "training_mean_daily_return": 0.0007939603000212799,
+        "training_membership_mass": 158.0614480638492
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.3627831755147736,
+        "training_mean_daily_return": 0.0023344331168653563,
+        "training_membership_mass": 252.20442664666936
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.18917873476468303,
+      "TCS.NS": 0.3429251423290448,
+      "INFY.NS": 6.152847328855238e-18,
+      "HDFCBANK.NS": 0.16195100897043474,
+      "ICICIBANK.NS": 0.3059451139358374
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1932184883598639,
+      "TCS.NS": 0.34458484004217255,
+      "INFY.NS": 7.909593661460657e-18,
+      "HDFCBANK.NS": 0.16288520077968235,
+      "ICICIBANK.NS": 0.2993114708182813
+    },
+    "estimated_annual_volatility": 0.1688676167892225,
+    "baseline_annual_volatility": 0.15540149049137167,
+    "convergence": {
+      "iterations": 163,
+      "last_log_likelihood_change": 9.189306729240343e-05
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2023-12-15",
+    "first_return_date": "2023-12-18"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-01-03",
+    "training_end": "2024-01-15",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.1948585249102938,
+        "training_mean_daily_return": -0.0006443054574897934,
+        "training_membership_mass": 152.33054000943466
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.06070840299143451,
+        "training_mean_daily_return": 0.00023357509549360803,
+        "training_membership_mass": 176.07837174903204
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.7444330720982717,
+        "training_mean_daily_return": 0.0014357391853901493,
+        "training_membership_mass": 175.59108824153378
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.2042079422911876,
+      "TCS.NS": 0.28769465023747126,
+      "INFY.NS": 3.8415061740350656e-18,
+      "HDFCBANK.NS": 0.18098114982030825,
+      "ICICIBANK.NS": 0.3271162576510329
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.19862411374238015,
+      "TCS.NS": 0.31328674829955167,
+      "INFY.NS": 0.0,
+      "HDFCBANK.NS": 0.1727011327367686,
+      "ICICIBANK.NS": 0.3153880052212997
+    },
+    "estimated_annual_volatility": 0.14831426147682356,
+    "baseline_annual_volatility": 0.15424036293102789,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0020110853243977544
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-01-16",
+    "first_return_date": "2024-01-17"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-02-02",
+    "training_end": "2024-02-15",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.08672609469228214,
+        "training_mean_daily_return": -0.0023182027234045534,
+        "training_membership_mass": 87.84485799180962
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.800305691606443,
+        "training_mean_daily_return": 0.0007222609906233834,
+        "training_membership_mass": 298.96776056279026
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.1129682137012747,
+        "training_mean_daily_return": 0.0013994796327895253,
+        "training_membership_mass": 117.18738144539955
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.19462840460791672,
+      "TCS.NS": 0.3264969110716201,
+      "INFY.NS": 9.134403303190375e-18,
+      "HDFCBANK.NS": 0.16202007918385336,
+      "ICICIBANK.NS": 0.31685460513660985
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.19486294929414316,
+      "TCS.NS": 0.32916790789545625,
+      "INFY.NS": 0.0,
+      "HDFCBANK.NS": 0.1533548935770555,
+      "ICICIBANK.NS": 0.32261424923334514
+    },
+    "estimated_annual_volatility": 0.14284072022615793,
+    "baseline_annual_volatility": 0.15273576571671368,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0001843452230332332
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-02-16",
+    "first_return_date": "2024-02-19"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-03-04",
+    "training_end": "2024-03-18",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.056131323511086136,
+        "training_mean_daily_return": -0.0006779980733335248,
+        "training_membership_mass": 175.4430938492173
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.12848509886653617,
+        "training_mean_daily_return": 0.0001978738675924926,
+        "training_membership_mass": 161.6839301286323
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.8153835776223777,
+        "training_mean_daily_return": 0.0019985110869988735,
+        "training_membership_mass": 166.87297602215097
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1846701412948174,
+      "TCS.NS": 0.3107339229292501,
+      "INFY.NS": 1.3567244353527349e-17,
+      "HDFCBANK.NS": 0.18954548173676553,
+      "ICICIBANK.NS": 0.31505045403916704
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1721199473631128,
+      "TCS.NS": 0.31401276127459327,
+      "INFY.NS": 2.413731556275456e-17,
+      "HDFCBANK.NS": 0.16670865902057833,
+      "ICICIBANK.NS": 0.3471586323417156
+    },
+    "estimated_annual_volatility": 0.1362926626202713,
+    "baseline_annual_volatility": 0.14388884711932182,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.00011887016023592878
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-03-19",
+    "first_return_date": "2024-03-20"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-04-05",
+    "training_end": "2024-04-22",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.20542452716254161,
+        "training_mean_daily_return": -0.0008101056441105664,
+        "training_membership_mass": 158.1487802302707
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.5208800259713667,
+        "training_mean_daily_return": -0.0003351104423704482,
+        "training_membership_mass": 175.05118874671803
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.2736954468660916,
+        "training_mean_daily_return": 0.001796888308927587,
+        "training_membership_mass": 170.8000310230112
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.17909045487545291,
+      "TCS.NS": 0.2781954219781526,
+      "INFY.NS": 1.309258826570972e-17,
+      "HDFCBANK.NS": 0.20394761490302105,
+      "ICICIBANK.NS": 0.3387665082433735
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.18037491731407182,
+      "TCS.NS": 0.2761533619810242,
+      "INFY.NS": 0.0,
+      "HDFCBANK.NS": 0.2049117285905239,
+      "ICICIBANK.NS": 0.3385599921143802
+    },
+    "estimated_annual_volatility": 0.13345255259632535,
+    "baseline_annual_volatility": 0.13804680352864745,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.022674071312394517
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-04-23",
+    "first_return_date": "2024-04-24"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-05-09",
+    "training_end": "2024-05-23",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.1704151766205567,
+        "training_mean_daily_return": -0.00031820041534459784,
+        "training_membership_mass": 209.4008480352332
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.6517434867374666,
+        "training_mean_daily_return": 0.0010214048763386482,
+        "training_membership_mass": 210.32218461711344
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.17784133664197663,
+        "training_mean_daily_return": 0.0012017756888558673,
+        "training_membership_mass": 84.27696734765348
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.19330077813077168,
+      "TCS.NS": 0.27997662573001275,
+      "INFY.NS": 0.0,
+      "HDFCBANK.NS": 0.23589156356910596,
+      "ICICIBANK.NS": 0.2908310325701096
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.18995247940492135,
+      "TCS.NS": 0.28075371019825174,
+      "INFY.NS": 1.007884503937892e-17,
+      "HDFCBANK.NS": 0.23583810709316963,
+      "ICICIBANK.NS": 0.29345570330365733
+    },
+    "estimated_annual_volatility": 0.13811008669079805,
+    "baseline_annual_volatility": 0.1358259284368884,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.00029392399119387846
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-05-24",
+    "first_return_date": "2024-05-27"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-06-07",
+    "training_end": "2024-06-24",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.29721853607419607,
+        "training_mean_daily_return": -0.0008226722587968602,
+        "training_membership_mass": 227.25723765362454
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.09158750324051236,
+        "training_mean_daily_return": 0.0006648570861038587,
+        "training_membership_mass": 65.26756333736239
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.6111939606852915,
+        "training_mean_daily_return": 0.001851874111625619,
+        "training_membership_mass": 211.47519900901133
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1932297846076999,
+      "TCS.NS": 0.33426656967197255,
+      "INFY.NS": 4.9060148304969076e-18,
+      "HDFCBANK.NS": 0.20777385997192635,
+      "ICICIBANK.NS": 0.26472978574840134
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.19009394337772603,
+      "TCS.NS": 0.33816108164435904,
+      "INFY.NS": 0.0,
+      "HDFCBANK.NS": 0.20366771008939497,
+      "ICICIBANK.NS": 0.26807726488851996
+    },
+    "estimated_annual_volatility": 0.13430509413920674,
+    "baseline_annual_volatility": 0.13660650061693416,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.001134096880832658
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-06-25",
+    "first_return_date": "2024-06-26"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-07-06",
+    "training_end": "2024-07-24",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.5750147785915627,
+        "training_mean_daily_return": -0.0007121320688342815,
+        "training_membership_mass": 235.5454372658673
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.35202823719639814,
+        "training_mean_daily_return": 0.0018282899777153055,
+        "training_membership_mass": 219.28247811455873
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.07295698421203926,
+        "training_mean_daily_return": 0.002858524230371492,
+        "training_membership_mass": 49.17208461957284
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.192527074812693,
+      "TCS.NS": 0.3169092236214833,
+      "INFY.NS": 0.0,
+      "HDFCBANK.NS": 0.19842935476170365,
+      "ICICIBANK.NS": 0.29213434680412004
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1944017434856978,
+      "TCS.NS": 0.3240347759295117,
+      "INFY.NS": 1.5890338090490674e-18,
+      "HDFCBANK.NS": 0.1996126869645824,
+      "ICICIBANK.NS": 0.2819507936202081
+    },
+    "estimated_annual_volatility": 0.1321323335023993,
+    "baseline_annual_volatility": 0.1337411476654063,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.00045486513386094884
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-07-25",
+    "first_return_date": "2024-07-26"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-08-04",
+    "training_end": "2024-08-23",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.8265799858650952,
+        "training_mean_daily_return": -0.0007447495368809087,
+        "training_membership_mass": 231.39571366083155
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.08138364815963568,
+        "training_mean_daily_return": 0.0011662186294728537,
+        "training_membership_mass": 57.641214747539365
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.09203636597526917,
+        "training_mean_daily_return": 0.001945529645455317,
+        "training_membership_mass": 214.9630715916288
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.18281995701825404,
+      "TCS.NS": 0.31836588951359174,
+      "INFY.NS": 1.3552527156068805e-19,
+      "HDFCBANK.NS": 0.20276971691172632,
+      "ICICIBANK.NS": 0.2960444365564279
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.18843338569472892,
+      "TCS.NS": 0.3266685693509458,
+      "INFY.NS": 2.6698478497455547e-18,
+      "HDFCBANK.NS": 0.19975945384244634,
+      "ICICIBANK.NS": 0.28513859111187884
+    },
+    "estimated_annual_volatility": 0.1290287113136618,
+    "baseline_annual_volatility": 0.13332551135652765,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0002385017055530625
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-08-26",
+    "first_return_date": "2024-08-27"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-09-07",
+    "training_end": "2024-09-23",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.7464603838939073,
+        "training_mean_daily_return": -0.0005089281188460551,
+        "training_membership_mass": 234.29926890817518
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.11294052069576214,
+        "training_mean_daily_return": 0.0008422293931785644,
+        "training_membership_mass": 79.76727312583856
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.14059909541033055,
+        "training_mean_daily_return": 0.002096533850876135,
+        "training_membership_mass": 189.93345796598624
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.18377458594774723,
+      "TCS.NS": 0.32106807350931266,
+      "INFY.NS": 8.859964628279982e-19,
+      "HDFCBANK.NS": 0.20566376062897987,
+      "ICICIBANK.NS": 0.28949357991396024
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.18133343612908281,
+      "TCS.NS": 0.3295402285363451,
+      "INFY.NS": 0.0,
+      "HDFCBANK.NS": 0.20520369057490426,
+      "ICICIBANK.NS": 0.28392264475966783
+    },
+    "estimated_annual_volatility": 0.1254482332264971,
+    "baseline_annual_volatility": 0.13050265440959938,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.00010827392031842464
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-09-24",
+    "first_return_date": "2024-09-25"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-10-07",
+    "training_end": "2024-10-23",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.765187335146471,
+        "training_mean_daily_return": -0.000868728984126477,
+        "training_membership_mass": 241.55967154485614
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.18271961939679845,
+        "training_mean_daily_return": 0.0018915416648784128,
+        "training_membership_mass": 225.0226929065193
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.0520930454567306,
+        "training_mean_daily_return": 0.0028038567870355886,
+        "training_membership_mass": 37.41763554862612
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1636582592088829,
+      "TCS.NS": 0.323748720091354,
+      "INFY.NS": 0.00741054157067219,
+      "HDFCBANK.NS": 0.2055466812278268,
+      "ICICIBANK.NS": 0.2996357979012641
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.17203209627453475,
+      "TCS.NS": 0.3367483249053641,
+      "INFY.NS": 8.501034416880972e-19,
+      "HDFCBANK.NS": 0.20316558882432736,
+      "ICICIBANK.NS": 0.2880539899957739
+    },
+    "estimated_annual_volatility": 0.1262994361331614,
+    "baseline_annual_volatility": 0.12805290126989088,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.0007636618669266682
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-10-24",
+    "first_return_date": "2024-10-25"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-11-09",
+    "training_end": "2024-11-25",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.034697624426853695,
+        "training_mean_daily_return": -0.00297316498008944,
+        "training_membership_mass": 9.1418129442436
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.839812730078721,
+        "training_mean_daily_return": 0.0002688893315911528,
+        "training_membership_mass": 422.5356603855196
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.1254896454944253,
+        "training_mean_daily_return": 0.0028627325329472746,
+        "training_membership_mass": 72.32252667023599
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.15637580570495407,
+      "TCS.NS": 0.32898491482003545,
+      "INFY.NS": 0.019018278123794308,
+      "HDFCBANK.NS": 0.22588428542895755,
+      "ICICIBANK.NS": 0.2697367159222585
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.16453392970177416,
+      "TCS.NS": 0.3110446144123611,
+      "INFY.NS": 0.01867372133333446,
+      "HDFCBANK.NS": 0.22447916298408796,
+      "ICICIBANK.NS": 0.2812685715684424
+    },
+    "estimated_annual_volatility": 0.13342934195554898,
+    "baseline_annual_volatility": 0.1310703510662717,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.00010984348625697749
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-11-26",
+    "first_return_date": "2024-11-27"
+  },
+  {
+    "status": "ready",
+    "method": "hmm_conditioned_minimum_variance",
+    "regime_aware": true,
+    "config": {
+      "lookback": 504,
+      "min_observations": 126,
+      "max_weight": 0.4,
+      "shrinkage": 0.5,
+      "seed": 42
+    },
+    "training_start": "2022-12-08",
+    "training_end": "2024-12-24",
+    "observations": 504,
+    "forecast_steps": 2,
+    "states": [
+      {
+        "label": "Lower-return state",
+        "probability": 0.09438508158327012,
+        "training_mean_daily_return": -0.002248509968352159,
+        "training_membership_mass": 51.17470983584497
+      },
+      {
+        "label": "Middle-return state",
+        "probability": 0.8625926443938936,
+        "training_mean_daily_return": 0.0003840801321206936,
+        "training_membership_mass": 428.0623294333408
+      },
+      {
+        "label": "Higher-return state",
+        "probability": 0.0430222740228363,
+        "training_mean_daily_return": 0.00770721959439109,
+        "training_membership_mass": 24.76296073081486
+      }
+    ],
+    "weights": {
+      "RELIANCE.NS": 0.1596354624764813,
+      "TCS.NS": 0.30653938584853785,
+      "INFY.NS": 0.028091121788253362,
+      "HDFCBANK.NS": 0.24260796191305928,
+      "ICICIBANK.NS": 0.2631260679736683
+    },
+    "baseline_weights": {
+      "RELIANCE.NS": 0.1594407733361032,
+      "TCS.NS": 0.30399001989950625,
+      "INFY.NS": 0.031151338371685232,
+      "HDFCBANK.NS": 0.24238812499343257,
+      "ICICIBANK.NS": 0.2630297433992727
+    },
+    "estimated_annual_volatility": 0.13174464161725633,
+    "baseline_annual_volatility": 0.13148854887371264,
+    "convergence": {
+      "iterations": 200,
+      "last_log_likelihood_change": 0.00011645400593351951
+    },
+    "explanation": "A trained HMM estimates probabilities of three market states. State-conditioned covariances are shrunk toward the overall historical covariance and mixed using those probabilities. The optimizer minimizes that estimated variance, with long-only weights and a 40% limit per stock. The matched baseline uses the same history and constraints without state information. These are model estimates, not measured future returns.",
+    "execution_date": "2024-12-26",
+    "first_return_date": "2024-12-27"
+  }
+]

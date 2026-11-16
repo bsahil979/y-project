@@ -1,0 +1,18 @@
+{
+  "ticker": "MSFT",
+  "trained_through": "2026-10-13",
+  "model": "Last-close baseline",
+  "lookback": 60,
+  "horizon": 30,
+  "input_scale": 1.994365930557251,
+  "selection_rule": "Lowest validation MAE versus last-close baseline; test data never selects weights or model.",
+  "metric": "Mean absolute cumulative log-return error in percentage points, averaged over forecast steps.",
+  "validation_lstm_mae": 4.590214729309082,
+  "validation_baseline_mae": 4.577944755554199,
+  "test_lstm_mae": 5.727871417999268,
+  "test_baseline_mae": 5.5733160972595215,
+  "train_origins": 1017,
+  "validation_origins": 260,
+  "test_origins": 277,
+  "limitations": "One chronological split, overlapping forecast windows, no calibrated uncertainty intervals. This is an experimental forecast, not established predictive superiority."
+}

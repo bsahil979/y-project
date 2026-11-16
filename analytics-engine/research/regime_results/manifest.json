@@ -1,0 +1,60 @@
+{
+  "created_at": "2026-09-25T06:22:48.111272+00:00",
+  "status": "preliminary_development_experiment",
+  "config": {
+    "lookback": 504,
+    "min_observations": 126,
+    "max_weight": 0.4,
+    "shrinkage": 0.5,
+    "seed": 42,
+    "rebalance_every": 21,
+    "cost_bps": 10,
+    "risk_free_rate": 0.02,
+    "execution": "Signal at close t; trade at close t+1; earn return through close t+2",
+    "cost_definition": "cost_bps per unit total absolute traded weight; initial purchase included",
+    "final_liquidation": false
+  },
+  "data": {
+    "type": "supplied_csv",
+    "path": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\research\\regime_results\\prices.csv",
+    "input_manifest_sha256": "d6213e320865a7c0561f03f8c689cc6f8242bd8bf0314c5c8d543e6486d3f0a2",
+    "input_data_provenance": {
+      "type": "real_market_provider",
+      "requested_start": "2018-01-01",
+      "requested_end_exclusive": "2025-01-01",
+      "provider": "Yahoo Finance adjusted close",
+      "currency": "INR"
+    }
+  },
+  "tickers": [
+    "RELIANCE.NS",
+    "TCS.NS",
+    "INFY.NS",
+    "HDFCBANK.NS",
+    "ICICIBANK.NS"
+  ],
+  "snapshot_sha256": "a1e0e17cd2bfdb06634d5a9d772b93137aa1d178bdd71dfe98990239a3abafce",
+  "source_sha256": {
+    "services/regime_allocation.py": "8b7b77ca5b1772ce2b66f70387bb1ba088f40133440f1732bf4b9771315c6bbf",
+    "research/regime_study.py": "729de16149abdcf2a597f6fd54cb5acdcc8a7ad2bdc354b1756fa95538390cc3",
+    "research/run_regime_study.py": "96b62f557c5203cabfaf49e3f7b1824bf8f963fa7b38f2afd5defad87ef12321"
+  },
+  "python": "3.10.11",
+  "versions": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "hmmlearn": "0.3.3"
+  },
+  "price_start": "2018-01-01",
+  "price_end": "2024-12-31",
+  "test_start": "2020-01-24",
+  "test_end": "2024-12-31",
+  "rebalances": 59,
+  "limitations": [
+    "Convenience universe; survivorship/selection bias not eliminated",
+    "One development period and seed; no statistical significance claim",
+    "Fixed cost approximation; no intraday spread or market-impact model",
+    "Adjusted-close research returns, not executable price quotes"
+  ]
+}

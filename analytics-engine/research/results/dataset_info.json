@@ -1,0 +1,12 @@
+{
+  "tickers": [
+    "RELIANCE.NS",
+    "TCS.NS",
+    "INFY.NS",
+    "HDFCBANK.NS",
+    "ICICIBANK.NS"
+  ],
+  "start": "2018-01-02",
+  "end": "2024-12-31",
+  "n_trading_days": 1726
+}

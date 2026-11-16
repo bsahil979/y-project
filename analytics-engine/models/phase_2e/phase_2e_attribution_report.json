@@ -1,0 +1,775 @@
+{
+  "phase": "2E.6",
+  "status": "completed",
+  "generated_at_utc": "2026-08-31T07:38:05.953495+00:00",
+  "evaluation_mode": "prediction_artifact_only",
+  "input": {
+    "prediction_csv_path": "c:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2e\\holdout_predictions.csv",
+    "prediction_csv_sha256": "bd5d3fe75a3b6bd221f472486e99e64a745d3b40562b037918a991765960b9e2",
+    "prediction_manifest_path": "c:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2e\\phase_2e_prediction_manifest.json"
+  },
+  "constraints": {
+    "models_loaded": false,
+    "models_retrained": false,
+    "dataset_loaded": false,
+    "thresholds_changed": false,
+    "resampling_performed": false,
+    "future_return_used_as_input": false
+  },
+  "breakeven_analysis": {
+    "crossover_cost_bps": 0.5214691162109375,
+    "interpretation": "Below 0.52 bps transaction cost Model A wins on raw signal return; above 0.52 bps Model B wins due to lower turnover friction."
+  },
+  "monthly_breakdown": [
+    {
+      "month": "2024-12",
+      "A_net_return": -0.034658636575445996,
+      "B_net_return": -0.03323738342156576,
+      "B_minus_A_net_return": 0.0014212531538802392,
+      "A_turnover": 8.874771576050302,
+      "B_turnover": 2.840897067904855
+    },
+    {
+      "month": "2025-01",
+      "A_net_return": -0.009249282953655784,
+      "B_net_return": 0.0010538249343713688,
+      "B_minus_A_net_return": 0.010303107888027152,
+      "A_turnover": 14.204566282184217,
+      "B_turnover": 7.363751130640068
+    },
+    {
+      "month": "2025-02",
+      "A_net_return": -0.04668653611975722,
+      "B_net_return": -0.04808707924361923,
+      "B_minus_A_net_return": -0.001400543123862008,
+      "A_turnover": 12.879051276901064,
+      "B_turnover": 7.61382406082504
+    },
+    {
+      "month": "2025-03",
+      "A_net_return": -0.04405815417754362,
+      "B_net_return": -0.04003288418317621,
+      "B_minus_A_net_return": 0.004025269994367413,
+      "A_turnover": 11.780361186384912,
+      "B_turnover": 5.699835976932743
+    },
+    {
+      "month": "2025-04",
+      "A_net_return": 0.035874026039216696,
+      "B_net_return": 0.03384481368778681,
+      "B_minus_A_net_return": -0.0020292123514298877,
+      "A_turnover": 12.303711232716951,
+      "B_turnover": 6.794546423334573
+    },
+    {
+      "month": "2025-05",
+      "A_net_return": 0.02398139334168489,
+      "B_net_return": 0.02622081318750541,
+      "B_minus_A_net_return": 0.0022394198458205207,
+      "A_turnover": 12.539052839918304,
+      "B_turnover": 5.3441399503467775
+    },
+    {
+      "month": "2025-06",
+      "A_net_return": 0.033285420644757396,
+      "B_net_return": 0.039633323661884934,
+      "B_minus_A_net_return": 0.0063479030171275375,
+      "A_turnover": 12.657390628818158,
+      "B_turnover": 4.268052908114371
+    },
+    {
+      "month": "2025-07",
+      "A_net_return": -0.047166953598453694,
+      "B_net_return": -0.035011803556019586,
+      "B_minus_A_net_return": 0.012155150042434108,
+      "A_turnover": 13.52236708193352,
+      "B_turnover": 4.790642791506907
+    },
+    {
+      "month": "2025-08",
+      "A_net_return": 0.016733127455705835,
+      "B_net_return": 0.02401515416035967,
+      "B_minus_A_net_return": 0.007282026704653836,
+      "A_turnover": 13.95035871648484,
+      "B_turnover": 7.075033678129968
+    },
+    {
+      "month": "2025-09",
+      "A_net_return": 0.017989718281654788,
+      "B_net_return": 0.016844271906474167,
+      "B_minus_A_net_return": -0.0011454463751806206,
+      "A_turnover": 11.804386777294505,
+      "B_turnover": 3.6459686581752573
+    },
+    {
+      "month": "2025-10",
+      "A_net_return": 0.007919287688306359,
+      "B_net_return": 0.012378530011353868,
+      "B_minus_A_net_return": 0.004459242323047509,
+      "A_turnover": 13.855285309934349,
+      "B_turnover": 7.255059334696102
+    },
+    {
+      "month": "2025-11",
+      "A_net_return": 0.008931228939716238,
+      "B_net_return": 0.01863147540349775,
+      "B_minus_A_net_return": 0.009700246463781512,
+      "A_turnover": 11.93813854851457,
+      "B_turnover": 6.312828798652191
+    },
+    {
+      "month": "2025-12",
+      "A_net_return": -0.0011598805410723435,
+      "B_net_return": 0.012716009521954693,
+      "B_minus_A_net_return": 0.013875890063027037,
+      "A_turnover": 10.244946790178975,
+      "B_turnover": 2.4847544126986194
+    },
+    {
+      "month": "2026-01",
+      "A_net_return": -0.019906539837974704,
+      "B_net_return": -0.012182205458915414,
+      "B_minus_A_net_return": 0.00772433437905929,
+      "A_turnover": 14.755301447891298,
+      "B_turnover": 7.833645045685517
+    },
+    {
+      "month": "2026-02",
+      "A_net_return": -0.030286398681845603,
+      "B_net_return": -0.028958235372842027,
+      "B_minus_A_net_return": 0.0013281633090035765,
+      "A_turnover": 11.295906378819621,
+      "B_turnover": 4.495472143717014
+    },
+    {
+      "month": "2026-03",
+      "A_net_return": -0.05289749004305777,
+      "B_net_return": -0.04725109192917211,
+      "B_minus_A_net_return": 0.005646398113885662,
+      "A_turnover": 13.10730099300613,
+      "B_turnover": 7.674355068767205
+    },
+    {
+      "month": "2026-04",
+      "A_net_return": 0.06550671634793849,
+      "B_net_return": 0.06387850059998032,
+      "B_minus_A_net_return": -0.00162821574795817,
+      "A_turnover": 10.137705292430665,
+      "B_turnover": 4.828547756547187
+    },
+    {
+      "month": "2026-05",
+      "A_net_return": -0.012043023168851506,
+      "B_net_return": 0.0060179364291939414,
+      "B_minus_A_net_return": 0.018060959598045448,
+      "A_turnover": 11.026683653341868,
+      "B_turnover": 4.2666448819418
+    },
+    {
+      "month": "2026-06",
+      "A_net_return": 0.0021253403357004573,
+      "B_net_return": 0.012004342860387842,
+      "B_minus_A_net_return": 0.009879002524687385,
+      "A_turnover": 10.92076616612939,
+      "B_turnover": 4.4205308187846555
+    },
+    {
+      "month": "2026-07",
+      "A_net_return": 0.013884338266360282,
+      "B_net_return": 0.030957867251256977,
+      "B_minus_A_net_return": 0.017073528984896696,
+      "A_turnover": 11.800104213702605,
+      "B_turnover": 4.168849775461548
+    },
+    {
+      "month": "2026-08",
+      "A_net_return": -0.01744153457172346,
+      "B_net_return": -0.01027507152355087,
+      "B_minus_A_net_return": 0.007166463048172589,
+      "A_turnover": 9.122633670607186,
+      "B_turnover": 3.0332390427279967
+    }
+  ],
+  "segmentation": {
+    "by_market": {
+      "India": {
+        "rows": 21118,
+        "A": {
+          "net_return": -0.1100164413143153,
+          "gross_return": 0.09109808308924539,
+          "annualized_return": -0.06587646256906565,
+          "annualized_volatility": 0.059985918235764525,
+          "sharpe_ratio": -1.1059186862187171,
+          "total_turnover": 203.68491528299663,
+          "avg_daily_turnover": 0.4725868104013843,
+          "total_transaction_costs": 19354.08114688305,
+          "trading_days": 431
+        },
+        "B": {
+          "net_return": 0.0749930142348702,
+          "gross_return": 0.09173142348265606,
+          "annualized_return": 0.04318771394877352,
+          "annualized_volatility": 0.05971342813644442,
+          "sharpe_ratio": 0.7379523480248763,
+          "total_turnover": 15.449810243403377,
+          "avg_daily_turnover": 0.03584642747889415,
+          "total_transaction_costs": 1566.4238069278451,
+          "trading_days": 431
+        },
+        "B_minus_A": {
+          "net_return": 0.18500945554918552,
+          "sharpe_ratio": 1.8438710342435933,
+          "turnover": -188.23510503959324,
+          "transaction_costs": -17787.657339955207
+        }
+      },
+      "US": {
+        "rows": 21450,
+        "A": {
+          "net_return": 0.03458955137246739,
+          "gross_return": 0.25940438372844055,
+          "annualized_return": 0.020175667408517173,
+          "annualized_volatility": 0.06406122570532713,
+          "sharpe_ratio": 0.3439442204123441,
+          "total_turnover": 196.58451981743033,
+          "avg_daily_turnover": 0.458238973933404,
+          "total_transaction_costs": 19108.688717912126,
+          "trading_days": 429
+        },
+        "B": {
+          "net_return": 0.18545363582985053,
+          "gross_return": 0.27776925299246913,
+          "annualized_return": 0.10509783527492655,
+          "annualized_volatility": 0.06426171203662509,
+          "sharpe_ratio": 1.587616367097705,
+          "total_turnover": 74.98176069259102,
+          "avg_daily_turnover": 0.17478265895708864,
+          "total_transaction_costs": 7757.8984828908415,
+          "trading_days": 429
+        },
+        "B_minus_A": {
+          "net_return": 0.15086408445738314,
+          "sharpe_ratio": 1.2436721466853609,
+          "turnover": -121.60275912483931,
+          "transaction_costs": -11350.790235021284
+        }
+      }
+    },
+    "by_sector": {
+      "Communication Services": {
+        "rows": 2576,
+        "A": {
+          "net_return": -0.2098718783977638,
+          "gross_return": 0.038803157787058895,
+          "annualized_return": -0.12435893972757317,
+          "annualized_volatility": 0.09120769872716805,
+          "sharpe_ratio": -1.4099811921785959,
+          "total_turnover": 273.50161250780627,
+          "avg_daily_turnover": 0.6118604306662333,
+          "total_transaction_costs": 25482.543743702056,
+          "trading_days": 447
+        },
+        "B": {
+          "net_return": -0.1602844010676212,
+          "gross_return": -0.03273177642188774,
+          "annualized_return": -0.09378988989542703,
+          "annualized_volatility": 0.08159062823943596,
+          "sharpe_ratio": -1.165996748045786,
+          "total_turnover": 141.3519641558553,
+          "avg_daily_turnover": 0.3162236334582893,
+          "total_transaction_costs": 13469.96047275035,
+          "trading_days": 447
+        },
+        "B_minus_A": {
+          "net_return": 0.0495874773301426,
+          "sharpe_ratio": 0.24398444413280984,
+          "turnover": -132.14964835195096,
+          "transaction_costs": -12012.583270951705
+        }
+      },
+      "Consumer Discretionary": {
+        "rows": 4733,
+        "A": {
+          "net_return": -0.24607376283575083,
+          "gross_return": 0.006916204637465118,
+          "annualized_return": -0.14720800669071654,
+          "annualized_volatility": 0.08787911282097079,
+          "sharpe_ratio": -1.767511106179326,
+          "total_turnover": 289.2282310224213,
+          "avg_daily_turnover": 0.6470430224215242,
+          "total_transaction_costs": 24774.72320950714,
+          "trading_days": 447
+        },
+        "B": {
+          "net_return": -0.14504872241944788,
+          "gross_return": -0.054882328879843345,
+          "annualized_return": -0.08455686140729768,
+          "annualized_volatility": 0.08684244104052342,
+          "sharpe_ratio": -0.9736493579648825,
+          "total_turnover": 100.21858984766692,
+          "avg_daily_turnover": 0.22420266185160384,
+          "total_transaction_costs": 8933.568701731172,
+          "trading_days": 447
+        },
+        "B_minus_A": {
+          "net_return": 0.10102504041630295,
+          "sharpe_ratio": 0.7938617482144436,
+          "turnover": -189.0096411747544,
+          "transaction_costs": -15841.15450777597
+        }
+      },
+      "Consumer Staples": {
+        "rows": 4298,
+        "A": {
+          "net_return": -0.2766567212220386,
+          "gross_return": -0.025903308525802804,
+          "annualized_return": -0.16688634276576542,
+          "annualized_volatility": 0.05940898890339882,
+          "sharpe_ratio": -3.0425003189509328,
+          "total_turnover": 297.49792015162353,
+          "avg_daily_turnover": 0.6655434455293592,
+          "total_transaction_costs": 26047.28352043898,
+          "trading_days": 447
+        },
+        "B": {
+          "net_return": -0.10442549316301607,
+          "gross_return": 0.021079711685821678,
+          "annualized_return": -0.06028330136848192,
+          "annualized_volatility": 0.05676700434951131,
+          "sharpe_ratio": -1.066774422874657,
+          "total_turnover": 131.10193930843428,
+          "avg_daily_turnover": 0.2932929291016427,
+          "total_transaction_costs": 12472.470422673152,
+          "trading_days": 447
+        },
+        "B_minus_A": {
+          "net_return": 0.17223122805902252,
+          "sharpe_ratio": 1.9757258960762758,
+          "turnover": -166.39598084318925,
+          "transaction_costs": -13574.81309776583
+        }
+      },
+      "Energy": {
+        "rows": 2582,
+        "A": {
+          "net_return": -0.1411025520242544,
+          "gross_return": 0.13824447314657196,
+          "annualized_return": -0.08217716054335256,
+          "annualized_volatility": 0.07847595530629912,
+          "sharpe_ratio": -1.0530923741434575,
+          "total_turnover": 281.4596376526806,
+          "avg_daily_turnover": 0.6296636189098,
+          "total_transaction_costs": 25946.496922466944,
+          "trading_days": 447
+        },
+        "B": {
+          "net_return": 0.10856431198240345,
+          "gross_return": 0.24537761003806335,
+          "annualized_return": 0.0598254131202689,
+          "annualized_volatility": 0.06879480453980881,
+          "sharpe_ratio": 0.8791883918573534,
+          "total_turnover": 116.32831094821219,
+          "avg_daily_turnover": 0.26024230637183937,
+          "total_transaction_costs": 12096.47478727747,
+          "trading_days": 447
+        },
+        "B_minus_A": {
+          "net_return": 0.24966686400665783,
+          "sharpe_ratio": 1.9322807660008108,
+          "turnover": -165.13132670446842,
+          "transaction_costs": -13850.022135189474
+        }
+      },
+      "Exchange Traded Fund": {
+        "rows": 1716,
+        "A": {
+          "net_return": -0.0017391888994559121,
+          "gross_return": 0.27664571858382936,
+          "annualized_return": -0.0010219882930602164,
+          "annualized_volatility": 0.07458462538348896,
+          "sharpe_ratio": 0.02365001508092274,
+          "total_turnover": 245.85823947107122,
+          "avg_daily_turnover": 0.5730961293031963,
+          "total_transaction_costs": 23029.604193908046,
+          "trading_days": 429
+        },
+        "B": {
+          "net_return": 0.2087437889927921,
+          "gross_return": 0.2995278897812319,
+          "annualized_return": 0.11780018734146136,
+          "annualized_volatility": 0.07258192037024383,
+          "sharpe_ratio": 1.5709917219392489,
+          "total_turnover": 72.39438762270699,
+          "avg_daily_turnover": 0.1687514863000163,
+          "total_transaction_costs": 7594.587023603894,
+          "trading_days": 429
+        },
+        "B_minus_A": {
+          "net_return": 0.210482977892248,
+          "sharpe_ratio": 1.5473417068583262,
+          "turnover": -173.46385184836424,
+          "transaction_costs": -15435.017170304152
+        }
+      },
+      "Financials": {
+        "rows": 6886,
+        "A": {
+          "net_return": -0.06439899469255106,
+          "gross_return": 0.23708369363192494,
+          "annualized_return": -0.03683181610846875,
+          "annualized_volatility": 0.06663209635599136,
+          "sharpe_ratio": -0.5298263014425355,
+          "total_turnover": 279.2077984030935,
+          "avg_daily_turnover": 0.6246259472104999,
+          "total_transaction_costs": 27147.769875165002,
+          "trading_days": 447
+        },
+        "B": {
+          "net_return": 0.09923042025830815,
+          "gross_return": 0.1968393248756064,
+          "annualized_return": 0.054785427435722234,
+          "annualized_volatility": 0.06538771340658847,
+          "sharpe_ratio": 0.8484912946173488,
+          "total_turnover": 85.03381834018161,
+          "avg_daily_turnover": 0.19023225579458974,
+          "total_transaction_costs": 8771.56587901619,
+          "trading_days": 447
+        },
+        "B_minus_A": {
+          "net_return": 0.1636294149508592,
+          "sharpe_ratio": 1.3783175960598844,
+          "turnover": -194.17398006291188,
+          "transaction_costs": -18376.20399614881
+        }
+      },
+      "Health Care": {
+        "rows": 5157,
+        "A": {
+          "net_return": -0.04639126423758178,
+          "gross_return": 0.2582152144757983,
+          "annualized_return": -0.02642415791547381,
+          "annualized_volatility": 0.07289637657164215,
+          "sharpe_ratio": -0.33087178349147606,
+          "total_turnover": 277.0818253907288,
+          "avg_daily_turnover": 0.6198698554602434,
+          "total_transaction_costs": 24482.536255424493,
+          "trading_days": 447
+        },
+        "B": {
+          "net_return": 0.11712767173009095,
+          "gross_return": 0.22910555034924607,
+          "annualized_return": 0.06443307890530536,
+          "annualized_volatility": 0.06675470303551853,
+          "sharpe_ratio": 0.9689027294215635,
+          "total_turnover": 95.48825744539182,
+          "avg_daily_turnover": 0.21362026274136872,
+          "total_transaction_costs": 9144.055281849629,
+          "trading_days": 447
+        },
+        "B_minus_A": {
+          "net_return": 0.16351893596767272,
+          "sharpe_ratio": 1.2997745129130396,
+          "turnover": -181.59356794533699,
+          "transaction_costs": -15338.480973574864
+        }
+      },
+      "Industrials": {
+        "rows": 2580,
+        "A": {
+          "net_return": 0.08804180176212976,
+          "gross_return": 0.5057189112926783,
+          "annualized_return": 0.04871928338778431,
+          "annualized_volatility": 0.10160836447788274,
+          "sharpe_ratio": 0.5190385731016373,
+          "total_turnover": 324.72613106522505,
+          "avg_daily_turnover": 0.7264566690497205,
+          "total_transaction_costs": 32383.025439365956,
+          "trading_days": 447
+        },
+        "B": {
+          "net_return": 0.1714898010682178,
+          "gross_return": 0.3167955961801501,
+          "annualized_return": 0.09333163104422337,
+          "annualized_volatility": 0.09271671722337516,
+          "sharpe_ratio": 1.0089544758790931,
+          "total_turnover": 116.87965241972847,
+          "avg_daily_turnover": 0.261475732482614,
+          "total_transaction_costs": 11802.760474404353,
+          "trading_days": 447
+        },
+        "B_minus_A": {
+          "net_return": 0.08344799930608802,
+          "sharpe_ratio": 0.4899159027774559,
+          "turnover": -207.84647864549657,
+          "transaction_costs": -20580.264964961603
+        }
+      },
+      "Information Technology": {
+        "rows": 8163,
+        "A": {
+          "net_return": -0.11711697613350043,
+          "gross_return": 0.14114880075817804,
+          "annualized_return": -0.06781425771381078,
+          "annualized_volatility": 0.09322300481960687,
+          "sharpe_ratio": -0.7064590183195981,
+          "total_turnover": 256.4984598860077,
+          "avg_daily_turnover": 0.5738220579105318,
+          "total_transaction_costs": 22978.08863833787,
+          "trading_days": 447
+        },
+        "B": {
+          "net_return": -0.027125689612544666,
+          "gross_return": 0.09744201031750777,
+          "annualized_return": -0.015384009678944377,
+          "annualized_volatility": 0.09327692103323627,
+          "sharpe_ratio": -0.11947527485509798,
+          "total_turnover": 120.44210699687493,
+          "avg_daily_turnover": 0.2694454295232101,
+          "total_transaction_costs": 10954.308438224156,
+          "trading_days": 447
+        },
+        "B_minus_A": {
+          "net_return": 0.08999128652095577,
+          "sharpe_ratio": 0.5869837434645001,
+          "turnover": -136.05635288913277,
+          "transaction_costs": -12023.780200113715
+        }
+      },
+      "Materials": {
+        "rows": 3015,
+        "A": {
+          "net_return": -0.07007260279737777,
+          "gross_return": 0.26572195947192334,
+          "annualized_return": -0.04012897244250946,
+          "annualized_volatility": 0.07369169917141986,
+          "sharpe_ratio": -0.5188735223617217,
+          "total_turnover": 308.1388540220745,
+          "avg_daily_turnover": 0.6893486667160503,
+          "total_transaction_costs": 29424.917897690517,
+          "trading_days": 447
+        },
+        "B": {
+          "net_return": 0.22940624611079533,
+          "gross_return": 0.3303413434306446,
+          "annualized_return": 0.12348309716874839,
+          "annualized_volatility": 0.07199458130155885,
+          "sharpe_ratio": 1.6536120507906389,
+          "total_turnover": 78.87212126885905,
+          "avg_daily_turnover": 0.17644769858805157,
+          "total_transaction_costs": 8385.624984070342,
+          "trading_days": 447
+        },
+        "B_minus_A": {
+          "net_return": 0.2994788489081731,
+          "sharpe_ratio": 2.1724855731523607,
+          "turnover": -229.26673275321545,
+          "transaction_costs": -21039.292913620175
+        }
+      },
+      "Utilities": {
+        "rows": 862,
+        "A": {
+          "net_return": -0.24019854421310172,
+          "gross_return": -0.05940467723046072,
+          "annualized_return": -0.14837786935268216,
+          "annualized_volatility": 0.08409103908508478,
+          "sharpe_ratio": -1.8673512690743332,
+          "total_turnover": 213.33422049554318,
+          "avg_daily_turnover": 0.4949749895488241,
+          "total_transaction_costs": 18592.105744274777,
+          "trading_days": 431
+        },
+        "B": {
+          "net_return": -0.06597282577551508,
+          "gross_return": -0.0031561673848301552,
+          "annualized_return": -0.039119016599464485,
+          "annualized_volatility": 0.09085131783870784,
+          "sharpe_ratio": -0.3938687079024758,
+          "total_turnover": 65.05606410930127,
+          "avg_daily_turnover": 0.15094214410510737,
+          "total_transaction_costs": 6538.950793692813,
+          "trading_days": 431
+        },
+        "B_minus_A": {
+          "net_return": 0.17422571843758664,
+          "sharpe_ratio": 1.4734825611718574,
+          "turnover": -148.2781563862419,
+          "transaction_costs": -12053.154950581964
+        }
+      }
+    },
+    "by_regime": {
+      "-1": {
+        "rows": 10110,
+        "A": {
+          "net_return": -0.09587943239677771,
+          "gross_return": 0.2928523564914651,
+          "annualized_return": -0.05547963617917351,
+          "annualized_volatility": 0.07779872612165295,
+          "sharpe_ratio": -0.6946007113357522,
+          "total_turnover": 357.4692595441428,
+          "avg_daily_turnover": 0.8033017068407703,
+          "total_transaction_costs": 31965.01561520837,
+          "trading_days": 445
+        },
+        "B": {
+          "net_return": -0.028363158055797102,
+          "gross_return": 0.25905319979189767,
+          "annualized_return": -0.016161986901914283,
+          "annualized_volatility": 0.07385575971929953,
+          "sharpe_ratio": -0.18363170636608572,
+          "total_turnover": 259.0293600181671,
+          "avg_daily_turnover": 0.5820884494790272,
+          "total_transaction_costs": 23970.63002260729,
+          "trading_days": 445
+        },
+        "B_minus_A": {
+          "net_return": 0.0675162743409806,
+          "sharpe_ratio": 0.5109690049696665,
+          "turnover": -98.4398995259757,
+          "transaction_costs": -7994.38559260108
+        }
+      },
+      "0": {
+        "rows": 17829,
+        "A": {
+          "net_return": -0.29255368820446326,
+          "gross_return": 0.025039426590502734,
+          "annualized_return": -0.1772584279143341,
+          "annualized_volatility": 0.054651395977792144,
+          "sharpe_ratio": -3.5413623666450462,
+          "total_turnover": 370.65507221513826,
+          "avg_daily_turnover": 0.829205978109929,
+          "total_transaction_costs": 31448.3790008094,
+          "trading_days": 447
+        },
+        "B": {
+          "net_return": -0.20432821344694865,
+          "gross_return": 0.025062110866647336,
+          "annualized_return": -0.12090069537023063,
+          "annualized_volatility": 0.05613645946159222,
+          "sharpe_ratio": -2.266728245872168,
+          "total_turnover": 253.22728003421474,
+          "avg_daily_turnover": 0.5665039821794513,
+          "total_transaction_costs": 22321.530576121084,
+          "trading_days": 447
+        },
+        "B_minus_A": {
+          "net_return": 0.0882254747575146,
+          "sharpe_ratio": 1.2746341207728782,
+          "turnover": -117.42779218092352,
+          "transaction_costs": -9126.848424688316
+        }
+      },
+      "1": {
+        "rows": 14629,
+        "A": {
+          "net_return": -0.24261788192400796,
+          "gross_return": 0.11200476294464345,
+          "annualized_return": -0.14500643640258692,
+          "annualized_volatility": 0.08682456074907328,
+          "sharpe_ratio": -1.7594392428748284,
+          "total_turnover": 383.86322146680374,
+          "avg_daily_turnover": 0.8587544104402768,
+          "total_transaction_costs": 30882.418098586746,
+          "trading_days": 447
+        },
+        "B": {
+          "net_return": -0.16670321669678945,
+          "gross_return": 0.07001493137769654,
+          "annualized_return": -0.09770163695999112,
+          "annualized_volatility": 0.08760968147932743,
+          "sharpe_ratio": -1.1285442511973531,
+          "total_turnover": 249.93623247383357,
+          "avg_daily_turnover": 0.5591414596730058,
+          "total_transaction_costs": 20486.606197010522,
+          "trading_days": 447
+        },
+        "B_minus_A": {
+          "net_return": 0.07591466522721851,
+          "sharpe_ratio": 0.6308949916774753,
+          "turnover": -133.92698899297017,
+          "transaction_costs": -10395.811901576224
+        }
+      }
+    }
+  },
+  "ticker_attribution": {
+    "top_5_b_advantages": {
+      "TXN": {
+        "A_net_return": -0.019781758172795236,
+        "B_net_return": 0.6148559815468252,
+        "B_minus_A_net_return": 0.6346377397196205,
+        "A_turnover": 117.0,
+        "B_turnover": 35.0
+      },
+      "SHRIRAMFIN.NS": {
+        "A_net_return": 0.23650298258716648,
+        "B_net_return": 0.8709528951353033,
+        "B_minus_A_net_return": 0.6344499125481368,
+        "A_turnover": 105.0,
+        "B_turnover": 5.0
+      },
+      "MSFT": {
+        "A_net_return": -0.02739270874414331,
+        "B_net_return": 0.5465213057555208,
+        "B_minus_A_net_return": 0.5739140144996642,
+        "A_turnover": 118.0,
+        "B_turnover": 23.0
+      },
+      "AVGO": {
+        "A_net_return": 0.839354814978725,
+        "B_net_return": 1.3628052139643818,
+        "B_minus_A_net_return": 0.5234503989856568,
+        "A_turnover": 117.0,
+        "B_turnover": 45.0
+      },
+      "DIS": {
+        "A_net_return": -0.18756310489997835,
+        "B_net_return": 0.2957807684449508,
+        "B_minus_A_net_return": 0.4833438733449292,
+        "A_turnover": 131.0,
+        "B_turnover": 49.0
+      }
+    },
+    "bottom_5_b_disadvantages": {
+      "INDUSINDBK.NS": {
+        "A_net_return": 0.37327695937390176,
+        "B_net_return": 0.032554109093539445,
+        "B_minus_A_net_return": -0.3407228502803623,
+        "A_turnover": 109.0,
+        "B_turnover": 3.0
+      },
+      "JNJ": {
+        "A_net_return": 0.4787946352619567,
+        "B_net_return": 0.11176447524616276,
+        "B_minus_A_net_return": -0.3670301600157939,
+        "A_turnover": 117.0,
+        "B_turnover": 22.0
+      },
+      "BAJFINANCE.NS": {
+        "A_net_return": 0.4012450056625047,
+        "B_net_return": -0.03277436112526717,
+        "B_minus_A_net_return": -0.43401936678777187,
+        "A_turnover": 137.0,
+        "B_turnover": 18.0
+      },
+      "GE": {
+        "A_net_return": 0.668329519233307,
+        "B_net_return": -0.039421375131273674,
+        "B_minus_A_net_return": -0.7077508943645806,
+        "A_turnover": 145.0,
+        "B_turnover": 56.0
+      },
+      "AMD": {
+        "A_net_return": 1.6643945711399177,
+        "B_net_return": 0.3756024031831321,
+        "B_minus_A_net_return": -1.2887921679567858,
+        "A_turnover": 109.0,
+        "B_turnover": 34.0
+      }
+    },
+    "total_tickers_evaluated": 99,
+    "b_outperformed_tickers_count": 75
+  }
+}

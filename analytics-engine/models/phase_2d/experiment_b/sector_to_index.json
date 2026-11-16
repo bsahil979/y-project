@@ -1,0 +1,14 @@
+{
+  "Communication Services": 1,
+  "Consumer Discretionary": 2,
+  "Consumer Staples": 3,
+  "Energy": 4,
+  "Exchange Traded Fund": 5,
+  "Financials": 6,
+  "Health Care": 7,
+  "Industrials": 8,
+  "Information Technology": 9,
+  "Materials": 10,
+  "Utilities": 11,
+  "__UNK__": 0
+}

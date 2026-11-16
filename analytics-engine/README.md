@@ -64,3 +64,18 @@ Use `backtesting/backtest.py` to compute:
 cd "analytics-engine"
 python scripts/verify_api.py
 ```
+
+
+### Advisor token limits
+
+The advisor compacts analytics before sending them to the LLM. Raw historical
+series are omitted; scalar risk metrics and relevant holdings are retained where
+the budget permits. Missing or omitted records must not be inferred.
+
+OpenAI-compatible requests (including Groq, streaming, and tools) have a shared
+6,000-byte UTF-8 input budget, including tool definitions and message metadata.
+This is a conservative text-token bound, with headroom for provider chat framing.
+Replies default to 512 tokens and are capped at 768 even if an environment value
+is larger. Set `LLM_MAX_TOKENS` (128-768) or `LLM_INPUT_BUDGET_BYTES` (3000-6000)
+to reduce usage further. These are per-request bounds; several requests within
+one minute can still exhaust a provider's shared TPM quota.

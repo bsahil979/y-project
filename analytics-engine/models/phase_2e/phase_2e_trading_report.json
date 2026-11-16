@@ -1,0 +1,1095 @@
+{
+  "phase": "2E.4_2E.5",
+  "status": "completed",
+  "generated_at_utc": "2026-08-31T07:33:07.598074+00:00",
+  "evaluation_mode": "prediction_artifact_only",
+  "input": {
+    "prediction_csv_path": "c:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2e\\holdout_predictions.csv",
+    "prediction_csv_sha256": "bd5d3fe75a3b6bd221f472486e99e64a745d3b40562b037918a991765960b9e2",
+    "prediction_manifest_path": "c:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2e\\phase_2e_prediction_manifest.json",
+    "prediction_manifest_sha256": "b4d236ea294d06b7229e31e77bdbf3a5e4a03b68af55f4b47fb30e4a43a01fa4"
+  },
+  "constraints": {
+    "models_loaded": false,
+    "models_retrained": false,
+    "dataset_loaded": false,
+    "thresholds_changed": false,
+    "resampling_performed": false,
+    "future_return_used_as_input": false,
+    "identical_execution_rules": true
+  },
+  "simulation_parameters": {
+    "starting_capital": 100000.0,
+    "default_transaction_cost_bps": 10,
+    "annualization_factor": 252,
+    "holding_period_days": 1
+  },
+  "primary_evaluation": {
+    "A": {
+      "starting_capital": 100000.0,
+      "ending_capital": 91011.70620421306,
+      "net_return": -0.08988293795786943,
+      "annualized_return": -0.051710951534000626,
+      "annualized_volatility": 0.054747122239527976,
+      "sharpe_ratio": -0.9423116272810717,
+      "maximum_drawdown": 0.1548212920844557,
+      "total_turnover": 247.32714855598354,
+      "avg_daily_turnover": 0.5533045828992921,
+      "total_transaction_costs": 22950.932456283525,
+      "cost_bps": 10,
+      "strategy": "long_only",
+      "rebalance_freq_days": 1,
+      "trading_days": 447,
+      "equity_curve_head": [
+        {
+          "Date": "2024-12-03",
+          "portfolio_value": 99922.5642460457,
+          "net_return": -0.0007743575395429136
+        },
+        {
+          "Date": "2024-12-04",
+          "portfolio_value": 99910.49659827625,
+          "net_return": -0.00012076999685217693
+        },
+        {
+          "Date": "2024-12-05",
+          "portfolio_value": 99657.12070487483,
+          "net_return": -0.002536028766028542
+        },
+        {
+          "Date": "2024-12-06",
+          "portfolio_value": 99458.37565327222,
+          "net_return": -0.0019942885184409676
+        },
+        {
+          "Date": "2024-12-09",
+          "portfolio_value": 99356.63107120046,
+          "net_return": -0.0010229865650174252
+        }
+      ],
+      "equity_curve_tail": [
+        {
+          "Date": "2026-08-18",
+          "portfolio_value": 91346.0598532777,
+          "net_return": 9.472639723484555e-05
+        },
+        {
+          "Date": "2026-08-19",
+          "portfolio_value": 91269.6690526688,
+          "net_return": -0.0008362790987546109
+        },
+        {
+          "Date": "2026-08-20",
+          "portfolio_value": 91290.19491822713,
+          "net_return": 0.00022489251655422038
+        },
+        {
+          "Date": "2026-08-21",
+          "portfolio_value": 91227.38443548401,
+          "net_return": -0.000688030985139032
+        },
+        {
+          "Date": "2026-08-24",
+          "portfolio_value": 91011.70620421306,
+          "net_return": -0.00236418299840091
+        }
+      ]
+    },
+    "B": {
+      "starting_capital": 100000.0,
+      "ending_capital": 104626.6096559719,
+      "net_return": 0.04626609655971901,
+      "annualized_return": 0.025825352907737686,
+      "annualized_volatility": 0.054423114941315645,
+      "sharpe_ratio": 0.4957748845542667,
+      "maximum_drawdown": 0.13860671708471622,
+      "total_turnover": 100.29951142312407,
+      "avg_daily_turnover": 0.22438369445889053,
+      "total_transaction_costs": 9745.001602249777,
+      "cost_bps": 10,
+      "strategy": "long_only",
+      "rebalance_freq_days": 1,
+      "trading_days": 447,
+      "equity_curve_head": [
+        {
+          "Date": "2024-12-03",
+          "portfolio_value": 99866.59679503963,
+          "net_return": -0.001334032049603695
+        },
+        {
+          "Date": "2024-12-04",
+          "portfolio_value": 99876.99087246221,
+          "net_return": 0.0001040796197742111
+        },
+        {
+          "Date": "2024-12-05",
+          "portfolio_value": 99721.6398201789,
+          "net_return": -0.001555423836123393
+        },
+        {
+          "Date": "2024-12-06",
+          "portfolio_value": 99553.46485758631,
+          "net_return": -0.00168644401451723
+        },
+        {
+          "Date": "2024-12-09",
+          "portfolio_value": 99429.56552079019,
+          "net_return": -0.0012445507243104004
+        }
+      ],
+      "equity_curve_tail": [
+        {
+          "Date": "2026-08-18",
+          "portfolio_value": 104688.39934105151,
+          "net_return": 0.0012517635607649513
+        },
+        {
+          "Date": "2026-08-19",
+          "portfolio_value": 104707.73297243033,
+          "net_return": 0.00018467787740106267
+        },
+        {
+          "Date": "2026-08-20",
+          "portfolio_value": 104820.95286669611,
+          "net_return": 0.0010812944856288809
+        },
+        {
+          "Date": "2026-08-21",
+          "portfolio_value": 104774.78281392761,
+          "net_return": -0.00044046587543633553
+        },
+        {
+          "Date": "2026-08-24",
+          "portfolio_value": 104626.6096559719,
+          "net_return": -0.001414206300182519
+        }
+      ]
+    },
+    "B_minus_A": {
+      "net_return": 0.13614903451758845,
+      "annualized_return": 0.07753630444173831,
+      "annualized_volatility": -0.000324007298212331,
+      "sharpe_ratio": 1.4380865118353383,
+      "maximum_drawdown": -0.016214574999739467,
+      "total_turnover": -147.02763713285947,
+      "avg_daily_turnover": -0.32892088844040157,
+      "total_transaction_costs": -13205.930854033748
+    }
+  },
+  "sensitivities": {
+    "cost_sensitivity": {
+      "0_bps": {
+        "A": {
+          "starting_capital": 100000.0,
+          "ending_capital": 116559.42076367763,
+          "net_return": 0.16559420763677626,
+          "annualized_return": 0.09022627385200432,
+          "annualized_volatility": 0.05441461443917023,
+          "sharpe_ratio": 1.6150519162421622,
+          "maximum_drawdown": 0.11314837526972844,
+          "total_turnover": 247.32714855598354,
+          "avg_daily_turnover": 0.5533045828992921,
+          "total_transaction_costs": 0.0,
+          "cost_bps": 0,
+          "strategy": "long_only",
+          "rebalance_freq_days": 1,
+          "trading_days": 447,
+          "equity_curve_head": [
+            {
+              "Date": "2024-12-03",
+              "portfolio_value": 100022.58683287859,
+              "net_return": 0.00022586832878590535
+            },
+            {
+              "Date": "2024-12-04",
+              "portfolio_value": 100057.59303151412,
+              "net_return": 0.0003499829362942908
+            },
+            {
+              "Date": "2024-12-05",
+              "portfolio_value": 99850.87873927147,
+              "net_return": -0.0020659530774194135
+            },
+            {
+              "Date": "2024-12-06",
+              "portfolio_value": 99697.06412557531,
+              "net_return": -0.0015404432653797206
+            },
+            {
+              "Date": "2024-12-09",
+              "portfolio_value": 99628.37162976967,
+              "net_return": -0.0006890122232598994
+            }
+          ],
+          "equity_curve_tail": [
+            {
+              "Date": "2026-08-18",
+              "portfolio_value": 116681.15445246335,
+              "net_return": 0.0004964871886956601
+            },
+            {
+              "Date": "2026-08-19",
+              "portfolio_value": 116637.66927390322,
+              "net_return": -0.0003726838216864259
+            },
+            {
+              "Date": "2026-08-20",
+              "portfolio_value": 116718.00688324071,
+              "net_return": 0.0006887792754914912
+            },
+            {
+              "Date": "2026-08-21",
+              "portfolio_value": 116785.11808046595,
+              "net_return": 0.0005749858056809387
+            },
+            {
+              "Date": "2026-08-24",
+              "portfolio_value": 116559.42076367763,
+              "net_return": -0.001932586278953985
+            }
+          ]
+        },
+        "B": {
+          "starting_capital": 100000.0,
+          "ending_capital": 115669.10196584769,
+          "net_return": 0.15669101965847687,
+          "annualized_return": 0.08552372360910954,
+          "annualized_volatility": 0.053979244964928286,
+          "sharpe_ratio": 1.547522808334857,
+          "maximum_drawdown": 0.11887242012289266,
+          "total_turnover": 100.29951142312407,
+          "avg_daily_turnover": 0.22438369445889053,
+          "total_transaction_costs": 0.0,
+          "cost_bps": 0,
+          "strategy": "long_only",
+          "rebalance_freq_days": 1,
+          "trading_days": 447,
+          "equity_curve_head": [
+            {
+              "Date": "2024-12-03",
+              "portfolio_value": 99966.56335839802,
+              "net_return": -0.0003343664160196935
+            },
+            {
+              "Date": "2024-12-04",
+              "portfolio_value": 99991.25230491748,
+              "net_return": 0.0002469720443518675
+            },
+            {
+              "Date": "2024-12-05",
+              "portfolio_value": 99844.7689439418,
+              "net_return": -0.0014649617601445453
+            },
+            {
+              "Date": "2024-12-06",
+              "portfolio_value": 99690.04250118107,
+              "net_return": -0.0015496699967085803
+            },
+            {
+              "Date": "2024-12-09",
+              "portfolio_value": 99581.2933855621,
+              "net_return": -0.0010908723969867973
+            }
+          ],
+          "equity_curve_tail": [
+            {
+              "Date": "2026-08-18",
+              "portfolio_value": 115617.80293196226,
+              "net_return": 0.0013602214743815289
+            },
+            {
+              "Date": "2026-08-19",
+              "portfolio_value": 115648.53106878983,
+              "net_return": 0.0002657734020914404
+            },
+            {
+              "Date": "2026-08-20",
+              "portfolio_value": 115782.72192891051,
+              "net_return": 0.001160333459323093
+            },
+            {
+              "Date": "2026-08-21",
+              "portfolio_value": 115832.5112449942,
+              "net_return": 0.0004300237138512575
+            },
+            {
+              "Date": "2026-08-24",
+              "portfolio_value": 115669.10196584769,
+              "net_return": -0.0014107376019922846
+            }
+          ]
+        },
+        "B_minus_A": {
+          "net_return": -0.008903187978299393,
+          "annualized_return": -0.004702550242894787,
+          "annualized_volatility": -0.0004353694742419423,
+          "sharpe_ratio": -0.06752910790730526,
+          "maximum_drawdown": 0.005724044853164217,
+          "total_turnover": -147.02763713285947,
+          "avg_daily_turnover": -0.32892088844040157,
+          "total_transaction_costs": 0.0
+        }
+      },
+      "5_bps": {
+        "A": {
+          "starting_capital": 100000.0,
+          "ending_capital": 102998.67745695471,
+          "net_return": 0.029986774569547126,
+          "annualized_return": 0.01679628158624502,
+          "annualized_volatility": 0.054536092609245856,
+          "sharpe_ratio": 0.33274823826415795,
+          "maximum_drawdown": 0.13417944710295124,
+          "total_turnover": 247.32714855598354,
+          "avg_daily_turnover": 0.5533045828992921,
+          "total_transaction_costs": 12209.46981518576,
+          "cost_bps": 5,
+          "strategy": "long_only",
+          "rebalance_freq_days": 1,
+          "trading_days": 447,
+          "equity_curve_head": [
+            {
+              "Date": "2024-12-03",
+              "portfolio_value": 99972.57553946217,
+              "net_return": -0.0002742446053783931
+            },
+            {
+              "Date": "2024-12-04",
+              "portfolio_value": 99984.03304341367,
+              "net_return": 0.00011460646972105692
+            },
+            {
+              "Date": "2024-12-05",
+              "portfolio_value": 99753.97069106343,
+              "net_return": -0.0023009909217239777
+            },
+            {
+              "Date": "2024-12-06",
+              "portfolio_value": 99577.66892568143,
+              "net_return": -0.0017673658919102886
+            },
+            {
+              "Date": "2024-12-09",
+              "portfolio_value": 99492.4305014113,
+              "net_return": -0.0008559993941387178
+            }
+          ],
+          "equity_curve_tail": [
+            {
+              "Date": "2026-08-18",
+              "portfolio_value": 103241.54093481899,
+              "net_return": 0.00029560679296536385
+            },
+            {
+              "Date": "2026-08-19",
+              "portfolio_value": 103179.1333373993,
+              "net_return": -0.0006044814602205184
+            },
+            {
+              "Date": "2026-08-20",
+              "portfolio_value": 103226.26926922835,
+              "net_return": 0.0004568358960228558
+            },
+            {
+              "Date": "2026-08-21",
+              "portfolio_value": 103220.43465316118,
+              "net_return": -5.652258972910218e-05
+            },
+            {
+              "Date": "2026-08-24",
+              "portfolio_value": 102998.67745695471,
+              "net_return": -0.002148384638677503
+            }
+          ]
+        },
+        "B": {
+          "starting_capital": 100000.0,
+          "ending_capital": 110010.38415304958,
+          "net_return": 0.10010384153049584,
+          "annualized_return": 0.05525783508174276,
+          "annualized_volatility": 0.05413697921158691,
+          "sharpe_ratio": 1.0207045895107958,
+          "maximum_drawdown": 0.12879359367620352,
+          "total_turnover": 100.29951142312407,
+          "avg_daily_turnover": 0.22438369445889053,
+          "total_transaction_costs": 4997.855668914204,
+          "cost_bps": 5,
+          "strategy": "long_only",
+          "rebalance_freq_days": 1,
+          "trading_days": 447,
+          "equity_curve_head": [
+            {
+              "Date": "2024-12-03",
+              "portfolio_value": 99916.58007671885,
+              "net_return": -0.0008341992328115833
+            },
+            {
+              "Date": "2024-12-04",
+              "portfolio_value": 99934.11801757371,
+              "net_return": 0.0001755258320630393
+            },
+            {
+              "Date": "2024-12-05",
+              "portfolio_value": 99783.1982322557,
+              "net_return": -0.0015101927981340246
+            },
+            {
+              "Date": "2024-12-06",
+              "portfolio_value": 99621.74332931354,
+              "net_return": -0.001618057005612905
+            },
+            {
+              "Date": "2024-12-09",
+              "portfolio_value": 99505.41386793595,
+              "net_return": -0.0011677115606485433
+            }
+          ],
+          "equity_curve_tail": [
+            {
+              "Date": "2026-08-18",
+              "portfolio_value": 110018.44875045425,
+              "net_return": 0.001305992517573351
+            },
+            {
+              "Date": "2026-08-19",
+              "portfolio_value": 110043.22772595797,
+              "net_return": 0.00022522563974636256
+            },
+            {
+              "Date": "2026-08-20",
+              "portfolio_value": 110166.56571316959,
+              "net_return": 0.001120813972476098
+            },
+            {
+              "Date": "2026-08-21",
+              "portfolio_value": 110165.99052462938,
+              "net_return": -5.221080792483512e-06
+            },
+            {
+              "Date": "2026-08-24",
+              "portfolio_value": 110010.38415304958,
+              "net_return": -0.0014124719510874018
+            }
+          ]
+        },
+        "B_minus_A": {
+          "net_return": 0.07011706696094872,
+          "annualized_return": 0.038461553495497736,
+          "annualized_volatility": -0.000399113397658947,
+          "sharpe_ratio": 0.6879563512466378,
+          "maximum_drawdown": -0.0053858534267477165,
+          "total_turnover": -147.02763713285947,
+          "avg_daily_turnover": -0.32892088844040157,
+          "total_transaction_costs": -7211.614146271555
+        }
+      },
+      "10_bps": {
+        "A": {
+          "starting_capital": 100000.0,
+          "ending_capital": 91011.70620421306,
+          "net_return": -0.08988293795786943,
+          "annualized_return": -0.051710951534000626,
+          "annualized_volatility": 0.054747122239527976,
+          "sharpe_ratio": -0.9423116272810717,
+          "maximum_drawdown": 0.1548212920844557,
+          "total_turnover": 247.32714855598354,
+          "avg_daily_turnover": 0.5533045828992921,
+          "total_transaction_costs": 22950.932456283525,
+          "cost_bps": 10,
+          "strategy": "long_only",
+          "rebalance_freq_days": 1,
+          "trading_days": 447,
+          "equity_curve_head": [
+            {
+              "Date": "2024-12-03",
+              "portfolio_value": 99922.5642460457,
+              "net_return": -0.0007743575395429136
+            },
+            {
+              "Date": "2024-12-04",
+              "portfolio_value": 99910.49659827625,
+              "net_return": -0.00012076999685217693
+            },
+            {
+              "Date": "2024-12-05",
+              "portfolio_value": 99657.12070487483,
+              "net_return": -0.002536028766028542
+            },
+            {
+              "Date": "2024-12-06",
+              "portfolio_value": 99458.37565327222,
+              "net_return": -0.0019942885184409676
+            },
+            {
+              "Date": "2024-12-09",
+              "portfolio_value": 99356.63107120046,
+              "net_return": -0.0010229865650174252
+            }
+          ],
+          "equity_curve_tail": [
+            {
+              "Date": "2026-08-18",
+              "portfolio_value": 91346.0598532777,
+              "net_return": 9.472639723484555e-05
+            },
+            {
+              "Date": "2026-08-19",
+              "portfolio_value": 91269.6690526688,
+              "net_return": -0.0008362790987546109
+            },
+            {
+              "Date": "2026-08-20",
+              "portfolio_value": 91290.19491822713,
+              "net_return": 0.00022489251655422038
+            },
+            {
+              "Date": "2026-08-21",
+              "portfolio_value": 91227.38443548401,
+              "net_return": -0.000688030985139032
+            },
+            {
+              "Date": "2026-08-24",
+              "portfolio_value": 91011.70620421306,
+              "net_return": -0.00236418299840091
+            }
+          ]
+        },
+        "B": {
+          "starting_capital": 100000.0,
+          "ending_capital": 104626.6096559719,
+          "net_return": 0.04626609655971901,
+          "annualized_return": 0.025825352907737686,
+          "annualized_volatility": 0.054423114941315645,
+          "sharpe_ratio": 0.4957748845542667,
+          "maximum_drawdown": 0.13860671708471622,
+          "total_turnover": 100.29951142312407,
+          "avg_daily_turnover": 0.22438369445889053,
+          "total_transaction_costs": 9745.001602249777,
+          "cost_bps": 10,
+          "strategy": "long_only",
+          "rebalance_freq_days": 1,
+          "trading_days": 447,
+          "equity_curve_head": [
+            {
+              "Date": "2024-12-03",
+              "portfolio_value": 99866.59679503963,
+              "net_return": -0.001334032049603695
+            },
+            {
+              "Date": "2024-12-04",
+              "portfolio_value": 99876.99087246221,
+              "net_return": 0.0001040796197742111
+            },
+            {
+              "Date": "2024-12-05",
+              "portfolio_value": 99721.6398201789,
+              "net_return": -0.001555423836123393
+            },
+            {
+              "Date": "2024-12-06",
+              "portfolio_value": 99553.46485758631,
+              "net_return": -0.00168644401451723
+            },
+            {
+              "Date": "2024-12-09",
+              "portfolio_value": 99429.56552079019,
+              "net_return": -0.0012445507243104004
+            }
+          ],
+          "equity_curve_tail": [
+            {
+              "Date": "2026-08-18",
+              "portfolio_value": 104688.39934105151,
+              "net_return": 0.0012517635607649513
+            },
+            {
+              "Date": "2026-08-19",
+              "portfolio_value": 104707.73297243033,
+              "net_return": 0.00018467787740106267
+            },
+            {
+              "Date": "2026-08-20",
+              "portfolio_value": 104820.95286669611,
+              "net_return": 0.0010812944856288809
+            },
+            {
+              "Date": "2026-08-21",
+              "portfolio_value": 104774.78281392761,
+              "net_return": -0.00044046587543633553
+            },
+            {
+              "Date": "2026-08-24",
+              "portfolio_value": 104626.6096559719,
+              "net_return": -0.001414206300182519
+            }
+          ]
+        },
+        "B_minus_A": {
+          "net_return": 0.13614903451758845,
+          "annualized_return": 0.07753630444173831,
+          "annualized_volatility": -0.000324007298212331,
+          "sharpe_ratio": 1.4380865118353383,
+          "maximum_drawdown": -0.016214574999739467,
+          "total_turnover": -147.02763713285947,
+          "avg_daily_turnover": -0.32892088844040157,
+          "total_transaction_costs": -13205.930854033748
+        }
+      },
+      "20_bps": {
+        "A": {
+          "starting_capital": 100000.0,
+          "ending_capital": 71051.36530672348,
+          "net_return": -0.28948634693276515,
+          "annualized_return": -0.17524926568993981,
+          "annualized_volatility": 0.055433311087067706,
+          "sharpe_ratio": -3.4466663323509277,
+          "maximum_drawdown": 0.29761430165687863,
+          "total_turnover": 247.32714855598354,
+          "avg_daily_turnover": 0.5533045828992921,
+          "total_transaction_costs": 40701.25947890881,
+          "cost_bps": 20,
+          "strategy": "long_only",
+          "rebalance_freq_days": 1,
+          "trading_days": 447,
+          "equity_curve_head": [
+            {
+              "Date": "2024-12-03",
+              "portfolio_value": 99822.54165921283,
+              "net_return": -0.0017745834078716216
+            },
+            {
+              "Date": "2024-12-04",
+              "portfolio_value": 99763.49433689067,
+              "net_return": -0.0005915229299986446
+            },
+            {
+              "Date": "2024-12-05",
+              "portfolio_value": 99463.59485215433,
+              "net_return": -0.0030061044546375593
+            },
+            {
+              "Date": "2024-12-06",
+              "portfolio_value": 99220.09466656177,
+              "net_return": -0.0024481337715021034
+            },
+            {
+              "Date": "2024-12-09",
+              "portfolio_value": 99085.45687693273,
+              "net_return": -0.001356960906774951
+            }
+          ],
+          "equity_curve_tail": [
+            {
+              "Date": "2026-08-18",
+              "portfolio_value": 71499.85788016897,
+              "net_return": -0.000307034394225858
+            },
+            {
+              "Date": "2026-08-19",
+              "portfolio_value": 71406.91704703557,
+              "net_return": -0.001299874375822796
+            },
+            {
+              "Date": "2026-08-20",
+              "portfolio_value": 71389.85120499501,
+              "net_return": -0.00023899424238305045
+            },
+            {
+              "Date": "2026-08-21",
+              "portfolio_value": 71250.56619457545,
+              "net_return": -0.0019510477759591138
+            },
+            {
+              "Date": "2026-08-24",
+              "portfolio_value": 71051.36530672348,
+              "net_return": -0.002795779717847835
+            }
+          ]
+        },
+        "B": {
+          "starting_capital": 100000.0,
+          "ending_capital": 94631.45671812804,
+          "net_return": -0.05368543281871956,
+          "annualized_return": -0.030629438913426177,
+          "annualized_volatility": 0.055371736068131595,
+          "sharpe_ratio": -0.5340429577521402,
+          "maximum_drawdown": 0.15794603674732918,
+          "total_turnover": 100.29951142312407,
+          "avg_daily_turnover": 0.22438369445889053,
+          "total_transaction_costs": 18535.79874430059,
+          "cost_bps": 20,
+          "strategy": "long_only",
+          "rebalance_freq_days": 1,
+          "trading_days": 447,
+          "equity_curve_head": [
+            {
+              "Date": "2024-12-03",
+              "portfolio_value": 99766.63023168124,
+              "net_return": -0.0023336976831876965
+            },
+            {
+              "Date": "2024-12-04",
+              "portfolio_value": 99762.75800893613,
+              "net_return": -3.8812804803667333e-05
+            },
+            {
+              "Date": "2024-12-05",
+              "portfolio_value": 99598.55989097676,
+              "net_return": -0.0016458859121022407
+            },
+            {
+              "Date": "2024-12-06",
+              "portfolio_value": 99416.97000058983,
+              "net_return": -0.0018232180323259906
+            },
+            {
+              "Date": "2024-12-09",
+              "portfolio_value": 99277.9623049096,
+              "net_return": -0.0013982290516338924
+            }
+          ],
+          "equity_curve_tail": [
+            {
+              "Date": "2026-08-18",
+              "portfolio_value": 94785.373560681,
+              "net_return": 0.0011433056471485958
+            },
+            {
+              "Date": "2026-08-19",
+              "portfolio_value": 94795.19165267695,
+              "net_return": 0.0001035823527104629
+            },
+            {
+              "Date": "2026-08-20",
+              "portfolio_value": 94890.20065601575,
+              "net_return": 0.0010022555119346688
+            },
+            {
+              "Date": "2026-08-21",
+              "portfolio_value": 94765.80382891699,
+              "net_return": -0.0013109554647239285
+            },
+            {
+              "Date": "2026-08-24",
+              "portfolio_value": 94631.45671812804,
+              "net_return": -0.0014176749983726422
+            }
+          ]
+        },
+        "B_minus_A": {
+          "net_return": 0.23580091411404558,
+          "annualized_return": 0.14461982677651364,
+          "annualized_volatility": -6.157501893611084e-05,
+          "sharpe_ratio": 2.9126233745987875,
+          "maximum_drawdown": -0.13966826490954945,
+          "total_turnover": -147.02763713285947,
+          "avg_daily_turnover": -0.32892088844040157,
+          "total_transaction_costs": -22165.46073460822
+        }
+      }
+    },
+    "long_short_strategy": {
+      "A": {
+        "starting_capital": 100000.0,
+        "ending_capital": 70796.27988195879,
+        "net_return": -0.2920372011804121,
+        "annualized_return": -0.17691985419222533,
+        "annualized_volatility": 0.016148774635930556,
+        "sharpe_ratio": -12.044012431386609,
+        "maximum_drawdown": 0.29236976786501084,
+        "total_turnover": 369.18070716758666,
+        "avg_daily_turnover": 0.8259076222988516,
+        "total_transaction_costs": 31625.877396419375,
+        "cost_bps": 10,
+        "strategy": "long_short",
+        "rebalance_freq_days": 1,
+        "trading_days": 447,
+        "equity_curve_head": [
+          {
+            "Date": "2024-12-03",
+            "portfolio_value": 100016.94660115645,
+            "net_return": 0.00016946601156453411
+          },
+          {
+            "Date": "2024-12-04",
+            "portfolio_value": 100046.99724086058,
+            "net_return": 0.0003004554800494219
+          },
+          {
+            "Date": "2024-12-05",
+            "portfolio_value": 99907.08037320718,
+            "net_return": -0.0013985114147559985
+          },
+          {
+            "Date": "2024-12-06",
+            "portfolio_value": 99771.19979030288,
+            "net_return": -0.001360069600639946
+          },
+          {
+            "Date": "2024-12-09",
+            "portfolio_value": 99705.85221780089,
+            "net_return": -0.0006549743076093018
+          }
+        ],
+        "equity_curve_tail": [
+          {
+            "Date": "2026-08-18",
+            "portfolio_value": 71133.73486974287,
+            "net_return": -0.002045026856976162
+          },
+          {
+            "Date": "2026-08-19",
+            "portfolio_value": 71011.94738216384,
+            "net_return": -0.001712091847869912
+          },
+          {
+            "Date": "2026-08-20",
+            "portfolio_value": 70948.75309594949,
+            "net_return": -0.00088991062129673
+          },
+          {
+            "Date": "2026-08-21",
+            "portfolio_value": 70879.51190168496,
+            "net_return": -0.0009759325039988553
+          },
+          {
+            "Date": "2026-08-24",
+            "portfolio_value": 70796.27988195879,
+            "net_return": -0.0011742747303566947
+          }
+        ]
+      },
+      "B": {
+        "starting_capital": 100000.0,
+        "ending_capital": 87708.49812472712,
+        "net_return": -0.1229150187527288,
+        "annualized_return": -0.0712704454585239,
+        "annualized_volatility": 0.02044951606845382,
+        "sharpe_ratio": -3.6048628047798252,
+        "maximum_drawdown": 0.15120603266238783,
+        "total_turnover": 148.4650507891638,
+        "avg_daily_turnover": 0.33213657894667514,
+        "total_transaction_costs": 13718.239744446408,
+        "cost_bps": 10,
+        "strategy": "long_short",
+        "rebalance_freq_days": 1,
+        "trading_days": 447,
+        "equity_curve_head": [
+          {
+            "Date": "2024-12-03",
+            "portfolio_value": 99934.88903253077,
+            "net_return": -0.0006511096746922851
+          },
+          {
+            "Date": "2024-12-04",
+            "portfolio_value": 99956.37197107145,
+            "net_return": 0.0002149693540329789
+          },
+          {
+            "Date": "2024-12-05",
+            "portfolio_value": 99942.32869954153,
+            "net_return": -0.0001404940100665497
+          },
+          {
+            "Date": "2024-12-06",
+            "portfolio_value": 99841.32008010118,
+            "net_return": -0.0010106690603939317
+          },
+          {
+            "Date": "2024-12-09",
+            "portfolio_value": 99595.86438554992,
+            "net_return": -0.002458458024736987
+          }
+        ],
+        "equity_curve_tail": [
+          {
+            "Date": "2026-08-18",
+            "portfolio_value": 87481.2655779514,
+            "net_return": -0.00015958946833327659
+          },
+          {
+            "Date": "2026-08-19",
+            "portfolio_value": 87505.77095498187,
+            "net_return": 0.0002801214279259945
+          },
+          {
+            "Date": "2026-08-20",
+            "portfolio_value": 87575.68057143729,
+            "net_return": 0.0007989143537903143
+          },
+          {
+            "Date": "2026-08-21",
+            "portfolio_value": 87587.32457105439,
+            "net_return": 0.00013295928208734153
+          },
+          {
+            "Date": "2026-08-24",
+            "portfolio_value": 87708.49812472712,
+            "net_return": 0.0013834599271773662
+          }
+        ]
+      },
+      "B_minus_A": {
+        "net_return": 0.1691221824276833,
+        "annualized_return": 0.10564940873370143,
+        "annualized_volatility": 0.004300741432523264,
+        "sharpe_ratio": 8.439149626606783,
+        "maximum_drawdown": -0.14116373520262301,
+        "total_turnover": -220.71565637842286,
+        "avg_daily_turnover": -0.4937710433521765,
+        "total_transaction_costs": -17907.637651972967
+      }
+    },
+    "five_day_rebalance_period": {
+      "A": {
+        "starting_capital": 100000.0,
+        "ending_capital": 459243.3906895931,
+        "net_return": 3.592433906895931,
+        "annualized_return": 1.3617408814963814,
+        "annualized_volatility": 0.2680478233045678,
+        "sharpe_ratio": 3.345165746538993,
+        "maximum_drawdown": 0.316434401457073,
+        "total_turnover": 68.36741276831052,
+        "avg_daily_turnover": 0.1529472321438714,
+        "total_transaction_costs": 15760.438043583514,
+        "cost_bps": 10,
+        "strategy": "long_only",
+        "rebalance_freq_days": 5,
+        "trading_days": 447,
+        "equity_curve_head": [
+          {
+            "Date": "2024-12-03",
+            "portfolio_value": 100072.43281788121,
+            "net_return": 0.0007243281788120726
+          },
+          {
+            "Date": "2024-12-04",
+            "portfolio_value": 100596.03557656604,
+            "net_return": 0.0052322377296223355
+          },
+          {
+            "Date": "2024-12-05",
+            "portfolio_value": 100220.12194164886,
+            "net_return": -0.0037368633143705088
+          },
+          {
+            "Date": "2024-12-06",
+            "portfolio_value": 99887.73636894209,
+            "net_return": -0.003316555261230869
+          },
+          {
+            "Date": "2024-12-09",
+            "portfolio_value": 100327.56999902916,
+            "net_return": 0.004403279582415598
+          }
+        ],
+        "equity_curve_tail": [
+          {
+            "Date": "2026-08-18",
+            "portfolio_value": 459092.8658141973,
+            "net_return": 0.005752347467229635
+          },
+          {
+            "Date": "2026-08-19",
+            "portfolio_value": 458586.075692231,
+            "net_return": -0.0011038945705842407
+          },
+          {
+            "Date": "2026-08-20",
+            "portfolio_value": 460652.3261405893,
+            "net_return": 0.004505698183790985
+          },
+          {
+            "Date": "2026-08-21",
+            "portfolio_value": 461521.2465243265,
+            "net_return": 0.001886282418276597
+          },
+          {
+            "Date": "2026-08-24",
+            "portfolio_value": 459243.3906895931,
+            "net_return": -0.004935538400209549
+          }
+        ]
+      },
+      "B": {
+        "starting_capital": 100000.0,
+        "ending_capital": 448826.0584983649,
+        "net_return": 3.4882605849836485,
+        "annualized_return": 1.3313875820882402,
+        "annualized_volatility": 0.26334560689793235,
+        "sharpe_ratio": 3.3507852473040116,
+        "maximum_drawdown": 0.3272827135242353,
+        "total_turnover": 37.45123346935081,
+        "avg_daily_turnover": 0.08378352006566177,
+        "total_transaction_costs": 7891.710050418633,
+        "cost_bps": 10,
+        "strategy": "long_only",
+        "rebalance_freq_days": 5,
+        "trading_days": 447,
+        "equity_curve_head": [
+          {
+            "Date": "2024-12-03",
+            "portfolio_value": 99774.20758973656,
+            "net_return": -0.0022579241026343677
+          },
+          {
+            "Date": "2024-12-04",
+            "portfolio_value": 100054.72912749501,
+            "net_return": 0.0028115636749723727
+          },
+          {
+            "Date": "2024-12-05",
+            "portfolio_value": 99740.60344239298,
+            "net_return": -0.0031395386089322352
+          },
+          {
+            "Date": "2024-12-06",
+            "portfolio_value": 99979.2337656375,
+            "net_return": 0.002392509319259828
+          },
+          {
+            "Date": "2024-12-09",
+            "portfolio_value": 100924.67626394241,
+            "net_return": 0.009456388718892761
+          }
+        ],
+        "equity_curve_tail": [
+          {
+            "Date": "2026-08-18",
+            "portfolio_value": 446147.1057901483,
+            "net_return": 0.010520706066277974
+          },
+          {
+            "Date": "2026-08-19",
+            "portfolio_value": 447436.22330919636,
+            "net_return": 0.0028894449886993634
+          },
+          {
+            "Date": "2026-08-20",
+            "portfolio_value": 451018.38188025204,
+            "net_return": 0.008005964614492767
+          },
+          {
+            "Date": "2026-08-21",
+            "portfolio_value": 451704.1800223018,
+            "net_return": 0.0015205547481029758
+          },
+          {
+            "Date": "2026-08-24",
+            "portfolio_value": 448826.0584983649,
+            "net_return": -0.006371695572520042
+          }
+        ]
+      },
+      "B_minus_A": {
+        "net_return": -0.10417332191228246,
+        "annualized_return": -0.030353299408141243,
+        "annualized_volatility": -0.004702216406635429,
+        "sharpe_ratio": 0.0056195007650186035,
+        "maximum_drawdown": 0.010848312067162302,
+        "total_turnover": -30.916179298959705,
+        "avg_daily_turnover": -0.06916371207820964,
+        "total_transaction_costs": -7868.727993164881
+      }
+    }
+  }
+}

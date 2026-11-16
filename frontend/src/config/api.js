@@ -12,9 +12,10 @@ export const HEALTH_CHECK_ENDPOINT = '/models/status';
 
 export const ENDPOINTS = {
   analyze: '/analyze',
+  quotes: '/quotes',
   portfolioAnalyze: '/portfolio/analyze',
   forecast: (ticker) => `/forecast/${ticker}`,
-  sentiment: (ticker) => `/sentiment/${ticker}`,
+  sentiment: (ticker) => `/sentiment/${encodeURIComponent(ticker.trim().toUpperCase())}`,
   regime: '/market-regime',
   fundamentals: (ticker) => `/fundamentals/${ticker}`,
   tradingDecision: '/trading/decision',
@@ -36,6 +37,8 @@ export const ENDPOINTS = {
   tools: '/tools',
   toolsCall: '/tools/call',
   ppoStatus: '/ppo/status',
+  evaluateTicker: '/ticker/evaluate',
+  advancedLab: '/portfolio/advanced-lab',
 };
 
 export default {

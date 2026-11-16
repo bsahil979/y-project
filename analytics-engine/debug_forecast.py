@@ -1,5 +1,5 @@
 import yfinance as yf
-from services.forecaster import get_lstm_forecast
+from services.forecaster import get_price_forecast
 import pandas as pd
 
 try:
@@ -10,7 +10,7 @@ try:
         prices = prices["AAPL"]
     
     print(f"Data shape: {prices.shape}")
-    forecast = get_lstm_forecast(prices, 30)
+    forecast = get_price_forecast(prices, 30, return_metadata=False)
     print("Forecast successful!")
     print(forecast[:5])
 except Exception as e:

@@ -1,8 +1,9 @@
+import { Link, useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import {
-  TrendingUp, TrendingDown, Loader2, AlertTriangle, Brain,
-  Target, Shield, BarChart3, PieChart as PieIcon, Activity,
-  Globe, RefreshCw, Zap, ChevronRight,
+  TrendingUp, TrendingDown, Loader2, AlertTriangle, Brain, Briefcase,
+  Target, Shield, BarChart3, PieChart as PieIcon,
+  Zap, ChevronRight,
 } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
@@ -10,102 +11,78 @@ import {
   PieChart as RechartsPieChart, Pie,
 } from 'recharts';
 import { PortfolioService } from '../services/api';
-import { useAuth } from '../contexts/AuthContext';
+import { analysisRequest, combinedAnalysisRequest, formatMoney } from '../services/portfolioValuation';
+import usePortfolioSnapshot from '../hooks/usePortfolioSnapshot';
 
 const COLORS = ['#6366f1', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#ec4899', '#14b8a6'];
 
-const PortfolioDashboard = ({ tickers = ['AAPL', 'MSFT', 'GOOGL'] }) => {
-  const { user } = useAuth();
-  const userId = user?.id || user?.email || 'guest';
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const PortfolioDashboard = ({ advisor = false }) => {
+  const { search } = useLocation();
+  const scope = new URLSearchParams(search);
+  const [preview, setPreview] = useState('saved');
+  const { snapshot, pricing } = usePortfolioSnapshot();
   const [activeTab, setActiveTab] = useState('overview');
-
-  const weights = tickers.length > 0 ? Array(tickers.length).fill(1 / tickers.length) : [];
+  const [dismissedRecommendations, setDismissedRecommendations] = useState([]);
+  const [selectedCurrency, setSelectedCurrency] = useState(scope.get('currency') || 'INR');
+  const [analysis, setAnalysis] = useState({ key: '', data: null, error: '' });
+  const allHoldings = snapshot.holdings;
+  const valued = snapshot.valuation;
+  const [combineHoldings, setCombineHoldings] = useState(scope.get('mixed') === '1');
+  const mixed = valued.currencies.length === 2 && valued.currencies.includes('USD') && valued.currencies.includes('INR');
+  const combined = mixed && combineHoldings;
+  const currency = valued.groups[selectedCurrency] ? selectedCurrency : valued.currencies[0];
+  const localGroup = valued.groups[currency];
+  const request = snapshot.valid ? (combined ? combinedAnalysisRequest(valued, currency, snapshot)
+    : analysisRequest(localGroup, snapshot)) : null;
+  if (request && advisor && preview !== 'saved') {
+    Object.assign(request, { risk_preference: 'aggressive', investment_horizon_years: Number(preview), horizon_source: 'explicit' });
+  }
+  const requestJson = request ? JSON.stringify(request) : '';
+  const analysisKey = (snapshot.portfolioId || '') + ':' + (snapshot.portfolioRevision || '') + ':' + requestJson + ':' + pricing.revision;
+  const isStale = Boolean(analysis.data?.portfolio_revision && snapshot.portfolioRevision && analysis.data.portfolio_revision !== snapshot.portfolioRevision);
+  const loading = (Boolean(requestJson) && analysis.key !== analysisKey) || isStale;
+  const data = (analysis.key === analysisKey && !isStale) ? analysis.data : null;
+  const error = (analysis.key === analysisKey && !isStale) ? analysis.error : '';
+  const group = combined && data ? {tickers: data.tickers, weights: data.weights,
+    market: data.portfolio_value, marketByTicker: data.position_values_base, complete: true,
+    cost: null, pnl: null, pnlPct: null} : localGroup;
+  const currencyControls = <div className="flex flex-wrap items-center gap-3 text-sm text-gray-300">
+    {advisor && <label>Allocation scenario <select value={preview} onChange={e => setPreview(e.target.value)} className="ml-2 rounded-lg border p-2">
+      <option value="saved">My saved profile</option><option value="10">Preview aggressive · 10 years</option><option value="1">Preview aggressive · 1 year</option>
+    </select></label>}
+    <label>Portfolio currency <select aria-label="Portfolio currency" value={currency || ''} onChange={(event) => setSelectedCurrency(event.target.value)} className="ml-2 rounded-lg border border-gray-700 bg-[#11131a] p-2">{valued.currencies.map((code) => <option key={code} value={code}>{code}</option>)}</select></label>
+    <button onClick={pricing.refresh} disabled={pricing.loading} className="rounded-lg border border-gray-700 px-3 py-2 disabled:opacity-50">Refresh prices and analysis</button>
+    {mixed && <label><input type="checkbox" checked={combineHoldings} onChange={event => setCombineHoldings(event.target.checked)} /> Include both currencies in {currency}</label>}
+    {!combined && valued.currencies.length > 1 && <span className="text-xs text-gray-400">Select a currency to view its holdings.</span>}
+  </div>;
 
   useEffect(() => {
-    const raw = localStorage.getItem(`onboarding_data_${userId}`);
-    if (raw) {
-      try {
-        const onboarding = JSON.parse(raw);
-        if (onboarding.tickers && onboarding.tickers.length > 0) {
-          // Use onboarding tickers
-        }
-      } catch (e) { console.error(e); }
-    }
-  }, [userId]);
+    if (!requestJson) return;
+    let active = true;
+    PortfolioService.getPortfolioAnalysis(JSON.parse(requestJson), pricing.revision > 0)
+      .then((result) => { if (active) setAnalysis({ key: analysisKey, data: result, error: '' }); })
+      .catch((err) => { if (active) setAnalysis({ key: analysisKey, data: null, error: err?.response?.data?.detail || err?.message || 'Analysis unavailable' }); });
+    return () => { active = false; };
+  }, [requestJson, analysisKey, pricing.revision]);
 
-  useEffect(() => {
-    if (tickers.length === 0) {
-      setLoading(false);
-      return;
-    }
-
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await PortfolioService.getPortfolioAnalysis({
-          tickers,
-          weights,
-          portfolio_value: 100000,
-          start: '2020-01-01',
-          benchmark: 'SPY',
-        });
-        setData(res);
-      } catch (err) {
-        const msg = String(err?.message || '');
-        if (err?.code === 'ECONNABORTED' || msg.toLowerCase().includes('timeout')) {
-          setError('Request timed out. Analytics may still be computing; try again in a few seconds.');
-        } else if (err?.code === 'ERR_NETWORK' || msg.includes('Network Error')) {
-          setError('Cannot reach analytics API at http://localhost:8000.');
-        } else {
-          setError(msg || 'Unknown analytics error');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [tickers]);
-
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center h-96 gap-4">
-        <Loader2 className="w-10 h-10 text-indigo-500 animate-spin" />
-        <p className="text-gray-400 text-sm">Running portfolio analysis pipeline...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex flex-col items-center justify-center h-96 gap-4">
-        <AlertTriangle className="w-10 h-10 text-yellow-500" />
-        <p className="text-gray-400 text-sm">Analytics engine error: {error}</p>
-      </div>
-    );
-  }
-
+  if (!snapshot.valid) return <p role="alert" className="text-amber-300">{snapshot.errors.map((item) => item.message).join(" ")}</p>;
+  if (!allHoldings.length) return <div className="rounded-2xl border border-gray-800 p-8 text-center text-gray-300"><Briefcase className="mx-auto mb-3 h-10 w-10" /><h2 className="text-xl font-semibold">Start with your holdings</h2><p className="mt-2">Add positions in My Holdings or record transactions. A watchlist alone is not an owned portfolio.</p></div>;
+  if (pricing.loading || loading) return <div className="space-y-5">{currencyControls}<div className="flex items-center gap-3 text-gray-300"><Loader2 className="h-6 w-6 animate-spin" />{pricing.loading ? 'Loading the latest available quotes...' : 'Analyzing current market-value weights...'}</div></div>;
+  if (!request) return <div className="space-y-4">{currencyControls}<div className="rounded-2xl border border-amber-600/40 p-6 text-gray-300"><h2 className="font-semibold">Complete pricing is required for analysis</h2><p className="mt-2">{pricing.error || (!['INR', 'USD'].includes(currency) ? 'Analysis currently supports INR and USD portfolios.' : 'Some positions have unavailable or mismatched prices. Recorded costs are available in My Holdings; they are not used as substitute prices.')}</p><ul className="mt-3 list-disc pl-5">{group?.missing.map((item, index) => <li key={index}>{item.ticker}: {item.reason}</li>)}</ul></div></div>;
+  if (error) return <div className="space-y-4">{currencyControls}<p role="alert" className="text-amber-300">Analysis unavailable: {error}</p></div>;
   if (!data) return null;
 
   const riskSummary = data.risk_engine || {};
-  const portfolioScore = data.portfolio_score || {};
   const benchmark = data.benchmark || {};
   const attribution = data.attribution || {};
   const riskBudget = data.risk_budget || {};
   const recommendations = data.recommendations || [];
-  const regime = data.market_regime || {};
-  const stress = data.stress_test || {};
-  const tickerDetails = data.ml_models?.ticker_details || {};
 
   const volData = riskSummary["Volatility (Annual)"] || {};
   const varData = riskSummary["VaR (95%)"] || {};
+  const cvarData = riskSummary["CVaR (95%)"] || {};
   const drawdownData = riskSummary["Max Drawdown"] || {};
   const tickersList = Object.keys(volData);
-
-  const scorePct = portfolioScore.pct || 0;
-  const scoreGrade = portfolioScore.grade || 'N/A';
 
   // Benchmark comparison
   const benchComp = benchmark.comparison || {};
@@ -118,196 +95,85 @@ const PortfolioDashboard = ({ tickers = ['AAPL', 'MSFT', 'GOOGL'] }) => {
 
   // Risk budget
   const riskContrib = riskBudget.risk_contributions || [];
-  const portVol = riskBudget.portfolio_volatility || 0;
 
   // Tabs
   const tabs = [
     { id: 'overview', label: 'Overview', icon: PieIcon },
     { id: 'risk', label: 'Risk & Budget', icon: Shield },
     { id: 'performance', label: 'Performance', icon: TrendingUp },
-    { id: 'intelligence', label: 'Intelligence', icon: Brain },
-    { id: 'recommendations', label: 'Recommendations', icon: Target },
   ];
+
+  const allocation = data.personalized_allocation;
+  const biggestRisk = riskContrib.reduce((largest, row) => !largest || row.percentage_contribution_to_risk > largest.percentage_contribution_to_risk ? row : largest, null);
+  if (advisor) return <div className="space-y-5">{currencyControls}
+    {allocation ? <section className="rounded-2xl border p-5 space-y-4">
+      <h2 className="text-xl font-semibold">Your suggested allocation</h2>
+      <p>{allocation.applied_profile} · {allocation.objective_used.replaceAll('_', ' ')} · maximum position {(allocation.max_weight_cap * 100).toFixed(1)}%</p>
+      {allocation.success ? <AllocationComparison data={data} /> : <p role="status">{allocation.reason}</p>}
+      {allocation.success && preview === 'saved' && !combined && <Link className="inline-block font-semibold text-indigo-600" to="/dashboard/chat" state={{allocationCurrency: currency, portfolioId: snapshot.portfolioId}}>Ask the advisor about this allocation</Link>}
+      {allocation.feasibility_floor_applied && <p>The position cap uses the minimum feasible weight for this number of stocks.</p>}
+      {allocation.target_return_adjusted && <p>The return target was lowered to fit the position cap.</p>}
+    </section> : <p role="status">Profile allocation unavailable.</p>}
+    <details><summary className="cursor-pointer font-semibold">Compare other models and review recommendations</summary>{renderRecommendations()}</details>
+  </div>;
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
-      {/* Header Stats */}
-      <div className="grid grid-cols-4 gap-4">
-        <StatCard
-          label="Portfolio Score"
-          value={portfolioScore.score || 0}
-          subtitle={`Grade ${scoreGrade} (${scorePct}%)`}
-          icon={<Brain className="w-5 h-5 text-indigo-400" />}
-          color="indigo"
-        />
-        <StatCard
-          label="Annualized Volatility"
-          value={`${(portVol * 100).toFixed(1)}%`}
-          subtitle="Portfolio Risk"
-          icon={<Activity className="w-5 h-5 text-rose-400" />}
-          color="rose"
-        />
-        <StatCard
-          label="Benchmark Alpha"
-          value={`${(benchComp.alpha * 100).toFixed(1)}%`}
-          subtitle={`vs ${benchmark.benchmark_display || 'SPY'}`}
-          icon={<TrendingUp className="w-5 h-5 text-emerald-400" />}
-          color="emerald"
-        />
-        <StatCard
-          label="Market Regime"
-          value={regime.current_regime || 'Unknown'}
-          subtitle={`Confidence ${((regime.confidence || 0) * 100).toFixed(0)}%`}
-          icon={<Globe className="w-5 h-5 text-blue-400" />}
-          color="blue"
-        />
-      </div>
-
-      {/* Tab Navigation */}
-      <div className="flex gap-1 bg-[#11131a]/80 border border-gray-800/50 rounded-xl p-1.5">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
-              activeTab === tab.id
-                ? 'bg-indigo-600/20 text-white border border-indigo-500/30'
-                : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/30'
-            }`}
-          >
-            <tab.icon className="w-4 h-4" />
-            {tab.label}
-          </button>
-        ))}
+      {currencyControls}
+      <p className="text-sm text-gray-400">Analysis uses current market-value weights from the latest available quotes, which may be delayed. Suggested allocations are model estimates.</p>
+      {/* Tab Navigation & Refresh */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#11131a]/80 border border-gray-800/50 rounded-xl p-1.5">
+        <div className="flex flex-wrap gap-1 w-full sm:w-auto">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                activeTab === tab.id
+                  ? 'bg-indigo-600/20 text-white border border-indigo-500/30'
+                  : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/30'
+              }`}
+            >
+              <tab.icon className="w-4 h-4" />
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Tab Content */}
       {activeTab === 'overview' && renderOverview()}
       {activeTab === 'risk' && renderRisk()}
+      {activeTab === 'risk' && Object.entries(data.stress_test?.scenarios || {}).map(([scenario, result]) =>
+        <details key={scenario} className="rounded-xl border border-gray-800 p-4">
+          <summary>{scenario} · {formatMoney(result.value_change, currency)}</summary>
+          <p>Gain required to recover: {result.recovery_gain_required == null ? 'Unavailable' : (result.recovery_gain_required * 100).toFixed(1) + '%'}</p>
+          <table className="w-full text-sm"><thead><tr><th>Holding</th><th>Method</th><th>Shock</th><th>Value change</th></tr></thead>
+          <tbody>{Object.entries(result.holdings).map(([ticker, h]) => <tr key={ticker}><td>{ticker}</td>
+            <td>{h.scenario_method === 'realized_historical_replay' ? 'Historical window' : 'Beta and residual risk'}</td>
+            <td>{(h.holding_shock * 100).toFixed(1)}%</td><td>{formatMoney(h.value_change, currency)}</td></tr>)}</tbody></table>
+        </details>)}
       {activeTab === 'performance' && renderPerformance()}
-      {activeTab === 'intelligence' && renderIntelligence()}
-      {activeTab === 'recommendations' && renderRecommendations()}
     </div>
   );
 
   // ── Tab Renderers ──────────────────────────────────────
 
   function renderOverview() {
-    const chartData = tickersList.map((ticker) => ({
-      name: ticker,
-      volatility: parseFloat(((volData[ticker] || 0) * 100).toFixed(2)),
-      var95: parseFloat(((varData[ticker] || 0) * 100).toFixed(2)),
-      maxDrawdown: parseFloat(((drawdownData[ticker] || 0) * 100).toFixed(2)),
-    }));
-
-    const scoreComponents = portfolioScore.components || {};
-    const allocation = data.asset_allocation || [];
-    const risksIdentified = portfolioScore.risks_identified || [];
-
-    return (
-      <div className="grid grid-cols-12 gap-6">
-        {/* Risk Metrics Chart */}
-        <div className="col-span-8 bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Risk Metrics by Asset</h3>
-          <div className="h-72">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} barCategoryGap="30%" barGap={4}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
-                <XAxis dataKey="name" stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} unit="%" />
-                <Tooltip contentStyle={{ backgroundColor: '#11131a', border: '1px solid #374151', borderRadius: '12px' }} />
-                <Legend />
-                <Bar dataKey="volatility" name="Volatility %" fill="#6366f1" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="var95" name="VaR (95%) %" fill="#f59e0b" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="maxDrawdown" name="Max Drawdown %" fill="#ef4444" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Portfolio Score */}
-        <div className="col-span-4 bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <Brain className="w-4 h-4 text-white" />
-            </div>
-            <h3 className="text-lg font-semibold text-white">Portfolio Score</h3>
-          </div>
-          <div className="text-center mb-4">
-            <div className="text-4xl font-black text-white">{portfolioScore.score || 0}</div>
-            <div className="text-sm text-gray-500 mt-1">
-              of {portfolioScore.max_score || 1000} · Grade: <span className={`font-bold ${scorePct >= 80 ? 'text-emerald-400' : scorePct >= 70 ? 'text-yellow-400' : scorePct >= 50 ? 'text-orange-400' : 'text-rose-400'}`}>{scoreGrade}</span>
-            </div>
-          </div>
-          <div className="space-y-3">
-            {Object.entries(scoreComponents).map(([key, comp]) => (
-              <div key={key}>
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-xs text-gray-400">{comp.label}</span>
-                  <span className="text-xs font-bold text-gray-300">{comp.score}/{comp.max}</span>
-                </div>
-                <div className="w-full bg-gray-800/50 rounded-full h-1.5 overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${(comp.score / comp.max) * 100}%`,
-                      backgroundColor: comp.score >= comp.max * 0.8 ? '#10b981' : comp.score >= comp.max * 0.6 ? '#f59e0b' : '#ef4444',
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Sector Allocation */}
-        <div className="col-span-6 bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Asset Allocation by Sector</h3>
-          <div className="space-y-3">
-            {allocation.map((asset, i) => (
-              <div key={asset.ticker} className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded" style={{ backgroundColor: COLORS[i % COLORS.length] }} />
-                  <span className="text-sm font-medium text-gray-300">{asset.ticker}</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-xs text-gray-500">{asset.category}</span>
-                  <span className="text-xs font-bold text-white">{asset.weight.toFixed(1)}%</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Risks Identified */}
-        <div className="col-span-6 bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Risks Identified ({risksIdentified.length})</h3>
-          <div className="space-y-3 max-h-48 overflow-y-auto custom-scrollbar">
-            {risksIdentified.length === 0 ? (
-              <p className="text-xs text-gray-500">No significant risks identified.</p>
-            ) : (
-              risksIdentified.map((risk, i) => (
-                <div key={i} className={`p-3 rounded-xl border-l-2 ${
-                  risk.severity === 'high' ? 'border-rose-500 bg-rose-500/5' :
-                  risk.severity === 'medium' ? 'border-amber-500 bg-amber-500/5' :
-                  'border-blue-500 bg-blue-500/5'
-                }`}>
-                  <div className="flex justify-between">
-                    <span className="text-xs font-bold text-gray-200">{risk.label}</span>
-                    <span className={`text-[10px] uppercase font-bold ${
-                      risk.severity === 'high' ? 'text-rose-400' :
-                      risk.severity === 'medium' ? 'text-amber-400' :
-                      'text-blue-400'
-                    }`}>{risk.severity}</span>
-                  </div>
-                  <p className="text-[11px] text-gray-500 mt-1">{risk.description}</p>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
+    const allocationRows = group.tickers.map((ticker, index) => ({ ticker, market: group.marketByTicker[ticker], weight: group.weights[index] }));
+    return <div className="space-y-5">
+      <div className="grid gap-4 md:grid-cols-3">
+        <StatCard label="Holdings value" value={formatMoney(group.market, currency)} subtitle="Latest available quotes" />
+        <StatCard label="Risk preference" value={allocation?.applied_profile || request.risk_preference} subtitle={request.investment_horizon_years == null ? 'Horizon unspecified' : request.investment_horizon_years.toFixed(1) + ' year horizon'} />
+        <StatCard label="Largest contributor to risk" value={biggestRisk?.ticker || 'Unavailable'} subtitle={biggestRisk ? biggestRisk.percentage_contribution_to_risk.toFixed(1) + '% of portfolio volatility' : 'Risk contributions unavailable'} />
       </div>
-    );
+      <div className="rounded-2xl border border-gray-800 p-5 text-gray-300">
+        <h2 className="mb-3 font-semibold">Your current allocation ({currency})</h2>
+        <table className="w-full text-sm"><thead><tr><th className="py-2 text-left">Stock</th><th className="text-right">Market value</th><th className="text-right">Weight</th></tr></thead><tbody>{allocationRows.map((row) => <tr key={row.ticker}><td className="py-2">{row.ticker}</td><td className="text-right">{formatMoney(row.market, currency)}</td><td className="text-right">{(row.weight * 100).toFixed(1)}%</td></tr>)}</tbody></table>
+        <p className="mt-3 text-xs text-gray-400">{combined ? `Values use USD/INR ${data.fx_rate_inr_per_usd} on ${data.valuation_date}. Weight is each converted value divided by the combined total.` : 'Weight is each position’s market value divided by the total in this currency.'} These weights are used throughout the risk and allocation analysis.</p>
+      </div>
+      <Link to={`/dashboard/advisor?currency=${currency}&mixed=${combined ? 1 : 0}`} className="inline-block rounded-lg bg-indigo-600 px-4 py-2 text-white">Review suggested allocation</Link>
+    </div>;
   }
 
   function renderRisk() {
@@ -348,14 +214,17 @@ const PortfolioDashboard = ({ tickers = ['AAPL', 'MSFT', 'GOOGL'] }) => {
 
         {/* Risk Summary Table */}
         <div className="col-span-6 bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Risk Metrics Summary</h3>
+          <h3 className="text-lg font-semibold text-white mb-2">Historical Risk Metrics by Holding</h3>
+          <p className="mb-4 text-xs text-gray-500">Uses daily returns over the selected history. Volatility is annualized (252 trading days); VaR is the 5th-percentile daily return; CVaR is the average return in that worst 5% tail. VaR and CVaR are signed returns, so losses appear negative. Maximum drawdown is the largest peak-to-trough fall in this window.</p>
+          <p className="mb-4 text-xs text-gray-500">Price history: {data.market_data?.provider || 'source unavailable'} · {data.market_data?.price_field || 'price convention unavailable'} · {data.market_data?.first_observation || '—'} to {data.market_data?.last_observation || '—'} ({data.market_data?.price_observations ?? '—'} complete observations; {data.market_data?.dropped_incomplete_rows ?? 0} incomplete dates excluded). Missing dates are excluded rather than filled with stale prices.</p>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
               <thead>
                 <tr className="border-b border-gray-800/50">
                   <th className="text-left py-2 text-gray-400">Ticker</th>
-                  <th className="text-right py-2 text-gray-400">Volatility</th>
-                  <th className="text-right py-2 text-gray-400">VaR (95%)</th>
+                  <th className="text-right py-2 text-gray-400">Annualized Volatility</th>
+                  <th className="text-right py-2 text-gray-400">Daily VaR (95%)</th>
+                  <th className="text-right py-2 text-gray-400">Daily CVaR (95%)</th>
                   <th className="text-right py-2 text-gray-400">Max Drawdown</th>
                 </tr>
               </thead>
@@ -365,6 +234,7 @@ const PortfolioDashboard = ({ tickers = ['AAPL', 'MSFT', 'GOOGL'] }) => {
                     <td className="py-2 text-gray-300">{ticker}</td>
                     <td className="py-2 text-right text-gray-300">{((volData[ticker] || 0) * 100).toFixed(1)}%</td>
                     <td className="py-2 text-right text-gray-300">{((varData[ticker] || 0) * 100).toFixed(1)}%</td>
+                    <td className="py-2 text-right text-gray-300">{((cvarData[ticker] || 0) * 100).toFixed(1)}%</td>
                     <td className="py-2 text-right text-gray-300">{((drawdownData[ticker] || 0) * 100).toFixed(1)}%</td>
                   </tr>
                 ))}
@@ -464,111 +334,161 @@ const PortfolioDashboard = ({ tickers = ['AAPL', 'MSFT', 'GOOGL'] }) => {
     );
   }
 
-  function renderIntelligence() {
-    return (
-      <div className="grid grid-cols-12 gap-6">
-        {/* Market Regime */}
-        <div className="col-span-4 bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Market Regime (HMM)</h3>
-          <div className="text-center">
-            <div className="text-3xl font-black text-white mb-2">{regime.current_regime || 'Unknown'}</div>
-            <div className="text-sm text-gray-400 mb-4">State #{regime.state_id} · Confidence {(regime.confidence * 100).toFixed(0)}%</div>
-            <div className="bg-gray-800/30 rounded-xl p-3">
-              <span className="text-xs text-gray-500">Portfolio Regime</span>
-              <p className="text-sm text-gray-300 mt-1">{data.portfolio_regime?.current_regime || 'N/A'}</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Stress Test */}
-        <div className="col-span-4 bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Stress Test</h3>
-          <div className="space-y-3">
-            {stress.worst_scenario && (
-              <div className="p-3 bg-rose-500/10 border border-rose-500/20 rounded-xl">
-                <span className="text-xs text-gray-500">Worst Case</span>
-                <p className="text-sm font-bold text-rose-400 mt-1">{stress.worst_scenario}</p>
-                <p className="text-xs text-gray-400">Loss: {stress.worst_loss_pct?.toFixed(1)}%</p>
-              </div>
-            )}
-            {riskBudget.var_95 !== undefined && (
-              <div className="p-3 bg-gray-800/30 rounded-xl">
-                <span className="text-xs text-gray-500">VaR (95%)</span>
-                <p className="text-sm font-bold text-white mt-1">{(riskBudget.var_95 * 100).toFixed(1)}%</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* ML Forecasts & Sentiment */}
-        <div className="col-span-4 bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">ML Intelligence</h3>
-          <div className="space-y-3 max-h-64 overflow-y-auto custom-scrollbar">
-            {tickers.map((ticker) => {
-              const detail = tickerDetails[ticker] || tickerDetails[ticker.toUpperCase()] || {};
-              const forecast = detail.forecast;
-              const mm = detail.marketmind;
-              const hasForecast = forecast && forecast.predictions && forecast.predictions.length > 0;
-              const hasMm = mm && mm.recommendation;
-              if (!hasForecast && !hasMm) return null;
-              return (
-                <div key={ticker} className="p-2.5 bg-gray-800/30 rounded-lg">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm font-bold text-gray-200">{ticker.toUpperCase()}</span>
-                  </div>
-                  {hasForecast && (
-                    <p className="text-xs text-gray-400">
-                      Forecast: {forecast.predictions.length} pts · Spot ${forecast.spot_price?.toFixed(2)}
-                    </p>
-                  )}
-                  {hasMm && (
-                    <div className="flex justify-between text-xs mt-1">
-                      <span className="text-gray-400">MarketMind:</span>
-                      <span className={`font-bold ${mm.recommendation === 'BUY' ? 'text-emerald-400' : mm.recommendation === 'SELL' ? 'text-rose-400' : 'text-gray-400'}`}>{mm.recommendation} ({mm.confidence?.toFixed(2)})</span>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   function renderRecommendations() {
-    return (
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold text-white">Evidence-Backed Recommendations</h3>
-          <span className="text-xs text-gray-500">{recommendations.length} recommendations generated</span>
-        </div>
+    try {
+      const list = Array.isArray(recommendations) ? recommendations : [];
+      const dismissed = Array.isArray(dismissedRecommendations) ? dismissedRecommendations : [];
+      const activeRecs = list.filter((rec) => rec && (rec.id || rec.action || rec.description) && !dismissed.includes(rec.id));
+
+      return (
         <div className="space-y-4">
-          {recommendations.map((rec) => (
-            <RecommendationCard key={rec.id} rec={rec} />
-          ))}
-        </div>
-        {recommendations.length === 0 && (
-          <div className="bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-8 text-center">
-            <Brain className="w-10 h-10 text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-400">No recommendations generated. Portfolio appears well-balanced.</p>
+          <div className="rounded-2xl border border-indigo-800/50 bg-[#11131a]/80 p-5 space-y-3">
+            <h3 className="text-lg font-semibold text-white">Allocation using market conditions</h3>
+            {data.regime_allocation?.status === 'ready' ? (
+              <>
+                <p className="text-sm text-gray-400">{data.regime_allocation.explanation}</p>
+                {data.regime_allocation.convergence?.converged === false && (
+                  <p role="status" className="rounded-lg border border-amber-700/60 bg-amber-950/30 px-3 py-2 text-sm text-amber-200">
+                    The HMM reached its {data.regime_allocation.convergence.iterations}-iteration limit before meeting the likelihood tolerance. Treat these state probabilities and weights as less reliable estimates.
+                  </p>
+                )}
+                {data.regime_allocation.states?.some((state) => state.covariance_fallback) && (
+                  <p role="status" className="rounded-lg border border-amber-700/60 bg-amber-950/30 px-3 py-2 text-sm text-amber-200">
+                    At least one market state had too little training data to estimate its own covariance. Its risk estimate falls back to the overall history, so this allocation is less state-specific.
+                  </p>
+                )}
+                <p className="text-xs text-gray-500">Trained on {data.regime_allocation.observations} daily returns: {data.regime_allocation.training_start} to {data.regime_allocation.training_end}. State probabilities look two trading sessions ahead.</p>
+                <div className="flex flex-wrap gap-3">
+                  {data.regime_allocation.states.map((state) => <span key={state.label} className="rounded-lg bg-indigo-500/10 px-3 py-2 text-sm text-indigo-300">{state.label}: {(state.probability * 100).toFixed(1)}%</span>)}
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-gray-300">
+                    <thead><tr><th className="text-left py-2">Stock</th><th className="text-right">Current</th><th className="text-right">Without regimes</th><th className="text-right">With regimes</th></tr></thead>
+                    <tbody>{data.tickers.map((ticker, index) => <tr key={ticker}><td className="py-2">{ticker}</td><td className="text-right">{(data.weights[index] * 100).toFixed(1)}%</td><td className="text-right">{(data.regime_allocation.baseline_weights[ticker] * 100).toFixed(1)}%</td><td className="text-right">{(data.regime_allocation.weights[ticker] * 100).toFixed(1)}%</td></tr>)}</tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-gray-500">Experimental comparison. Neither allocation has a guaranteed performance advantage.</p>
+              </>
+            ) : <p className="text-sm text-gray-400">{data.regime_allocation?.reason || 'Refresh the analysis to calculate market-condition allocations.'}</p>}
           </div>
-        )}
-      </div>
-    );
+          {data.ai_black_litterman_allocation && (
+            <div className="glass-card rounded-xl p-6 space-y-3">
+              <h3 className="text-lg font-semibold text-white">AI Black–Litterman allocation</h3>
+              <p className="text-sm text-gray-400">MarketMind + FinBERT · maximum position {(data.ai_black_litterman_allocation.max_weight_cap * 100).toFixed(1)}% · {data.ai_black_litterman_allocation.horizon_modifier?.replaceAll('_', ' ')}</p>
+              {data.ai_black_litterman_allocation.signal_status === 'prior_only' && <p className="text-sm text-amber-400">AI signals unavailable. Uses the equilibrium prior without an AI tilt.</p>}
+              {data.ai_black_litterman_allocation.success ? (
+                <div className="overflow-x-auto"><table className="w-full text-sm"><thead><tr><th className="text-left">Stock</th><th>Current</th><th>Prior</th><th>AI target</th><th>Signal sources</th></tr></thead>
+                  <tbody>{data.tickers.map((ticker, index) => {
+                    const ai = data.ai_black_litterman_allocation;
+                    const view = ai.provenance[ticker];
+                    return <tr key={ticker}><td className="py-2">{ticker}</td><td className="text-center">{(data.weights[index] * 100).toFixed(1)}%</td><td className="text-center">{(ai.prior_weights[ticker] * 100).toFixed(1)}%</td><td className="text-center">{(ai.weights[ticker] * 100).toFixed(1)}%</td><td className="text-center">{view.fallback_to_prior ? 'Prior only' : [view.marketmind_net_prob != null && 'MarketMind', view.finbert_score != null && 'FinBERT'].filter(Boolean).join(' + ')}</td></tr>;
+                  })}</tbody></table></div>
+              ) : <p role="status">{data.ai_black_litterman_allocation.reason}</p>}
+              <p className="text-xs text-gray-400">Equal-weight equilibrium prior. Historical estimates; AI view confidence is heuristic, not calibrated accuracy. Missing news is not neutral sentiment.</p>
+            </div>
+          )}
+          {data.allocation?.weights && (
+            <div className="rounded-2xl border border-gray-800 bg-[#11131a]/80 p-5 space-y-3">
+              <h3 className="text-lg font-semibold text-white">Minimum-volatility allocation</h3>
+              <p className="text-sm text-gray-400">{data.allocation.explanation}</p>
+              <table className="w-full text-sm text-gray-300">
+                <thead><tr><th className="text-left py-2">Stock</th><th className="text-right">Current weight</th><th className="text-right">Suggested weight</th></tr></thead>
+                <tbody>{data.tickers.map((ticker, index) => (
+                  <tr key={ticker}><td className="py-2">{ticker}</td><td className="text-right">{(data.weights[index] * 100).toFixed(1)}%</td><td className="text-right">{(data.allocation.weights[ticker] * 100).toFixed(1)}%</td></tr>
+                ))}</tbody>
+              </table>
+              <p className="text-sm text-gray-400">Historical annualized volatility: {(data.allocation.current_performance.volatility * 100).toFixed(1)}% current; {(data.allocation.performance.volatility * 100).toFixed(1)}% suggested.</p>
+            </div>
+          )}
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-lg font-semibold text-white">Portfolio Improvements</h3>
+            <span className="text-xs text-gray-400 font-mono">{activeRecs.length} improvements available</span>
+          </div>
+          {activeRecs.length > 0 ? (
+            <div className="space-y-3">
+              {activeRecs.map((rec, idx) => (
+                <RecommendationCard
+                  key={rec?.id || idx}
+                  rec={rec}
+                  onDismiss={() => rec?.id && setDismissedRecommendations((current) => [...current, rec.id])}
+                />
+              ))}
+            </div>
+          ) : data.stages?.recommendations?.status === 'UNAVAILABLE' || data.stages?.recommendations?.status === 'FAILED' ? (
+            <div className="bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-8 text-center">
+              <Brain className="w-10 h-10 text-amber-500/50 mx-auto mb-3" />
+              <p className="text-gray-300 font-medium">Recommendations currently unavailable.</p>
+              <p className="text-xs text-gray-500 mt-1">{data.stages.recommendations.reason || 'Check model signals and market data coverage.'}</p>
+            </div>
+          ) : (
+            <div className="bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-8 text-center">
+              <Brain className="w-10 h-10 text-gray-600 mx-auto mb-3" />
+              <p className="text-gray-300 font-medium">No immediate recommendations requiring review.</p>
+              <p className="text-xs text-gray-500 mt-1">No risk concentration or rebalancing thresholds were triggered for this portfolio.</p>
+            </div>
+          )}
+        </div>
+      );
+    } catch (err) {
+      return (
+        <div className="bg-[#11131a]/80 border border-amber-500/30 rounded-2xl p-6 text-center text-amber-300 text-sm">
+          Unable to render recommendations. {String(err?.message || err)}
+        </div>
+      );
+    }
   }
 };
 
 // ── Sub-components ───────────────────────────────────────────
 
-const StatCard = ({ label, value, subtitle, icon }) => (
-  <div className="bg-[#11131a]/80 border border-gray-800/50 rounded-2xl p-4">
-    <div className="flex items-center gap-2 mb-2">
-      {icon}
-      <span className="text-xs text-gray-500 font-medium">{label}</span>
+const ActionCenter = ({ recommendations, totalCount, onReviewAll, onDismiss }) => (
+<section className="rounded-[28px] border border-indigo-500/20 bg-gradient-to-br from-indigo-500/10 via-slate-900/80 to-slate-950/80 p-5 shadow-xl shadow-indigo-950/20">
+  <div className="mb-4 flex items-center justify-between gap-4">
+      <div>
+      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-indigo-300">Action center</p>
+      <h2 className="mt-1 text-lg font-bold text-white">What deserves your attention?</h2>
+      <p className="mt-1 text-xs text-slate-400">Evidence-backed insights from your portfolio analysis.</p>
+      </div>
+    <button type="button" onClick={onReviewAll} className="text-xs font-bold text-indigo-200 transition hover:text-white">
+      Review all {totalCount > 0 ? `(${totalCount})` : ''} <ChevronRight className="inline h-3.5 w-3.5" />
+      </button>
     </div>
-    <div className="text-2xl font-black text-white">{value}</div>
-    <p className="text-[10px] text-gray-500 mt-1">{subtitle}</p>
+    {Array.isArray(recommendations) && recommendations.length === 0 ? (
+    <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4">
+        <p className="text-sm font-semibold text-emerald-300">No immediate actions identified.</p>
+      <p className="mt-1 text-xs text-slate-400">Your current analysis has no recommendations requiring review.</p>
+      </div>
+    ) : (
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+        {Array.isArray(recommendations) ? recommendations.map((rec, i) => (
+        <div key={rec?.id || i} className="flex flex-col rounded-2xl border border-white/10 bg-slate-900/60 p-4">
+            <div className="flex items-start justify-between gap-2">
+            <p className="text-xs font-bold uppercase text-slate-300">{String(rec?.action || 'Review').replace(/_/g, ' ')} <span className="normal-case text-white">{String(rec?.asset || '')}</span></p>
+            <span className="shrink-0 rounded-full bg-amber-500/10 px-2 py-1 text-[10px] font-bold uppercase text-amber-300">{String(rec?.confidence || 'review')}</span>
+            </div>
+          <p className="mt-3 flex-1 text-sm text-slate-300">{String(rec?.reason || rec?.description || 'Review this portfolio insight.')}</p>
+          {rec?.expected_impact && <p className="mt-3 text-[11px] text-slate-400">Potential impact: {String(rec.expected_impact)}</p>}
+          <div className="mt-4 flex gap-2">
+            <button type="button" onClick={onReviewAll} className="rounded-lg bg-indigo-600/20 px-3 py-1.5 text-xs text-indigo-200 transition hover:bg-indigo-600/30">Review</button>
+            <button type="button" onClick={() => rec?.id && onDismiss(rec.id)} className="rounded-lg bg-white/5 px-3 py-1.5 text-xs text-slate-300 transition hover:text-white">Dismiss</button>
+            </div>
+          </div>
+        )) : (
+          <></>
+        )}
+      </div>
+    )}
+  </section>
+);
+
+const StatCard = ({ label, value, subtitle, icon }) => (
+<div className="rounded-[24px] border border-white/10 bg-gradient-to-br from-slate-900/90 to-slate-950/80 p-4 shadow-xl shadow-slate-950/20">
+  <div className="mb-3 flex items-center gap-2">
+    {icon && <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-800/80">{icon}</div>}
+    <span className="text-xs font-medium text-slate-400">{label}</span>
+    </div>
+  <div className="text-2xl font-black tracking-tight text-white">{value}</div>
+  <p className="mt-1 text-[10px] text-slate-400">{subtitle}</p>
   </div>
 );
 
@@ -632,33 +552,54 @@ const CorrelationMatrix = ({ data }) => {
   );
 };
 
-const RecommendationCard = ({ rec }) => {
+const RecommendationCard = ({ rec, onDismiss }) => {
+  if (!rec) return null;
+
+  const formatMetricVal = (val) => {
+    try {
+      if (val == null) return 'N/A';
+      if (typeof val === 'number') {
+        return Number.isInteger(val) ? val.toString() : val.toFixed(Math.abs(val) >= 1 ? 2 : 4);
+      }
+      if (Array.isArray(val)) {
+        return val.map((item) => (typeof item === 'object' && item !== null ? JSON.stringify(item) : String(item))).join(', ');
+      }
+      if (typeof val === 'object') {
+        return Object.entries(val).map(([k, v]) => `${k}: ${typeof v === 'number' ? v.toFixed(2) : String(v ?? 'N/A')}`).join(' | ');
+      }
+      return String(val);
+    } catch {
+      return String(val ?? 'N/A');
+    }
+  };
+
   const severityColors = {
     high: 'border-rose-500 bg-rose-500/5',
     medium: 'border-amber-500 bg-amber-500/5',
     low: 'border-blue-500 bg-blue-500/5',
     experimental: 'border-purple-500 bg-purple-500/5',
   };
-  const colorClass = severityColors[rec.confidence] || 'border-gray-500 bg-gray-500/5';
+  const confidenceStr = String(rec.confidence || 'medium').toLowerCase();
+  const colorClass = severityColors[confidenceStr] || 'border-gray-500 bg-gray-500/5';
   return (
     <div className={`border-l-2 rounded-xl p-4 ${colorClass}`}>
       <div className="flex justify-between items-start mb-2">
         <div>
-          <span className="text-xs font-bold uppercase text-gray-500">{rec.action}</span>
-          <span className="text-sm font-bold text-white"> {rec.asset}</span>
+          <span className="text-xs font-bold uppercase text-gray-500">{String(rec.action || 'Review').replace(/_/g, ' ')}</span>
+          <span className="text-sm font-bold text-white"> {String(rec.asset || '')}</span>
         </div>
         <span className={`text-[10px] uppercase font-bold px-2 py-1 rounded ${
-          rec.confidence === 'high' ? 'text-rose-300 bg-rose-500/10' :
-          rec.confidence === 'medium' ? 'text-amber-300 bg-amber-500/10' :
+          confidenceStr === 'high' ? 'text-rose-300 bg-rose-500/10' :
+          confidenceStr === 'medium' ? 'text-amber-300 bg-amber-500/10' :
           'text-blue-300 bg-blue-500/10'
-        }`}>{rec.confidence}</span>
+        }`}>{confidenceStr}</span>
       </div>
-      <p className="text-sm text-gray-300 mb-2">{rec.reason}</p>
-      {rec.supporting_metrics && Object.keys(rec.supporting_metrics).length > 0 && (
+      <p className="text-sm text-gray-300 mb-2">{String(rec.reason || rec.description || '')}</p>
+      {rec.supporting_metrics && typeof rec.supporting_metrics === 'object' && !Array.isArray(rec.supporting_metrics) && Object.keys(rec.supporting_metrics).length > 0 && (
         <div className="text-xs text-gray-500 mb-2">
           <span className="font-medium text-gray-400">Metrics:</span>
           {Object.entries(rec.supporting_metrics).map(([k, v]) => (
-            <span key={k} className="ml-2">{k}: {typeof v === 'number' ? v.toFixed ? v.toFixed(v > 1 ? 2 : 4) : v : v}</span>
+            <span key={k} className="ml-2">{k}: {formatMetricVal(v)}</span>
           ))}
         </div>
       )}
@@ -669,12 +610,35 @@ const RecommendationCard = ({ rec }) => {
         <button className="text-xs px-3 py-1.5 bg-indigo-600/20 text-indigo-300 rounded-lg hover:bg-indigo-600/30 transition-colors">
           Simulate
         </button>
+        {onDismiss && <button type="button" onClick={onDismiss} className="text-xs px-3 py-1.5 bg-gray-800/50 text-gray-400 rounded-lg hover:text-white transition-colors">Dismiss</button>}
         <span className="text-[10px] text-gray-600">
-          Models: {rec.supporting_models?.join(', ') || 'N/A'}
+          Models: {Array.isArray(rec.supporting_models) ? rec.supporting_models.join(', ') : 'N/A'}
         </span>
       </div>
     </div>
   );
 };
+
+export function AllocationComparison({ data }) {
+  const allocation = data.personalized_allocation;
+  const rows = data.tickers.map((ticker, index) => ({
+    ticker, current: data.weights[index], target: allocation.weights[ticker],
+    change: allocation.weights[ticker] - data.weights[index],
+  })).sort((a, b) => Math.abs(b.change) - Math.abs(a.change));
+  const top = rows[0];
+  const aiView = allocation.objective_used === 'black_litterman' && data.ai_black_litterman_allocation?.provenance?.[top?.ticker];
+  const pct = weight => (weight * 100).toFixed(1) + '%';
+  return <>
+    <table className="w-full text-sm"><thead><tr><th className="text-left">Holding</th><th>Current</th><th>Suggested</th><th>Change (pp)</th></tr></thead>
+      <tbody>{rows.map(r => <tr className="border-t text-center" key={r.ticker}><td className="py-2 text-left">{r.ticker}</td><td>{pct(r.current)}</td><td>{pct(r.target)}</td><td>{(100 * r.change).toFixed(1)}</td></tr>)}</tbody>
+    </table>
+    <details><summary className="cursor-pointer font-semibold">Explain this allocation</summary>
+      {top && <p className="mt-3">{Math.abs(top.change) < 0.0005 ? 'Current weights already match the suggested allocation at the precision shown.' : `The largest adjustment is ${top.ticker}, from ${pct(top.current)} to ${pct(top.target)}.`}</p>}
+      <p>The optimizer used {allocation.objective_used.replaceAll('_', ' ')} with a {pct(allocation.max_weight_cap)} position cap. Horizon rule: {allocation.horizon_modifier?.replaceAll('_', ' ') || 'baseline'}.</p>
+      {aiView && <p>{top.ticker} view: MarketMind net probability {aiView.marketmind_net_prob == null ? 'unavailable' : pct(aiView.marketmind_net_prob)}. FinBERT sentiment {aiView.finbert_score == null ? 'unavailable' : aiView.finbert_score.toFixed(2)}. {aiView.fallback_to_prior && 'The model used the equilibrium prior.'}</p>}
+      <p className="mt-2 text-sm">Suggested weights are estimates before execution costs.</p>
+    </details>
+  </>;
+}
 
 export default PortfolioDashboard;

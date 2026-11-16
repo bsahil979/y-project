@@ -1,0 +1,31 @@
+{
+  "ticker": "MSFT",
+  "marketmind_model": {
+    "recommendation": "SELL",
+    "score": -1,
+    "confidence": 0.528,
+    "directional_probabilities": {
+      "buy": 0.232,
+      "hold": 0.24,
+      "sell": 0.528
+    },
+    "class_probabilities": {
+      "0": 0.528,
+      "1": 0.24,
+      "2": 0.232
+    },
+    "regime": {
+      "state_id": 1,
+      "state_probabilities": [
+        0.18145742383638308,
+        0.7858525786484147,
+        0.032689997515202275
+      ],
+      "available": true,
+      "feature_encoding": "legacy_1_0_minus1",
+      "source": "causal_gaussian_hmm",
+      "legacy_model_requires_revalidation": true
+    }
+  },
+  "status": "ready"
+}

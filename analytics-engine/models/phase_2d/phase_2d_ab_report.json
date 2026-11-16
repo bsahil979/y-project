@@ -1,0 +1,168 @@
+{
+  "phase": "2D",
+  "status": "completed",
+  "generated_at_utc": "2026-08-31T06:27:05.907825+00:00",
+  "dataset_identity": {
+    "path": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\meta_model\\meta_dataset.csv",
+    "rows": 211965,
+    "sha256": "07d1d87b7a5e54625a584f3e96077d512116cf78d69654b6d2131326df3c97df",
+    "feature_columns": [
+      "returns",
+      "rsi",
+      "macd",
+      "macd_signal",
+      "macd_diff",
+      "adx",
+      "volatility",
+      "ema_50",
+      "ema_200",
+      "trend_strength",
+      "momentum_5d",
+      "momentum_10d",
+      "sentiment_score",
+      "regime_code"
+    ]
+  },
+  "split": {
+    "method": "chronological_final_block_by_unique_date",
+    "test_size": 0.2,
+    "train_rows": 169397,
+    "holdout_rows": 42568,
+    "train_end": "2024-12-02",
+    "holdout_start": "2024-12-03",
+    "train_tickers": 99,
+    "holdout_tickers": 99
+  },
+  "experiment_a": {
+    "implementation": "existing_sklearn_baseline",
+    "seed": 42,
+    "output_directory": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2d\\experiment_a",
+    "result": {
+      "dataset_version": "marketmind-v1",
+      "selected_model": "random_forest",
+      "metrics": {
+        "random_forest": {
+          "accuracy": 0.38068502161247886,
+          "f1_macro": 0.30681875405343295,
+          "precision_macro": 0.3530984711793801,
+          "recall_macro": 0.34043137528479184
+        },
+        "hist_gradient_boost": {
+          "accuracy": 0.3895884232287164,
+          "f1_macro": 0.26518270134216976,
+          "precision_macro": 0.3720964294494313,
+          "recall_macro": 0.3401894839087031
+        }
+      },
+      "features": [
+        "returns",
+        "rsi",
+        "macd",
+        "macd_signal",
+        "macd_diff",
+        "adx",
+        "volatility",
+        "ema_50",
+        "ema_200",
+        "trend_strength",
+        "momentum_5d",
+        "momentum_10d",
+        "sentiment_score",
+        "regime_code"
+      ],
+      "test_size": 0.2,
+      "split": "chronological_final_block",
+      "rows": 211965,
+      "date_range": {
+        "train_end": "2024-12-02",
+        "test_start": "2024-12-03"
+      }
+    }
+  },
+  "experiment_b": {
+    "implementation": "existing_pytorch_embedding_model",
+    "seed": 42,
+    "epochs": 25,
+    "batch_size": 256,
+    "learning_rate": 0.001,
+    "output_directory": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2d\\experiment_b",
+    "result": {
+      "experiment": "B",
+      "architecture": "MLP_with_embeddings",
+      "numeric_features": 14,
+      "ticker_count": 100,
+      "market_count": 3,
+      "sector_count": 12,
+      "ticker_embedding_dim": 16,
+      "market_embedding_dim": 4,
+      "sector_embedding_dim": 8,
+      "hidden_layers": [
+        128,
+        64
+      ],
+      "class_to_index": {
+        "-1": 0,
+        "0": 1,
+        "1": 2
+      },
+      "epochs": 25,
+      "batch_size": 256,
+      "learning_rate": 0.001,
+      "seed": 42,
+      "dataset_split": "chronological_final_block",
+      "numeric_imputation": {
+        "returns": 0.0006865075613387,
+        "rsi": 53.31024423541618,
+        "macd": 0.7483570182211849,
+        "macd_signal": 0.744642316670618,
+        "macd_diff": 0.0112340054653382,
+        "adx": 22.799269152282275,
+        "volatility": 0.0156680699951282,
+        "ema_50": 239.7060651197921,
+        "ema_200": 229.1037600648436,
+        "trend_strength": 0.0170995287481997,
+        "momentum_5d": 0.0040058336759869,
+        "momentum_10d": 0.0078247156132436,
+        "sentiment_score": 0.0,
+        "regime_code": 0.0
+      },
+      "metadata_source": "config/ticker_metadata.csv",
+      "metrics": {
+        "accuracy": 0.38474910731065587,
+        "f1_macro": 0.29057348893893914,
+        "split": "chronological_final_block",
+        "rows": 211965,
+        "test_size": 0.2,
+        "date_range": {
+          "train_end": "2024-12-02",
+          "test_start": "2024-12-03"
+        }
+      }
+    }
+  },
+  "not_evaluated_in_frozen_run": {
+    "classification": [
+      "balanced_accuracy",
+      "per_class_precision",
+      "per_class_recall"
+    ],
+    "calibration": [
+      "brier_score",
+      "expected_calibration_error"
+    ],
+    "trading": [
+      "net_return",
+      "sharpe",
+      "maximum_drawdown",
+      "turnover",
+      "transaction_costs"
+    ],
+    "breakdowns": [
+      "market",
+      "sector",
+      "ticker",
+      "market_regime"
+    ],
+    "reason": "Neither existing frozen training implementation emits predictions/probabilities or trading backtest outputs for these metrics."
+  }
+}

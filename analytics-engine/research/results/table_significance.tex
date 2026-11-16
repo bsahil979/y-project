@@ -1,0 +1,16 @@
+\begin{table}
+\caption{Statistical significance tests: proposed PPO+Regime vs. baselines.}
+\label{tab:significance}
+\begin{tabular}{lrlrlrlr}
+\toprule
+ & Wilcoxon p & Wilcoxon sig. & t-test p & t-test sig. & Sharpe (proposed) & Sharpe 95\% CI & N months \\
+Baseline &  &  &  &  &  &  &  \\
+\midrule
+PPO-NoRegime & 0.259800 & ✗ & 0.288000 & ✗ & 0.784200 & [-0.6863, 2.615] & 22 \\
+Markowitz-MaxSharpe & 0.652300 & ✗ & 0.589400 & ✗ & 0.784200 & [-0.6863, 2.615] & 10 \\
+Markowitz-MinVol & 0.687500 & ✗ & 0.505200 & ✗ & 0.784200 & [-0.6863, 2.615] & 10 \\
+Equal-Weight & 0.812500 & ✗ & 0.554400 & ✗ & 0.784200 & [-0.6863, 2.615] & 10 \\
+Buy-and-Hold & 0.883800 & ✗ & 0.612600 & ✗ & 0.784200 & [-0.6863, 2.615] & 10 \\
+\bottomrule
+\end{tabular}
+\end{table}

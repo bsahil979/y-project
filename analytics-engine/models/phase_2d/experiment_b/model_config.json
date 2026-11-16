@@ -1,0 +1,53 @@
+{
+  "experiment": "B",
+  "architecture": "MLP_with_embeddings",
+  "numeric_features": 14,
+  "ticker_count": 100,
+  "market_count": 3,
+  "sector_count": 12,
+  "ticker_embedding_dim": 16,
+  "market_embedding_dim": 4,
+  "sector_embedding_dim": 8,
+  "hidden_layers": [
+    128,
+    64
+  ],
+  "class_to_index": {
+    "-1": 0,
+    "0": 1,
+    "1": 2
+  },
+  "epochs": 25,
+  "batch_size": 256,
+  "learning_rate": 0.001,
+  "seed": 42,
+  "dataset_split": "chronological_final_block",
+  "numeric_imputation": {
+    "returns": 0.0006865075613387,
+    "rsi": 53.31024423541618,
+    "macd": 0.7483570182211849,
+    "macd_signal": 0.744642316670618,
+    "macd_diff": 0.0112340054653382,
+    "adx": 22.799269152282275,
+    "volatility": 0.0156680699951282,
+    "ema_50": 239.7060651197921,
+    "ema_200": 229.1037600648436,
+    "trend_strength": 0.0170995287481997,
+    "momentum_5d": 0.0040058336759869,
+    "momentum_10d": 0.0078247156132436,
+    "sentiment_score": 0.0,
+    "regime_code": 0.0
+  },
+  "metadata_source": "config/ticker_metadata.csv",
+  "metrics": {
+    "accuracy": 0.38474910731065587,
+    "f1_macro": 0.29057348893893914,
+    "split": "chronological_final_block",
+    "rows": 211965,
+    "test_size": 0.2,
+    "date_range": {
+      "train_end": "2024-12-02",
+      "test_start": "2024-12-03"
+    }
+  }
+}

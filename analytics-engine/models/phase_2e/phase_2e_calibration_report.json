@@ -1,0 +1,4447 @@
+{
+  "phase": "2E.3",
+  "status": "completed",
+  "generated_at_utc": "2026-08-31T06:52:31.137820+00:00",
+  "evaluation_mode": "prediction_artifact_only",
+  "input": {
+    "prediction_csv_path": "c:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2e\\holdout_predictions.csv",
+    "prediction_csv_sha256": "bd5d3fe75a3b6bd221f472486e99e64a745d3b40562b037918a991765960b9e2",
+    "prediction_manifest_path": "c:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\models\\phase_2e\\phase_2e_prediction_manifest.json",
+    "prediction_manifest_sha256": "b4d236ea294d06b7229e31e77bdbf3a5e4a03b68af55f4b47fb30e4a43a01fa4"
+  },
+  "constraints": {
+    "models_loaded": false,
+    "models_retrained": false,
+    "dataset_loaded": false,
+    "probabilities_transformed": false,
+    "temperature_scaling": false,
+    "platt_scaling": false,
+    "isotonic_regression": false,
+    "thresholds_changed": false,
+    "resampling_performed": false,
+    "future_return_used_as_input": false
+  },
+  "methodology": {
+    "multiclass_brier_score": "mean over rows of the sum of squared errors across three classes",
+    "expected_calibration_error": "10 equal-width confidence bins; weighted absolute confidence-minus-accuracy gap",
+    "confidence_bins": [
+      {
+        "lower_inclusive": 0.0,
+        "upper": 0.1
+      },
+      {
+        "lower_inclusive": 0.1,
+        "upper": 0.2
+      },
+      {
+        "lower_inclusive": 0.2,
+        "upper": 0.30000000000000004
+      },
+      {
+        "lower_inclusive": 0.30000000000000004,
+        "upper": 0.4
+      },
+      {
+        "lower_inclusive": 0.4,
+        "upper": 0.5
+      },
+      {
+        "lower_inclusive": 0.5,
+        "upper": 0.6000000000000001
+      },
+      {
+        "lower_inclusive": 0.6000000000000001,
+        "upper": 0.7000000000000001
+      },
+      {
+        "lower_inclusive": 0.7000000000000001,
+        "upper": 0.8
+      },
+      {
+        "lower_inclusive": 0.8,
+        "upper": 0.9
+      },
+      {
+        "lower_inclusive": 0.9,
+        "upper": 1.0
+      }
+    ]
+  },
+  "aggregate": {
+    "A": {
+      "rows": 42568,
+      "multiclass_brier_score": 0.668679018229656,
+      "expected_calibration_error": 0.07376010148468336,
+      "mean_confidence": 0.4544295245254652,
+      "accuracy_from_native_argmax": 0.38068502161247886,
+      "confidence_bin_statistics": [
+        {
+          "lower_inclusive": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "share": 0.0,
+          "mean_confidence": null,
+          "accuracy": null,
+          "absolute_gap": null
+        },
+        {
+          "lower_inclusive": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "share": 0.0,
+          "mean_confidence": null,
+          "accuracy": null,
+          "absolute_gap": null
+        },
+        {
+          "lower_inclusive": 0.2,
+          "upper": 0.30000000000000004,
+          "count": 0,
+          "share": 0.0,
+          "mean_confidence": null,
+          "accuracy": null,
+          "absolute_gap": null
+        },
+        {
+          "lower_inclusive": 0.30000000000000004,
+          "upper": 0.4,
+          "count": 8562,
+          "share": 0.20113700432249576,
+          "mean_confidence": 0.37621677178229385,
+          "accuracy": 0.3498014482597524,
+          "absolute_gap": 0.026415323522541445
+        },
+        {
+          "lower_inclusive": 0.4,
+          "upper": 0.5,
+          "count": 24339,
+          "share": 0.5717675249013343,
+          "mean_confidence": 0.44395151813961137,
+          "accuracy": 0.38013065450511524,
+          "absolute_gap": 0.06382086363449613
+        },
+        {
+          "lower_inclusive": 0.5,
+          "upper": 0.6000000000000001,
+          "count": 8435,
+          "share": 0.19815354256718662,
+          "mean_confidence": 0.5365410788381743,
+          "accuracy": 0.4021339656194428,
+          "absolute_gap": 0.13440711321873144
+        },
+        {
+          "lower_inclusive": 0.6000000000000001,
+          "upper": 0.7000000000000001,
+          "count": 1151,
+          "share": 0.027039090396542002,
+          "mean_confidence": 0.636257167680278,
+          "accuracy": 0.45351867940920937,
+          "absolute_gap": 0.1827384882710686
+        },
+        {
+          "lower_inclusive": 0.7000000000000001,
+          "upper": 0.8,
+          "count": 79,
+          "share": 0.0018558541627513626,
+          "mean_confidence": 0.7332658227848102,
+          "accuracy": 0.5316455696202531,
+          "absolute_gap": 0.20162025316455712
+        },
+        {
+          "lower_inclusive": 0.8,
+          "upper": 0.9,
+          "count": 2,
+          "share": 4.698364968990791e-05,
+          "mean_confidence": 0.834,
+          "accuracy": 1.0,
+          "absolute_gap": 0.16600000000000004
+        },
+        {
+          "lower_inclusive": 0.9,
+          "upper": 1.0,
+          "count": 0,
+          "share": 0.0,
+          "mean_confidence": null,
+          "accuracy": null,
+          "absolute_gap": null
+        }
+      ],
+      "reliability_summary": {
+        "mean_confidence_minus_accuracy": 0.07374450291298634,
+        "confidence_min": 0.336,
+        "confidence_max": 0.836
+      },
+      "calibration_by_predicted_class": {
+        "SELL": {
+          "predicted_rows": 10603,
+          "mean_predicted_probability": 0.43436499104027165,
+          "empirical_precision": 0.35989814203527304,
+          "calibration_gap": 0.07446684900499861
+        },
+        "HOLD": {
+          "predicted_rows": 2642,
+          "mean_predicted_probability": 0.40822861468584404,
+          "empirical_precision": 0.30431491294473884,
+          "calibration_gap": 0.1039137017411052
+        },
+        "BUY": {
+          "predicted_rows": 29323,
+          "mean_predicted_probability": 0.465847423524196,
+          "empirical_precision": 0.39508235855812845,
+          "calibration_gap": 0.07076506496606755
+        }
+      }
+    },
+    "B": {
+      "rows": 42568,
+      "multiclass_brier_score": 0.6649452288982638,
+      "expected_calibration_error": 0.062233847941881214,
+      "mean_confidence": 0.44698295525253706,
+      "accuracy_from_native_argmax": 0.38474910731065587,
+      "confidence_bin_statistics": [
+        {
+          "lower_inclusive": 0.0,
+          "upper": 0.1,
+          "count": 0,
+          "share": 0.0,
+          "mean_confidence": null,
+          "accuracy": null,
+          "absolute_gap": null
+        },
+        {
+          "lower_inclusive": 0.1,
+          "upper": 0.2,
+          "count": 0,
+          "share": 0.0,
+          "mean_confidence": null,
+          "accuracy": null,
+          "absolute_gap": null
+        },
+        {
+          "lower_inclusive": 0.2,
+          "upper": 0.30000000000000004,
+          "count": 0,
+          "share": 0.0,
+          "mean_confidence": null,
+          "accuracy": null,
+          "absolute_gap": null
+        },
+        {
+          "lower_inclusive": 0.30000000000000004,
+          "upper": 0.4,
+          "count": 9105,
+          "share": 0.21389306521330578,
+          "mean_confidence": 0.376958932686436,
+          "accuracy": 0.35925315760571114,
+          "absolute_gap": 0.01770577508072485
+        },
+        {
+          "lower_inclusive": 0.4,
+          "upper": 0.5,
+          "count": 26892,
+          "share": 0.6317421537305018,
+          "mean_confidence": 0.44037803644318013,
+          "accuracy": 0.3827904209430314,
+          "absolute_gap": 0.05758761550014874
+        },
+        {
+          "lower_inclusive": 0.5,
+          "upper": 0.6000000000000001,
+          "count": 4965,
+          "share": 0.1166369103551964,
+          "mean_confidence": 0.5397544634340382,
+          "accuracy": 0.4136958710976838,
+          "absolute_gap": 0.1260585923363544
+        },
+        {
+          "lower_inclusive": 0.6000000000000001,
+          "upper": 0.7000000000000001,
+          "count": 1235,
+          "share": 0.029012403683518137,
+          "mean_confidence": 0.6408861774331984,
+          "accuracy": 0.4493927125506073,
+          "absolute_gap": 0.1914934648825911
+        },
+        {
+          "lower_inclusive": 0.7000000000000001,
+          "upper": 0.8,
+          "count": 310,
+          "share": 0.007282465701935727,
+          "mean_confidence": 0.7390604369032259,
+          "accuracy": 0.5548387096774193,
+          "absolute_gap": 0.18422172722580654
+        },
+        {
+          "lower_inclusive": 0.8,
+          "upper": 0.9,
+          "count": 50,
+          "share": 0.0011745912422476978,
+          "mean_confidence": 0.8340489056000001,
+          "accuracy": 0.48,
+          "absolute_gap": 0.35404890560000013
+        },
+        {
+          "lower_inclusive": 0.9,
+          "upper": 1.0,
+          "count": 11,
+          "share": 0.0002584100732944935,
+          "mean_confidence": 0.9206072954545454,
+          "accuracy": 0.7272727272727273,
+          "absolute_gap": 0.19333456818181816
+        }
+      ],
+      "reliability_summary": {
+        "mean_confidence_minus_accuracy": 0.06223384794188119,
+        "confidence_min": 0.3345542,
+        "confidence_max": 0.9528139
+      },
+      "calibration_by_predicted_class": {
+        "SELL": {
+          "predicted_rows": 7900,
+          "mean_predicted_probability": 0.4427537913594937,
+          "empirical_precision": 0.37253164556962026,
+          "calibration_gap": 0.07022214578987346
+        },
+        "HOLD": {
+          "predicted_rows": 1998,
+          "mean_predicted_probability": 0.4206893976226226,
+          "empirical_precision": 0.3073073073073073,
+          "calibration_gap": 0.11338209031531526
+        },
+        "BUY": {
+          "predicted_rows": 32670,
+          "mean_predicted_probability": 0.44961365384144486,
+          "empirical_precision": 0.39243954698500155,
+          "calibration_gap": 0.05717410685644331
+        }
+      }
+    },
+    "B_minus_A": {
+      "multiclass_brier_score": -0.0037337893313922343,
+      "expected_calibration_error": -0.011526253542802144,
+      "mean_confidence": -0.0074465692729281385,
+      "accuracy_from_native_argmax": 0.004064085698177011,
+      "reliability_mean_confidence_minus_accuracy": -0.01151065497110515
+    }
+  },
+  "segments": {
+    "market": {
+      "India": {
+        "A": {
+          "rows": 21118,
+          "multiclass_brier_score": 0.6810076787574582,
+          "expected_calibration_error": 0.09052429207311302,
+          "mean_confidence": 0.44969656217444837,
+          "accuracy_from_native_argmax": 0.35917227010133534,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 4615,
+              "share": 0.21853395207879533,
+              "mean_confidence": 0.3760286023835319,
+              "accuracy": 0.3412784398699892,
+              "absolute_gap": 0.03475016251354274
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 12177,
+              "share": 0.576617103892414,
+              "mean_confidence": 0.442976430976431,
+              "accuracy": 0.360679970436068,
+              "absolute_gap": 0.08229646054036305
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 3844,
+              "share": 0.18202481295577233,
+              "mean_confidence": 0.5355650364203954,
+              "accuracy": 0.36992715920915714,
+              "absolute_gap": 0.1656378772112383
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 462,
+              "share": 0.021877071692395115,
+              "mean_confidence": 0.6360086580086579,
+              "accuracy": 0.41125541125541126,
+              "absolute_gap": 0.22475324675324665
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 20,
+              "share": 0.000947059380623165,
+              "mean_confidence": 0.7323999999999999,
+              "accuracy": 0.3,
+              "absolute_gap": 0.43239999999999995
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.09052429207311302,
+            "confidence_min": 0.336,
+            "confidence_max": 0.784
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 5536,
+              "mean_predicted_probability": 0.4322507225433525,
+              "empirical_precision": 0.3591040462427746,
+              "calibration_gap": 0.07314667630057792
+            },
+            "HOLD": {
+              "predicted_rows": 1378,
+              "mean_predicted_probability": 0.4059071117561683,
+              "empirical_precision": 0.2946298984034833,
+              "calibration_gap": 0.11127721335268498
+            },
+            "BUY": {
+              "predicted_rows": 14204,
+              "mean_predicted_probability": 0.46074429738101946,
+              "empirical_precision": 0.36546043368065334,
+              "calibration_gap": 0.09528386370036612
+            }
+          }
+        },
+        "B": {
+          "rows": 21118,
+          "multiclass_brier_score": 0.6686541524324568,
+          "expected_calibration_error": 0.06299148126905955,
+          "mean_confidence": 0.43182375705275117,
+          "accuracy_from_native_argmax": 0.36883227578369165,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 4650,
+              "share": 0.22019130599488587,
+              "mean_confidence": 0.37558531092043007,
+              "accuracy": 0.34,
+              "absolute_gap": 0.03558531092043005
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 15173,
+              "share": 0.7184865991097642,
+              "mean_confidence": 0.43771930463125286,
+              "accuracy": 0.37303104198246884,
+              "absolute_gap": 0.06468826264878402
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 1050,
+              "share": 0.04972061748271617,
+              "mean_confidence": 0.5428502482857143,
+              "accuracy": 0.4276190476190476,
+              "absolute_gap": 0.11523120066666664
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 214,
+              "share": 0.010133535372667866,
+              "mean_confidence": 0.6437073228971962,
+              "accuracy": 0.4252336448598131,
+              "absolute_gap": 0.21847367803738316
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 27,
+              "share": 0.0012785301638412727,
+              "mean_confidence": 0.7508334562962965,
+              "accuracy": 0.25925925925925924,
+              "absolute_gap": 0.49157419703703725
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 4,
+              "share": 0.00018941187612463303,
+              "mean_confidence": 0.8121913425,
+              "accuracy": 0.25,
+              "absolute_gap": 0.5621913425
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.06299148126905951,
+            "confidence_min": 0.3345542,
+            "confidence_max": 0.82223594
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 2406,
+              "mean_predicted_probability": 0.40970403777639236,
+              "empirical_precision": 0.3636741479634248,
+              "calibration_gap": 0.04602988981296757
+            },
+            "HOLD": {
+              "predicted_rows": 232,
+              "mean_predicted_probability": 0.40202769698275864,
+              "empirical_precision": 0.3706896551724138,
+              "calibration_gap": 0.03133804181034483
+            },
+            "BUY": {
+              "predicted_rows": 18480,
+              "mean_predicted_probability": 0.43507769268668833,
+              "empirical_precision": 0.36948051948051946,
+              "calibration_gap": 0.06559717320616887
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": -0.012353526325001307,
+          "expected_calibration_error": -0.027532810804053467,
+          "mean_confidence": -0.0178728051216972,
+          "accuracy_from_native_argmax": 0.00966000568235631,
+          "reliability_mean_confidence_minus_accuracy": -0.02753281080405351
+        }
+      },
+      "US": {
+        "A": {
+          "rows": 21450,
+          "multiclass_brier_score": 0.6565411789277389,
+          "expected_calibration_error": 0.05725538461538466,
+          "mean_confidence": 0.45908923076923075,
+          "accuracy_from_native_argmax": 0.4018648018648019,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 3947,
+              "share": 0.18400932400932402,
+              "mean_confidence": 0.37643678743349374,
+              "accuracy": 0.359766911578414,
+              "absolute_gap": 0.01666987585507973
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 12162,
+              "share": 0.566993006993007,
+              "mean_confidence": 0.44492780792632797,
+              "accuracy": 0.39960532807104093,
+              "absolute_gap": 0.045322479855287034
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 4591,
+              "share": 0.21403263403263403,
+              "mean_confidence": 0.5373583097364409,
+              "accuracy": 0.42910041385319103,
+              "absolute_gap": 0.10825789588324991
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 689,
+              "share": 0.03212121212121212,
+              "mean_confidence": 0.6364238026124819,
+              "accuracy": 0.4818577648766328,
+              "absolute_gap": 0.1545660377358491
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 59,
+              "share": 0.0027505827505827506,
+              "mean_confidence": 0.7335593220338982,
+              "accuracy": 0.6101694915254238,
+              "absolute_gap": 0.12338983050847441
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 2,
+              "share": 9.324009324009324e-05,
+              "mean_confidence": 0.834,
+              "accuracy": 1.0,
+              "absolute_gap": 0.16600000000000004
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.05722442890442886,
+            "confidence_min": 0.336,
+            "confidence_max": 0.836
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 5067,
+              "mean_predicted_probability": 0.43667495559502656,
+              "empirical_precision": 0.3607657390961121,
+              "calibration_gap": 0.07590921649891447
+            },
+            "HOLD": {
+              "predicted_rows": 1264,
+              "mean_predicted_probability": 0.4107594936708861,
+              "empirical_precision": 0.314873417721519,
+              "calibration_gap": 0.0958860759493671
+            },
+            "BUY": {
+              "predicted_rows": 15119,
+              "mean_predicted_probability": 0.4706417091077453,
+              "empirical_precision": 0.42291156822541176,
+              "calibration_gap": 0.047730140882333516
+            }
+          }
+        },
+        "B": {
+          "rows": 21450,
+          "multiclass_brier_score": 0.6612937115465112,
+          "expected_calibration_error": 0.061885201169696966,
+          "mean_confidence": 0.4619075215734266,
+          "accuracy_from_native_argmax": 0.4004195804195804,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 4455,
+              "share": 0.2076923076923077,
+              "mean_confidence": 0.37839267931088666,
+              "accuracy": 0.3793490460157127,
+              "absolute_gap": 0.0009563667048260172
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 11719,
+              "share": 0.5463403263403264,
+              "mean_confidence": 0.4438203896970731,
+              "accuracy": 0.39542623090707396,
+              "absolute_gap": 0.04839415878999914
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 3915,
+              "share": 0.1825174825174825,
+              "mean_confidence": 0.5389241763090677,
+              "accuracy": 0.4099616858237548,
+              "absolute_gap": 0.12896249048531294
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 1021,
+              "share": 0.047599067599067596,
+              "mean_confidence": 0.6402948697649363,
+              "accuracy": 0.4544564152791381,
+              "absolute_gap": 0.18583845448579822
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 283,
+              "share": 0.013193473193473193,
+              "mean_confidence": 0.7379372159717313,
+              "accuracy": 0.5830388692579506,
+              "absolute_gap": 0.15489834671378078
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 46,
+              "share": 0.0021445221445221445,
+              "mean_confidence": 0.8359495632608697,
+              "accuracy": 0.5,
+              "absolute_gap": 0.33594956326086967
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 11,
+              "share": 0.0005128205128205128,
+              "mean_confidence": 0.9206072954545454,
+              "accuracy": 0.7272727272727273,
+              "absolute_gap": 0.19333456818181816
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.061487941153846204,
+            "confidence_min": 0.3345995,
+            "confidence_max": 0.9528139
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 5494,
+              "mean_predicted_probability": 0.4572273456224973,
+              "empirical_precision": 0.37641062977793954,
+              "calibration_gap": 0.08081671584455774
+            },
+            "HOLD": {
+              "predicted_rows": 1766,
+              "mean_predicted_probability": 0.42314099136466593,
+              "empirical_precision": 0.29898074745186864,
+              "calibration_gap": 0.12416024391279729
+            },
+            "BUY": {
+              "predicted_rows": 14190,
+              "mean_predicted_probability": 0.4685442079034532,
+              "empirical_precision": 0.42233967582804793,
+              "calibration_gap": 0.04620453207540526
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": 0.004752532618772287,
+          "expected_calibration_error": 0.004629816554312306,
+          "mean_confidence": 0.0028182908041958776,
+          "accuracy_from_native_argmax": -0.0014452214452214673,
+          "reliability_mean_confidence_minus_accuracy": 0.004263512249417345
+        }
+      }
+    },
+    "sector": {
+      "Communication Services": {
+        "A": {
+          "rows": 2576,
+          "multiclass_brier_score": 0.6717152049689442,
+          "expected_calibration_error": 0.08572204968944099,
+          "mean_confidence": 0.45916925465838515,
+          "accuracy_from_native_argmax": 0.3734472049689441,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 473,
+              "share": 0.18361801242236025,
+              "mean_confidence": 0.37631289640591964,
+              "accuracy": 0.35306553911205074,
+              "absolute_gap": 0.023247357293868898
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 1473,
+              "share": 0.5718167701863354,
+              "mean_confidence": 0.44525458248472505,
+              "accuracy": 0.3645621181262729,
+              "absolute_gap": 0.08069246435845212
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 537,
+              "share": 0.20846273291925466,
+              "mean_confidence": 0.5393370577281192,
+              "accuracy": 0.4227188081936685,
+              "absolute_gap": 0.11661824953445071
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 88,
+              "share": 0.034161490683229816,
+              "mean_confidence": 0.6329545454545454,
+              "accuracy": 0.3409090909090909,
+              "absolute_gap": 0.29204545454545455
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 5,
+              "share": 0.0019409937888198758,
+              "mean_confidence": 0.728,
+              "accuracy": 0.2,
+              "absolute_gap": 0.528
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.08572204968944103,
+            "confidence_min": 0.336,
+            "confidence_max": 0.748
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 673,
+              "mean_predicted_probability": 0.42939078751857357,
+              "empirical_precision": 0.37592867756315007,
+              "calibration_gap": 0.0534621099554235
+            },
+            "HOLD": {
+              "predicted_rows": 77,
+              "mean_predicted_probability": 0.3863376623376623,
+              "empirical_precision": 0.3246753246753247,
+              "calibration_gap": 0.06166233766233764
+            },
+            "BUY": {
+              "predicted_rows": 1826,
+              "mean_predicted_probability": 0.4732157721796277,
+              "empirical_precision": 0.37458926615553123,
+              "calibration_gap": 0.09862650602409645
+            }
+          }
+        },
+        "B": {
+          "rows": 2576,
+          "multiclass_brier_score": 0.6709830155806568,
+          "expected_calibration_error": 0.08119713664984474,
+          "mean_confidence": 0.46327386828027955,
+          "accuracy_from_native_argmax": 0.3889751552795031,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 419,
+              "share": 0.1626552795031056,
+              "mean_confidence": 0.3773623635799523,
+              "accuracy": 0.39856801909307876,
+              "absolute_gap": 0.021205655513126476
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 1584,
+              "share": 0.6149068322981367,
+              "mean_confidence": 0.448695960385101,
+              "accuracy": 0.3958333333333333,
+              "absolute_gap": 0.0528626270517677
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 454,
+              "share": 0.17624223602484473,
+              "mean_confidence": 0.5408962880837005,
+              "accuracy": 0.3634361233480176,
+              "absolute_gap": 0.17746016473568288
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 91,
+              "share": 0.035326086956521736,
+              "mean_confidence": 0.6334973685714286,
+              "accuracy": 0.45054945054945056,
+              "absolute_gap": 0.18294791802197802
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 24,
+              "share": 0.009316770186335404,
+              "mean_confidence": 0.7534042362500001,
+              "accuracy": 0.08333333333333333,
+              "absolute_gap": 0.6700709029166667
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 4,
+              "share": 0.0015527950310559005,
+              "mean_confidence": 0.811844025,
+              "accuracy": 0.0,
+              "absolute_gap": 0.811844025
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.07429871300077645,
+            "confidence_min": 0.3363547,
+            "confidence_max": 0.8199809
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 725,
+              "mean_predicted_probability": 0.4392057249793103,
+              "empirical_precision": 0.40413793103448276,
+              "calibration_gap": 0.03506779394482756
+            },
+            "HOLD": {
+              "predicted_rows": 45,
+              "mean_predicted_probability": 0.40049752911111103,
+              "empirical_precision": 0.2,
+              "calibration_gap": 0.20049752911111102
+            },
+            "BUY": {
+              "predicted_rows": 1806,
+              "mean_predicted_probability": 0.47449996969545966,
+              "empirical_precision": 0.3875968992248062,
+              "calibration_gap": 0.08690307047065343
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": -0.000732189388287452,
+          "expected_calibration_error": -0.004524913039596248,
+          "mean_confidence": 0.004104613621894404,
+          "accuracy_from_native_argmax": 0.01552795031055898,
+          "reliability_mean_confidence_minus_accuracy": -0.011423336688664576
+        }
+      },
+      "Consumer Discretionary": {
+        "A": {
+          "rows": 4733,
+          "multiclass_brier_score": 0.6673441588844286,
+          "expected_calibration_error": 0.08044791886752586,
+          "mean_confidence": 0.46124994717937884,
+          "accuracy_from_native_argmax": 0.3809423198816818,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 817,
+              "share": 0.1726177899852102,
+              "mean_confidence": 0.3764553243574051,
+              "accuracy": 0.35006119951040393,
+              "absolute_gap": 0.026394124847001155
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 2703,
+              "share": 0.5710965560954997,
+              "mean_confidence": 0.4453288938216796,
+              "accuracy": 0.3814280429152793,
+              "absolute_gap": 0.0639008509064003
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 1037,
+              "share": 0.2190999366152546,
+              "mean_confidence": 0.5375583413693346,
+              "accuracy": 0.39247830279652846,
+              "absolute_gap": 0.1450800385728061
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 161,
+              "share": 0.034016480033805196,
+              "mean_confidence": 0.6405217391304348,
+              "accuracy": 0.4409937888198758,
+              "absolute_gap": 0.19952795031055898
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 13,
+              "share": 0.002746672300866258,
+              "mean_confidence": 0.736,
+              "accuracy": 0.46153846153846156,
+              "absolute_gap": 0.2744615384615384
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 2,
+              "share": 0.0004225649693640397,
+              "mean_confidence": 0.834,
+              "accuracy": 1.0,
+              "absolute_gap": 0.16600000000000004
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.08030762729769703,
+            "confidence_min": 0.336,
+            "confidence_max": 0.836
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 1441,
+              "mean_predicted_probability": 0.4462567661346288,
+              "empirical_precision": 0.39000693962526023,
+              "calibration_gap": 0.05624982650936855
+            },
+            "HOLD": {
+              "predicted_rows": 256,
+              "mean_predicted_probability": 0.41628125000000005,
+              "empirical_precision": 0.24609375,
+              "calibration_gap": 0.17018750000000005
+            },
+            "BUY": {
+              "predicted_rows": 3036,
+              "mean_predicted_probability": 0.4721581027667984,
+              "empirical_precision": 0.38801054018445325,
+              "calibration_gap": 0.08414756258234518
+            }
+          }
+        },
+        "B": {
+          "rows": 4733,
+          "multiclass_brier_score": 0.6577665546258628,
+          "expected_calibration_error": 0.06595279838157625,
+          "mean_confidence": 0.457881807466723,
+          "accuracy_from_native_argmax": 0.39192900908514683,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 967,
+              "share": 0.2043101626875132,
+              "mean_confidence": 0.3820652358324716,
+              "accuracy": 0.3650465356773526,
+              "absolute_gap": 0.01701870015511897
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 2771,
+              "share": 0.585463765053877,
+              "mean_confidence": 0.4456850963370625,
+              "accuracy": 0.38975099242150846,
+              "absolute_gap": 0.055934103915554034
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 794,
+              "share": 0.16775829283752378,
+              "mean_confidence": 0.5418799484508817,
+              "accuracy": 0.4168765743073048,
+              "absolute_gap": 0.12500337414357693
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 159,
+              "share": 0.033593915064441156,
+              "mean_confidence": 0.6369292690566036,
+              "accuracy": 0.41509433962264153,
+              "absolute_gap": 0.2218349294339621
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 42,
+              "share": 0.008873864356644834,
+              "mean_confidence": 0.7423732592857143,
+              "accuracy": 0.5952380952380952,
+              "absolute_gap": 0.14713516404761906
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.0659527983815762,
+            "confidence_min": 0.34881833,
+            "confidence_max": 0.79930425
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 1164,
+              "mean_predicted_probability": 0.4357056178006873,
+              "empirical_precision": 0.39776632302405496,
+              "calibration_gap": 0.037939294776632326
+            },
+            "HOLD": {
+              "predicted_rows": 0,
+              "mean_predicted_probability": null,
+              "empirical_precision": null,
+              "calibration_gap": null
+            },
+            "BUY": {
+              "predicted_rows": 3569,
+              "mean_predicted_probability": 0.46511438935836363,
+              "empirical_precision": 0.3900252171476604,
+              "calibration_gap": 0.07508917221070321
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": -0.009577604258565797,
+          "expected_calibration_error": -0.014495120485949614,
+          "mean_confidence": -0.0033681397126558155,
+          "accuracy_from_native_argmax": 0.010986689203465017,
+          "reliability_mean_confidence_minus_accuracy": -0.014354828916120832
+        }
+      },
+      "Consumer Staples": {
+        "A": {
+          "rows": 4298,
+          "multiclass_brier_score": 0.6871216454164728,
+          "expected_calibration_error": 0.09602512796649608,
+          "mean_confidence": 0.4399060027919963,
+          "accuracy_from_native_argmax": 0.3438808748255002,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1125,
+              "share": 0.2617496510004653,
+              "mean_confidence": 0.3754595555555555,
+              "accuracy": 0.33244444444444443,
+              "absolute_gap": 0.04301511111111106
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 2470,
+              "share": 0.5746859004187994,
+              "mean_confidence": 0.4405991902834009,
+              "accuracy": 0.351417004048583,
+              "absolute_gap": 0.08918218623481788
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 651,
+              "share": 0.15146579804560262,
+              "mean_confidence": 0.5323870967741936,
+              "accuracy": 0.33640552995391704,
+              "absolute_gap": 0.19598156682027656
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 49,
+              "share": 0.011400651465798045,
+              "mean_confidence": 0.6391836734693876,
+              "accuracy": 0.3469387755102041,
+              "absolute_gap": 0.29224489795918357
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 3,
+              "share": 0.0006979990693345743,
+              "mean_confidence": 0.7133333333333333,
+              "accuracy": 0.0,
+              "absolute_gap": 0.7133333333333333
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.0960251279664961,
+            "confidence_min": 0.336,
+            "confidence_max": 0.72
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 996,
+              "mean_predicted_probability": 0.4200602409638554,
+              "empirical_precision": 0.3463855421686747,
+              "calibration_gap": 0.07367469879518074
+            },
+            "HOLD": {
+              "predicted_rows": 367,
+              "mean_predicted_probability": 0.4017656675749318,
+              "empirical_precision": 0.27520435967302453,
+              "calibration_gap": 0.12656130790190728
+            },
+            "BUY": {
+              "predicted_rows": 2935,
+              "mean_predicted_probability": 0.45140988074957406,
+              "empirical_precision": 0.351618398637138,
+              "calibration_gap": 0.09979148211243605
+            }
+          }
+        },
+        "B": {
+          "rows": 4298,
+          "multiclass_brier_score": 0.6834621733039009,
+          "expected_calibration_error": 0.07948347798976269,
+          "mean_confidence": 0.4114983686365751,
+          "accuracy_from_native_argmax": 0.33201489064681244,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 2114,
+              "share": 0.49185667752442996,
+              "mean_confidence": 0.36771470307947024,
+              "accuracy": 0.3282876064333018,
+              "absolute_gap": 0.03942709664616845
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 1867,
+              "share": 0.43438808748255003,
+              "mean_confidence": 0.4383713125441885,
+              "accuracy": 0.3401178361006963,
+              "absolute_gap": 0.0982534764434922
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 280,
+              "share": 0.06514657980456026,
+              "mean_confidence": 0.5319078333928572,
+              "accuracy": 0.32142857142857145,
+              "absolute_gap": 0.21047926196428574
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 33,
+              "share": 0.007677989762680316,
+              "mean_confidence": 0.6333324612121213,
+              "accuracy": 0.21212121212121213,
+              "absolute_gap": 0.4212112490909091
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 4,
+              "share": 0.0009306654257794323,
+              "mean_confidence": 0.7494252499999999,
+              "accuracy": 0.25,
+              "absolute_gap": 0.49942524999999993
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.07948347798976263,
+            "confidence_min": 0.3345542,
+            "confidence_max": 0.764353
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 592,
+              "mean_predicted_probability": 0.40327539344594593,
+              "empirical_precision": 0.3158783783783784,
+              "calibration_gap": 0.08739701506756753
+            },
+            "HOLD": {
+              "predicted_rows": 715,
+              "mean_predicted_probability": 0.4435939065314685,
+              "empirical_precision": 0.27132867132867133,
+              "calibration_gap": 0.17226523520279718
+            },
+            "BUY": {
+              "predicted_rows": 2991,
+              "mean_predicted_probability": 0.40545346449682373,
+              "empirical_precision": 0.34971581410899366,
+              "calibration_gap": 0.05573765038783007
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": -0.003659472112571893,
+          "expected_calibration_error": -0.016541649976733394,
+          "mean_confidence": -0.028407634155421246,
+          "accuracy_from_native_argmax": -0.011865984178687783,
+          "reliability_mean_confidence_minus_accuracy": -0.016541649976733463
+        }
+      },
+      "Energy": {
+        "A": {
+          "rows": 2582,
+          "multiclass_brier_score": 0.6710532734314485,
+          "expected_calibration_error": 0.06743609604957396,
+          "mean_confidence": 0.4493106119287374,
+          "accuracy_from_native_argmax": 0.38187451587916343,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 569,
+              "share": 0.2203718048024787,
+              "mean_confidence": 0.3761687170474516,
+              "accuracy": 0.37082601054481545,
+              "absolute_gap": 0.00534270650263613
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 1485,
+              "share": 0.575135553834237,
+              "mean_confidence": 0.4433212121212121,
+              "accuracy": 0.38855218855218854,
+              "absolute_gap": 0.05476902356902358
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 477,
+              "share": 0.1847405112316034,
+              "mean_confidence": 0.5344486373165619,
+              "accuracy": 0.35429769392033544,
+              "absolute_gap": 0.18015094339622645
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 45,
+              "share": 0.017428350116189,
+              "mean_confidence": 0.6289777777777777,
+              "accuracy": 0.5555555555555556,
+              "absolute_gap": 0.07342222222222217
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 6,
+              "share": 0.0023237800154918666,
+              "mean_confidence": 0.7519999999999999,
+              "accuracy": 0.6666666666666666,
+              "absolute_gap": 0.08533333333333326
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.06743609604957396,
+            "confidence_min": 0.336,
+            "confidence_max": 0.792
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 521,
+              "mean_predicted_probability": 0.42104414587332056,
+              "empirical_precision": 0.3416506717850288,
+              "calibration_gap": 0.07939347408829178
+            },
+            "HOLD": {
+              "predicted_rows": 197,
+              "mean_predicted_probability": 0.4124467005076143,
+              "empirical_precision": 0.29441624365482233,
+              "calibration_gap": 0.11803045685279195
+            },
+            "BUY": {
+              "predicted_rows": 1864,
+              "mean_predicted_probability": 0.4611072961373391,
+              "empirical_precision": 0.40236051502145925,
+              "calibration_gap": 0.05874678111587983
+            }
+          }
+        },
+        "B": {
+          "rows": 2582,
+          "multiclass_brier_score": 0.6603319984470082,
+          "expected_calibration_error": 0.05746264474051124,
+          "mean_confidence": 0.44316989863671574,
+          "accuracy_from_native_argmax": 0.3946553059643687,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 385,
+              "share": 0.14910921766072813,
+              "mean_confidence": 0.3790503681558441,
+              "accuracy": 0.4,
+              "absolute_gap": 0.020949631844155936
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 1920,
+              "share": 0.7436096049573974,
+              "mean_confidence": 0.43729070752604166,
+              "accuracy": 0.3770833333333333,
+              "absolute_gap": 0.06020737419270833
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 228,
+              "share": 0.08830364058869093,
+              "mean_confidence": 0.5511053623245614,
+              "accuracy": 0.49122807017543857,
+              "absolute_gap": 0.05987729214912285
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 31,
+              "share": 0.012006196746707979,
+              "mean_confidence": 0.6294733238709679,
+              "accuracy": 0.7419354838709677,
+              "absolute_gap": 0.11246215999999987
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 16,
+              "share": 0.006196746707978312,
+              "mean_confidence": 0.7475992775,
+              "accuracy": 0.375,
+              "absolute_gap": 0.3725992775
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 2,
+              "share": 0.000774593338497289,
+              "mean_confidence": 0.802422,
+              "accuracy": 0.0,
+              "absolute_gap": 0.802422
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.048514592672347034,
+            "confidence_min": 0.33774248,
+            "confidence_max": 0.8028526
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 705,
+              "mean_predicted_probability": 0.426968164070922,
+              "empirical_precision": 0.39290780141843973,
+              "calibration_gap": 0.034060362652482246
+            },
+            "HOLD": {
+              "predicted_rows": 153,
+              "mean_predicted_probability": 0.43964000771241823,
+              "empirical_precision": 0.23529411764705882,
+              "calibration_gap": 0.20434589006535941
+            },
+            "BUY": {
+              "predicted_rows": 1724,
+              "mean_predicted_probability": 0.45010858551624133,
+              "empirical_precision": 0.4095127610208817,
+              "calibration_gap": 0.040595824495359645
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": -0.01072127498444031,
+          "expected_calibration_error": -0.009973451309062714,
+          "mean_confidence": -0.006140713292021649,
+          "accuracy_from_native_argmax": 0.012780790085205274,
+          "reliability_mean_confidence_minus_accuracy": -0.018921503377226923
+        }
+      },
+      "Exchange Traded Fund": {
+        "A": {
+          "rows": 1716,
+          "multiclass_brier_score": 0.665479682983683,
+          "expected_calibration_error": 0.060853146853146856,
+          "mean_confidence": 0.44546853146853144,
+          "accuracy_from_native_argmax": 0.38461538461538464,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 411,
+              "share": 0.2395104895104895,
+              "mean_confidence": 0.37660340632603395,
+              "accuracy": 0.34793187347931875,
+              "absolute_gap": 0.028671532846715198
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 1000,
+              "share": 0.5827505827505828,
+              "mean_confidence": 0.44405600000000006,
+              "accuracy": 0.382,
+              "absolute_gap": 0.062056000000000056
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 275,
+              "share": 0.16025641025641027,
+              "mean_confidence": 0.5337163636363637,
+              "accuracy": 0.4254545454545455,
+              "absolute_gap": 0.10826181818181818
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 30,
+              "share": 0.017482517482517484,
+              "mean_confidence": 0.6270666666666666,
+              "accuracy": 0.6,
+              "absolute_gap": 0.027066666666666572
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.0608531468531468,
+            "confidence_min": 0.34,
+            "confidence_max": 0.7
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 262,
+              "mean_predicted_probability": 0.4208854961832061,
+              "empirical_precision": 0.2480916030534351,
+              "calibration_gap": 0.17279389312977098
+            },
+            "HOLD": {
+              "predicted_rows": 290,
+              "mean_predicted_probability": 0.42892413793103445,
+              "empirical_precision": 0.4586206896551724,
+              "calibration_gap": -0.029696551724137932
+            },
+            "BUY": {
+              "predicted_rows": 1164,
+              "mean_predicted_probability": 0.4551237113402062,
+              "empirical_precision": 0.39690721649484534,
+              "calibration_gap": 0.058216494845360844
+            }
+          }
+        },
+        "B": {
+          "rows": 1716,
+          "multiclass_brier_score": 0.6538566882052401,
+          "expected_calibration_error": 0.01976895997086243,
+          "mean_confidence": 0.43585287605477857,
+          "accuracy_from_native_argmax": 0.4160839160839161,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 346,
+              "share": 0.20163170163170163,
+              "mean_confidence": 0.37915245829479766,
+              "accuracy": 0.3786127167630058,
+              "absolute_gap": 0.0005397415317918708
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 1238,
+              "share": 0.7214452214452215,
+              "mean_confidence": 0.43757053090468495,
+              "accuracy": 0.4176090468497577,
+              "absolute_gap": 0.01996148405492726
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 95,
+              "share": 0.05536130536130536,
+              "mean_confidence": 0.5429455892631578,
+              "accuracy": 0.4842105263157895,
+              "absolute_gap": 0.058735062947368355
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 37,
+              "share": 0.02156177156177156,
+              "mean_confidence": 0.6336388243243244,
+              "accuracy": 0.5405405405405406,
+              "absolute_gap": 0.09309828378378382
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.019768959970862476,
+            "confidence_min": 0.34206912,
+            "confidence_max": 0.6923498
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 86,
+              "mean_predicted_probability": 0.4433710003488372,
+              "empirical_precision": 0.2558139534883721,
+              "calibration_gap": 0.1875570468604651
+            },
+            "HOLD": {
+              "predicted_rows": 264,
+              "mean_predicted_probability": 0.41282875344696973,
+              "empirical_precision": 0.5037878787878788,
+              "calibration_gap": -0.09095912534090905
+            },
+            "BUY": {
+              "predicted_rows": 1366,
+              "mean_predicted_probability": 0.4398293106661786,
+              "empirical_precision": 0.40922401171303074,
+              "calibration_gap": 0.03060529895314784
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": -0.011622994778442863,
+          "expected_calibration_error": -0.04108418688228442,
+          "mean_confidence": -0.009615655413752866,
+          "accuracy_from_native_argmax": 0.03146853146853146,
+          "reliability_mean_confidence_minus_accuracy": -0.041084186882284324
+        }
+      },
+      "Financials": {
+        "A": {
+          "rows": 6886,
+          "multiclass_brier_score": 0.6765343525994771,
+          "expected_calibration_error": 0.07883706070287544,
+          "mean_confidence": 0.4455230903282022,
+          "accuracy_from_native_argmax": 0.36668602962532676,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1702,
+              "share": 0.24716816729596283,
+              "mean_confidence": 0.3756850763807285,
+              "accuracy": 0.34665099882491185,
+              "absolute_gap": 0.029034077555816662
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 3882,
+              "share": 0.5637525413883241,
+              "mean_confidence": 0.4429088098918084,
+              "accuracy": 0.37068521380731584,
+              "absolute_gap": 0.07222359608449258
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 1169,
+              "share": 0.16976474005227998,
+              "mean_confidence": 0.5342549187339607,
+              "accuracy": 0.3746792130025663,
+              "absolute_gap": 0.1595757057313944
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 128,
+              "share": 0.01858844031367993,
+              "mean_confidence": 0.63278125,
+              "accuracy": 0.453125,
+              "absolute_gap": 0.17965624999999996
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 5,
+              "share": 0.0007261109497531223,
+              "mean_confidence": 0.7088000000000001,
+              "accuracy": 0.0,
+              "absolute_gap": 0.7088000000000001
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.07883706070287544,
+            "confidence_min": 0.336,
+            "confidence_max": 0.716
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 1608,
+              "mean_predicted_probability": 0.42469651741293535,
+              "empirical_precision": 0.35261194029850745,
+              "calibration_gap": 0.0720845771144279
+            },
+            "HOLD": {
+              "predicted_rows": 533,
+              "mean_predicted_probability": 0.4069718574108818,
+              "empirical_precision": 0.300187617260788,
+              "calibration_gap": 0.1067842401500938
+            },
+            "BUY": {
+              "predicted_rows": 4745,
+              "mean_predicted_probability": 0.4569112750263435,
+              "empirical_precision": 0.37892518440463646,
+              "calibration_gap": 0.07798609062170703
+            }
+          }
+        },
+        "B": {
+          "rows": 6886,
+          "multiclass_brier_score": 0.6666939428434852,
+          "expected_calibration_error": 0.058656429753122324,
+          "mean_confidence": 0.43391056858553584,
+          "accuracy_from_native_argmax": 0.3752541388324136,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1671,
+              "share": 0.24266627940749347,
+              "mean_confidence": 0.3778000258707361,
+              "accuracy": 0.3339317773788151,
+              "absolute_gap": 0.043868248491921
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 4743,
+              "share": 0.6887888469358118,
+              "mean_confidence": 0.4382127663419777,
+              "accuracy": 0.38098250052709254,
+              "absolute_gap": 0.05723026581488516
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 270,
+              "share": 0.039209991286668605,
+              "mean_confidence": 0.533869504111111,
+              "accuracy": 0.45185185185185184,
+              "absolute_gap": 0.08201765225925917
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 168,
+              "share": 0.02439732791170491,
+              "mean_confidence": 0.6533264473809524,
+              "accuracy": 0.4583333333333333,
+              "absolute_gap": 0.19499311404761904
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 34,
+              "share": 0.004937554458321232,
+              "mean_confidence": 0.7134580005882353,
+              "accuracy": 0.5882352941176471,
+              "absolute_gap": 0.1252227064705882
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.05865642975312224,
+            "confidence_min": 0.34049168,
+            "confidence_max": 0.7545109
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 731,
+              "mean_predicted_probability": 0.41204127080711356,
+              "empirical_precision": 0.35157318741450067,
+              "calibration_gap": 0.06046808339261289
+            },
+            "HOLD": {
+              "predicted_rows": 114,
+              "mean_predicted_probability": 0.39622156061403513,
+              "empirical_precision": 0.2894736842105263,
+              "calibration_gap": 0.1067478764035088
+            },
+            "BUY": {
+              "predicted_rows": 6041,
+              "mean_predicted_probability": 0.4372681258748552,
+              "empirical_precision": 0.3797384538983612,
+              "calibration_gap": 0.057529671976494
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": -0.009840409755991986,
+          "expected_calibration_error": -0.020180630949753114,
+          "mean_confidence": -0.01161252174266636,
+          "accuracy_from_native_argmax": 0.008568109207086838,
+          "reliability_mean_confidence_minus_accuracy": -0.020180630949753198
+        }
+      },
+      "Health Care": {
+        "A": {
+          "rows": 5157,
+          "multiclass_brier_score": 0.6631075245297654,
+          "expected_calibration_error": 0.06312197013767701,
+          "mean_confidence": 0.4523017258095792,
+          "accuracy_from_native_argmax": 0.38917975567190227,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1100,
+              "share": 0.21330230754314525,
+              "mean_confidence": 0.37592,
+              "accuracy": 0.3336363636363636,
+              "absolute_gap": 0.04228363636363636
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 2925,
+              "share": 0.5671902268760908,
+              "mean_confidence": 0.44342290598290607,
+              "accuracy": 0.38974358974358975,
+              "absolute_gap": 0.05367931623931632
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 990,
+              "share": 0.19197207678883071,
+              "mean_confidence": 0.5369737373737374,
+              "accuracy": 0.4414141414141414,
+              "absolute_gap": 0.09555959595959601
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 133,
+              "share": 0.025790188093853014,
+              "mean_confidence": 0.6301654135338345,
+              "accuracy": 0.42857142857142855,
+              "absolute_gap": 0.20159398496240594
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 9,
+              "share": 0.0017452006980802793,
+              "mean_confidence": 0.7311111111111112,
+              "accuracy": 0.6666666666666666,
+              "absolute_gap": 0.06444444444444453
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.06312197013767695,
+            "confidence_min": 0.336,
+            "confidence_max": 0.768
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 1344,
+              "mean_predicted_probability": 0.4348630952380952,
+              "empirical_precision": 0.32514880952380953,
+              "calibration_gap": 0.10971428571428565
+            },
+            "HOLD": {
+              "predicted_rows": 271,
+              "mean_predicted_probability": 0.4003690036900369,
+              "empirical_precision": 0.2952029520295203,
+              "calibration_gap": 0.10516605166051662
+            },
+            "BUY": {
+              "predicted_rows": 3542,
+              "mean_predicted_probability": 0.46289215132693395,
+              "empirical_precision": 0.42066629023150764,
+              "calibration_gap": 0.04222586109542631
+            }
+          }
+        },
+        "B": {
+          "rows": 5157,
+          "multiclass_brier_score": 0.6679476446749727,
+          "expected_calibration_error": 0.05646785185766915,
+          "mean_confidence": 0.44700498585030063,
+          "accuracy_from_native_argmax": 0.3905371339926314,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1077,
+              "share": 0.20884235020360675,
+              "mean_confidence": 0.37937258962859793,
+              "accuracy": 0.3565459610027855,
+              "absolute_gap": 0.022826628625812417
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 3399,
+              "share": 0.6591041303083188,
+              "mean_confidence": 0.44524107932333035,
+              "accuracy": 0.3968814357163872,
+              "absolute_gap": 0.04835964360694317
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 528,
+              "share": 0.10238510762070971,
+              "mean_confidence": 0.5365130939962122,
+              "accuracy": 0.3977272727272727,
+              "absolute_gap": 0.13878582126893946
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 128,
+              "share": 0.024820632150475083,
+              "mean_confidence": 0.6340860853906249,
+              "accuracy": 0.4765625,
+              "absolute_gap": 0.15752358539062494
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 21,
+              "share": 0.004072134962187318,
+              "mean_confidence": 0.7368127066666667,
+              "accuracy": 0.47619047619047616,
+              "absolute_gap": 0.2606222304761905
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 4,
+              "share": 0.0007756447547023463,
+              "mean_confidence": 0.832751245,
+              "accuracy": 0.0,
+              "absolute_gap": 0.832751245
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.05646785185766923,
+            "confidence_min": 0.33799833,
+            "confidence_max": 0.85183257
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 784,
+              "mean_predicted_probability": 0.4512362851658163,
+              "empirical_precision": 0.33290816326530615,
+              "calibration_gap": 0.11832812190051017
+            },
+            "HOLD": {
+              "predicted_rows": 172,
+              "mean_predicted_probability": 0.39460531813953487,
+              "empirical_precision": 0.2441860465116279,
+              "calibration_gap": 0.15041927162790697
+            },
+            "BUY": {
+              "predicted_rows": 4201,
+              "mean_predicted_probability": 0.44836071167341107,
+              "empirical_precision": 0.4072839800047608,
+              "calibration_gap": 0.04107673166865028
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": 0.004840120145207294,
+          "expected_calibration_error": -0.006654118280007858,
+          "mean_confidence": -0.005296739959278596,
+          "accuracy_from_native_argmax": 0.0013573783207291301,
+          "reliability_mean_confidence_minus_accuracy": -0.006654118280007726
+        }
+      },
+      "Industrials": {
+        "A": {
+          "rows": 2580,
+          "multiclass_brier_score": 0.6572428527131783,
+          "expected_calibration_error": 0.031010852713178338,
+          "mean_confidence": 0.4533519379844961,
+          "accuracy_from_native_argmax": 0.4236434108527132,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 445,
+              "share": 0.17248062015503876,
+              "mean_confidence": 0.37662921348314604,
+              "accuracy": 0.3797752808988764,
+              "absolute_gap": 0.003146067415730369
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 1581,
+              "share": 0.6127906976744186,
+              "mean_confidence": 0.44331182795698926,
+              "accuracy": 0.4187223276407337,
+              "absolute_gap": 0.024589500316255564
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 501,
+              "share": 0.1941860465116279,
+              "mean_confidence": 0.5339640718562875,
+              "accuracy": 0.4870259481037924,
+              "absolute_gap": 0.046938123752495065
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 52,
+              "share": 0.020155038759689922,
+              "mean_confidence": 0.6333846153846155,
+              "accuracy": 0.3269230769230769,
+              "absolute_gap": 0.3064615384615386
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 1,
+              "share": 0.0003875968992248062,
+              "mean_confidence": 0.72,
+              "accuracy": 1.0,
+              "absolute_gap": 0.28
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.029708527131782902,
+            "confidence_min": 0.336,
+            "confidence_max": 0.72
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 762,
+              "mean_predicted_probability": 0.4385354330708661,
+              "empirical_precision": 0.39238845144356954,
+              "calibration_gap": 0.04614698162729658
+            },
+            "HOLD": {
+              "predicted_rows": 96,
+              "mean_predicted_probability": 0.4046666666666667,
+              "empirical_precision": 0.22916666666666666,
+              "calibration_gap": 0.17550000000000002
+            },
+            "BUY": {
+              "predicted_rows": 1722,
+              "mean_predicted_probability": 0.4626225319396052,
+              "empirical_precision": 0.44831591173054586,
+              "calibration_gap": 0.014306620209059318
+            }
+          }
+        },
+        "B": {
+          "rows": 2580,
+          "multiclass_brier_score": 0.6609796015660072,
+          "expected_calibration_error": 0.0593877002751938,
+          "mean_confidence": 0.4524736780426357,
+          "accuracy_from_native_argmax": 0.3949612403100775,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 384,
+              "share": 0.14883720930232558,
+              "mean_confidence": 0.37441162973958325,
+              "accuracy": 0.3802083333333333,
+              "absolute_gap": 0.005796703593750063
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 1698,
+              "share": 0.6581395348837209,
+              "mean_confidence": 0.43623469084216726,
+              "accuracy": 0.3839811542991755,
+              "absolute_gap": 0.05225353654299175
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 381,
+              "share": 0.14767441860465116,
+              "mean_confidence": 0.5398606874278216,
+              "accuracy": 0.4120734908136483,
+              "absolute_gap": 0.12778719661417326
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 100,
+              "share": 0.03875968992248062,
+              "mean_confidence": 0.6468925780999999,
+              "accuracy": 0.52,
+              "absolute_gap": 0.12689257809999988
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 16,
+              "share": 0.006201550387596899,
+              "mean_confidence": 0.73115582875,
+              "accuracy": 0.6875,
+              "absolute_gap": 0.04365582874999996
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 1,
+              "share": 0.0003875968992248062,
+              "mean_confidence": 0.8068455,
+              "accuracy": 1.0,
+              "absolute_gap": 0.1931545
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.05751243773255821,
+            "confidence_min": 0.33629635,
+            "confidence_max": 0.8068455
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 304,
+              "mean_predicted_probability": 0.4401537927960527,
+              "empirical_precision": 0.3026315789473684,
+              "calibration_gap": 0.1375222138486843
+            },
+            "HOLD": {
+              "predicted_rows": 46,
+              "mean_predicted_probability": 0.40156859826086966,
+              "empirical_precision": 0.391304347826087,
+              "calibration_gap": 0.010264250434782685
+            },
+            "BUY": {
+              "predicted_rows": 2230,
+              "mean_predicted_probability": 0.45520322009865466,
+              "empirical_precision": 0.40762331838565025,
+              "calibration_gap": 0.04757990171300441
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": 0.0037367488528289305,
+          "expected_calibration_error": 0.028376847562015462,
+          "mean_confidence": -0.0008782599418603598,
+          "accuracy_from_native_argmax": -0.028682170542635665,
+          "reliability_mean_confidence_minus_accuracy": 0.027803910600775306
+        }
+      },
+      "Information Technology": {
+        "A": {
+          "rows": 8163,
+          "multiclass_brier_score": 0.6548750723998529,
+          "expected_calibration_error": 0.0719705990444689,
+          "mean_confidence": 0.4728398872963372,
+          "accuracy_from_native_argmax": 0.4026705867940708,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1020,
+              "share": 0.12495406100698273,
+              "mean_confidence": 0.3771058823529412,
+              "accuracy": 0.3843137254901961,
+              "absolute_gap": 0.007207843137254921
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 4588,
+              "share": 0.5620482665686635,
+              "mean_confidence": 0.44730863121185693,
+              "accuracy": 0.3938535309503051,
+              "absolute_gap": 0.05345510026155181
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 2137,
+              "share": 0.26179100820776674,
+              "mean_confidence": 0.5390322882545624,
+              "accuracy": 0.4108563406644829,
+              "absolute_gap": 0.1281759475900795
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 383,
+              "share": 0.04691902486830822,
+              "mean_confidence": 0.6403446475195823,
+              "accuracy": 0.48825065274151436,
+              "absolute_gap": 0.15209399477806795
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 35,
+              "share": 0.004287639348278819,
+              "mean_confidence": 0.7350857142857142,
+              "accuracy": 0.6571428571428571,
+              "absolute_gap": 0.07794285714285709
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.07016930050226639,
+            "confidence_min": 0.336,
+            "confidence_max": 0.784
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 1975,
+              "mean_predicted_probability": 0.44731746835443037,
+              "empirical_precision": 0.390379746835443,
+              "calibration_gap": 0.05693772151898735
+            },
+            "HOLD": {
+              "predicted_rows": 299,
+              "mean_predicted_probability": 0.4069163879598661,
+              "empirical_precision": 0.26421404682274247,
+              "calibration_gap": 0.14270234113712366
+            },
+            "BUY": {
+              "predicted_rows": 5889,
+              "mean_predicted_probability": 0.4847464764815759,
+              "empirical_precision": 0.41382238070979793,
+              "calibration_gap": 0.070924095771778
+            }
+          }
+        },
+        "B": {
+          "rows": 8163,
+          "multiclass_brier_score": 0.6566863167643747,
+          "expected_calibration_error": 0.08485244091755481,
+          "mean_confidence": 0.47708285681122137,
+          "accuracy_from_native_argmax": 0.40144554698027685,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1024,
+              "share": 0.12544407693250031,
+              "mean_confidence": 0.38319183834960935,
+              "accuracy": 0.419921875,
+              "absolute_gap": 0.03673003665039065
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 4679,
+              "share": 0.5731961288741884,
+              "mean_confidence": 0.4453994487967515,
+              "accuracy": 0.3776447958965591,
+              "absolute_gap": 0.06775465290019239
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 1825,
+              "share": 0.22356976601739556,
+              "mean_confidence": 0.540484113939726,
+              "accuracy": 0.4241095890410959,
+              "absolute_gap": 0.11637452489863004
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 452,
+              "share": 0.05537179958348646,
+              "mean_confidence": 0.6413506329867257,
+              "accuracy": 0.4247787610619469,
+              "absolute_gap": 0.21657187192477878
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 133,
+              "share": 0.016293029523459512,
+              "mean_confidence": 0.7436229154887218,
+              "accuracy": 0.6240601503759399,
+              "absolute_gap": 0.11956276511278197
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 39,
+              "share": 0.004777655273796398,
+              "mean_confidence": 0.8387788384615384,
+              "accuracy": 0.5897435897435898,
+              "absolute_gap": 0.2490352487179487
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 11,
+              "share": 0.001347543795173343,
+              "mean_confidence": 0.9206072954545454,
+              "accuracy": 0.7272727272727273,
+              "absolute_gap": 0.19333456818181816
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.07563730983094452,
+            "confidence_min": 0.338418,
+            "confidence_max": 0.9528139
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 2273,
+              "mean_predicted_probability": 0.47516572692036957,
+              "empirical_precision": 0.39771227452705676,
+              "calibration_gap": 0.0774534523933128
+            },
+            "HOLD": {
+              "predicted_rows": 67,
+              "mean_predicted_probability": 0.4510916338805971,
+              "empirical_precision": 0.13432835820895522,
+              "calibration_gap": 0.31676327567164186
+            },
+            "BUY": {
+              "predicted_rows": 5823,
+              "mean_predicted_probability": 0.47813026333333336,
+              "empirical_precision": 0.4059763008758372,
+              "calibration_gap": 0.07215396245749617
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": 0.0018112443645218468,
+          "expected_calibration_error": 0.012881841873085914,
+          "mean_confidence": 0.004242969514884176,
+          "accuracy_from_native_argmax": -0.00122503981379396,
+          "reliability_mean_confidence_minus_accuracy": 0.005468009328678136
+        }
+      },
+      "Materials": {
+        "A": {
+          "rows": 3015,
+          "multiclass_brier_score": 0.6758130733001658,
+          "expected_calibration_error": 0.08161061359867325,
+          "mean_confidence": 0.4467847429519071,
+          "accuracy_from_native_argmax": 0.36517412935323385,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 703,
+              "share": 0.23316749585406302,
+              "mean_confidence": 0.37702987197724036,
+              "accuracy": 0.33001422475106684,
+              "absolute_gap": 0.04701564722617352
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 1740,
+              "share": 0.5771144278606966,
+              "mean_confidence": 0.44127126436781605,
+              "accuracy": 0.36666666666666664,
+              "absolute_gap": 0.07460459770114941
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 505,
+              "share": 0.16749585406301823,
+              "mean_confidence": 0.5371326732673266,
+              "accuracy": 0.39603960396039606,
+              "absolute_gap": 0.14109306930693055
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 65,
+              "share": 0.02155887230514096,
+              "mean_confidence": 0.6376,
+              "accuracy": 0.46153846153846156,
+              "absolute_gap": 0.17606153846153838
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 2,
+              "share": 0.0006633499170812604,
+              "mean_confidence": 0.748,
+              "accuracy": 0.5,
+              "absolute_gap": 0.248
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.08161061359867328,
+            "confidence_min": 0.336,
+            "confidence_max": 0.784
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 857,
+              "mean_predicted_probability": 0.43349358226371065,
+              "empirical_precision": 0.31388564760793464,
+              "calibration_gap": 0.11960793465577602
+            },
+            "HOLD": {
+              "predicted_rows": 200,
+              "mean_predicted_probability": 0.40398,
+              "empirical_precision": 0.315,
+              "calibration_gap": 0.08898
+            },
+            "BUY": {
+              "predicted_rows": 1958,
+              "mean_predicted_probability": 0.45697446373850875,
+              "empirical_precision": 0.3927477017364658,
+              "calibration_gap": 0.06422676200204297
+            }
+          }
+        },
+        "B": {
+          "rows": 3015,
+          "multiclass_brier_score": 0.6672332732565276,
+          "expected_calibration_error": 0.04413626426533993,
+          "mean_confidence": 0.42987424104809285,
+          "accuracy_from_native_argmax": 0.3857379767827529,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 408,
+              "share": 0.13532338308457711,
+              "mean_confidence": 0.38123280651960784,
+              "accuracy": 0.3382352941176471,
+              "absolute_gap": 0.04299751240196076
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 2462,
+              "share": 0.8165837479270315,
+              "mean_confidence": 0.4286107317262388,
+              "accuracy": 0.3866774979691308,
+              "absolute_gap": 0.041933233757108
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 89,
+              "share": 0.029519071310116086,
+              "mean_confidence": 0.5338945459550561,
+              "accuracy": 0.48314606741573035,
+              "absolute_gap": 0.05074847853932579
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 36,
+              "share": 0.011940298507462687,
+              "mean_confidence": 0.6448480011111112,
+              "accuracy": 0.4444444444444444,
+              "absolute_gap": 0.20040355666666676
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 20,
+              "share": 0.006633499170812604,
+              "mean_confidence": 0.7278543780000001,
+              "accuracy": 0.7,
+              "absolute_gap": 0.027854378000000124
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.04413626426533995,
+            "confidence_min": 0.3414751,
+            "confidence_max": 0.736539
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 186,
+              "mean_predicted_probability": 0.43408684306451606,
+              "empirical_precision": 0.3387096774193548,
+              "calibration_gap": 0.09537716564516124
+            },
+            "HOLD": {
+              "predicted_rows": 292,
+              "mean_predicted_probability": 0.38258071568493146,
+              "empirical_precision": 0.3253424657534247,
+              "calibration_gap": 0.05723824993150678
+            },
+            "BUY": {
+              "predicted_rows": 2537,
+              "mean_predicted_probability": 0.43500871697674415,
+              "empirical_precision": 0.39613716988569175,
+              "calibration_gap": 0.038871547091052394
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": -0.00857980004363823,
+          "expected_calibration_error": -0.037474349333333316,
+          "mean_confidence": -0.016910501903814268,
+          "accuracy_from_native_argmax": 0.020563847429519055,
+          "reliability_mean_confidence_minus_accuracy": -0.03747434933333332
+        }
+      },
+      "Utilities": {
+        "A": {
+          "rows": 862,
+          "multiclass_brier_score": 0.6848136983758701,
+          "expected_calibration_error": 0.09956844547563805,
+          "mean_confidence": 0.4479025522041764,
+          "accuracy_from_native_argmax": 0.351508120649652,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 197,
+              "share": 0.228538283062645,
+              "mean_confidence": 0.3764670050761421,
+              "accuracy": 0.3248730964467005,
+              "absolute_gap": 0.05159390862944163
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 492,
+              "share": 0.5707656612529002,
+              "mean_confidence": 0.44260162601626013,
+              "accuracy": 0.3475609756097561,
+              "absolute_gap": 0.09504065040650406
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 156,
+              "share": 0.18097447795823665,
+              "mean_confidence": 0.5354871794871795,
+              "accuracy": 0.358974358974359,
+              "absolute_gap": 0.17651282051282052
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 17,
+              "share": 0.019721577726218097,
+              "mean_confidence": 0.6254117647058824,
+              "accuracy": 0.7058823529411765,
+              "absolute_gap": 0.08047058823529407
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.09639443155452443,
+            "confidence_min": 0.34,
+            "confidence_max": 0.656
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 164,
+              "mean_predicted_probability": 0.42092682926829256,
+              "empirical_precision": 0.4268292682926829,
+              "calibration_gap": -0.00590243902439036
+            },
+            "HOLD": {
+              "predicted_rows": 56,
+              "mean_predicted_probability": 0.4001428571428572,
+              "empirical_precision": 0.35714285714285715,
+              "calibration_gap": 0.04300000000000004
+            },
+            "BUY": {
+              "predicted_rows": 642,
+              "mean_predicted_probability": 0.4589595015576325,
+              "empirical_precision": 0.3317757009345794,
+              "calibration_gap": 0.12718380062305307
+            }
+          }
+        },
+        "B": {
+          "rows": 862,
+          "multiclass_brier_score": 0.6800288237649429,
+          "expected_calibration_error": 0.058957058236658935,
+          "mean_confidence": 0.4116252716937356,
+          "accuracy_from_native_argmax": 0.35266821345707655,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 310,
+              "share": 0.35962877030162416,
+              "mean_confidence": 0.3825017048064516,
+              "accuracy": 0.3741935483870968,
+              "absolute_gap": 0.00830815641935484
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 531,
+              "share": 0.6160092807424594,
+              "mean_confidence": 0.4244084929190207,
+              "accuracy": 0.3465160075329567,
+              "absolute_gap": 0.07789248538606403
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 21,
+              "share": 0.024361948955916472,
+              "mean_confidence": 0.518311712857143,
+              "accuracy": 0.19047619047619047,
+              "absolute_gap": 0.3278355223809525
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.05895705823665903,
+            "confidence_min": 0.33876857,
+            "confidence_max": 0.5719695
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 350,
+              "mean_predicted_probability": 0.4134798507142857,
+              "empirical_precision": 0.35428571428571426,
+              "calibration_gap": 0.059194136428571464
+            },
+            "HOLD": {
+              "predicted_rows": 130,
+              "mean_predicted_probability": 0.42802642907692307,
+              "empirical_precision": 0.34615384615384615,
+              "calibration_gap": 0.08187258292307692
+            },
+            "BUY": {
+              "predicted_rows": 382,
+              "mean_predicted_probability": 0.4043445043717277,
+              "empirical_precision": 0.35340314136125656,
+              "calibration_gap": 0.05094136301047114
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": -0.004784874610927248,
+          "expected_calibration_error": -0.04061138723897911,
+          "mean_confidence": -0.036277280510440824,
+          "accuracy_from_native_argmax": 0.001160092807424573,
+          "reliability_mean_confidence_minus_accuracy": -0.0374373733178654
+        }
+      }
+    },
+    "regime_code": {
+      "-1": {
+        "A": {
+          "rows": 10110,
+          "multiclass_brier_score": 0.6536106381800197,
+          "expected_calibration_error": 0.06555093966369926,
+          "mean_confidence": 0.47821167161226513,
+          "accuracy_from_native_argmax": 0.4126607319485658,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1329,
+              "share": 0.1314540059347181,
+              "mean_confidence": 0.3768276899924755,
+              "accuracy": 0.35741158765989467,
+              "absolute_gap": 0.019416102332580842
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 5244,
+              "share": 0.5186943620178042,
+              "mean_confidence": 0.44822044241037373,
+              "accuracy": 0.3979786422578185,
+              "absolute_gap": 0.05024180015255525
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 2864,
+              "share": 0.2832838773491593,
+              "mean_confidence": 0.5407122905027932,
+              "accuracy": 0.4437849162011173,
+              "absolute_gap": 0.09692737430167592
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 627,
+              "share": 0.06201780415430267,
+              "mean_confidence": 0.6395534290271132,
+              "accuracy": 0.4960127591706539,
+              "absolute_gap": 0.1435406698564593
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 46,
+              "share": 0.004549950544015826,
+              "mean_confidence": 0.7358260869565215,
+              "accuracy": 0.6086956521739131,
+              "absolute_gap": 0.12713043478260844
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.06555093966369935,
+            "confidence_min": 0.336,
+            "confidence_max": 0.792
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 2172,
+              "mean_predicted_probability": 0.4457348066298342,
+              "empirical_precision": 0.3669429097605893,
+              "calibration_gap": 0.07879189686924493
+            },
+            "HOLD": {
+              "predicted_rows": 400,
+              "mean_predicted_probability": 0.40863,
+              "empirical_precision": 0.2825,
+              "calibration_gap": 0.12613000000000002
+            },
+            "BUY": {
+              "predicted_rows": 7538,
+              "mean_predicted_probability": 0.49126187317590875,
+              "empirical_precision": 0.432740780047758,
+              "calibration_gap": 0.058521093128150736
+            }
+          }
+        },
+        "B": {
+          "rows": 10110,
+          "multiclass_brier_score": 0.6515094456954887,
+          "expected_calibration_error": 0.05139185154599411,
+          "mean_confidence": 0.4695137335242334,
+          "accuracy_from_native_argmax": 0.4246290801186944,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 1628,
+              "share": 0.16102868447082097,
+              "mean_confidence": 0.3766008067567568,
+              "accuracy": 0.3968058968058968,
+              "absolute_gap": 0.020205090049140007
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 5741,
+              "share": 0.5678536102868447,
+              "mean_confidence": 0.4421627349590664,
+              "accuracy": 0.4109040236892527,
+              "absolute_gap": 0.031258711269813666
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 1902,
+              "share": 0.18813056379821957,
+              "mean_confidence": 0.5438269613354365,
+              "accuracy": 0.4579390115667718,
+              "absolute_gap": 0.0858879497686647
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 638,
+              "share": 0.06310583580613255,
+              "mean_confidence": 0.6407816261912226,
+              "accuracy": 0.47962382445141066,
+              "absolute_gap": 0.16115780173981192
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 171,
+              "share": 0.01691394658753709,
+              "mean_confidence": 0.7442280209356725,
+              "accuracy": 0.5497076023391813,
+              "absolute_gap": 0.19452041859649127
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 30,
+              "share": 0.002967359050445104,
+              "mean_confidence": 0.8260307193333333,
+              "accuracy": 0.5666666666666667,
+              "absolute_gap": 0.2593640526666666
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.04488465340553904,
+            "confidence_min": 0.33624774,
+            "confidence_max": 0.8924916
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 1779,
+              "mean_predicted_probability": 0.4530367176278808,
+              "empirical_precision": 0.388982574480045,
+              "calibration_gap": 0.06405414314783581
+            },
+            "HOLD": {
+              "predicted_rows": 122,
+              "mean_predicted_probability": 0.3857335210655738,
+              "empirical_precision": 0.26229508196721313,
+              "calibration_gap": 0.12343843909836066
+            },
+            "BUY": {
+              "predicted_rows": 8209,
+              "mean_predicted_probability": 0.47432964255085885,
+              "empirical_precision": 0.43476671945425754,
+              "calibration_gap": 0.03956292309660131
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": -0.0021011924845310004,
+          "expected_calibration_error": -0.014159088117705151,
+          "mean_confidence": -0.00869793808803171,
+          "accuracy_from_native_argmax": 0.011968348170128595,
+          "reliability_mean_confidence_minus_accuracy": -0.020666286258160305
+        }
+      },
+      "0": {
+        "A": {
+          "rows": 17829,
+          "multiclass_brier_score": 0.6780928527679623,
+          "expected_calibration_error": 0.08828582646250492,
+          "mean_confidence": 0.4471954680576589,
+          "accuracy_from_native_argmax": 0.358909641595154,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 3980,
+              "share": 0.2232318133378204,
+              "mean_confidence": 0.37588542713567835,
+              "accuracy": 0.3399497487437186,
+              "absolute_gap": 0.03593567839195977
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 10438,
+              "share": 0.5854506702563239,
+              "mean_confidence": 0.4432025292201571,
+              "accuracy": 0.3641502203487258,
+              "absolute_gap": 0.07905230887143133
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 3114,
+              "share": 0.1746592629984856,
+              "mean_confidence": 0.53391265253693,
+              "accuracy": 0.36287732819524726,
+              "absolute_gap": 0.17103532434168273
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 286,
+              "share": 0.016041281058948902,
+              "mean_confidence": 0.6301258741258742,
+              "accuracy": 0.3881118881118881,
+              "absolute_gap": 0.24201398601398605
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 11,
+              "share": 0.0006169723484211117,
+              "mean_confidence": 0.7323636363636364,
+              "accuracy": 0.36363636363636365,
+              "absolute_gap": 0.3687272727272728
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.08828582646250493,
+            "confidence_min": 0.336,
+            "confidence_max": 0.76
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 4019,
+              "mean_predicted_probability": 0.4258721074894253,
+              "empirical_precision": 0.3408808161234138,
+              "calibration_gap": 0.08499129136601147
+            },
+            "HOLD": {
+              "predicted_rows": 1205,
+              "mean_predicted_probability": 0.4066224066390041,
+              "empirical_precision": 0.2995850622406639,
+              "calibration_gap": 0.10703734439834023
+            },
+            "BUY": {
+              "predicted_rows": 12605,
+              "mean_predicted_probability": 0.4578729075763586,
+              "empirical_precision": 0.3703292344307814,
+              "calibration_gap": 0.0875436731455772
+            }
+          }
+        },
+        "B": {
+          "rows": 17829,
+          "multiclass_brier_score": 0.6680427711665134,
+          "expected_calibration_error": 0.06617111371922152,
+          "mean_confidence": 0.4361862575859555,
+          "accuracy_from_native_argmax": 0.37001514386673395,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 4433,
+              "share": 0.248639856413708,
+              "mean_confidence": 0.37659044666365893,
+              "accuracy": 0.35213173922851343,
+              "absolute_gap": 0.0244587074351455
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 11522,
+              "share": 0.646250490773459,
+              "mean_confidence": 0.4387291371827808,
+              "accuracy": 0.3731123068911647,
+              "absolute_gap": 0.06561683029161608
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 1515,
+              "share": 0.08497391889618038,
+              "mean_confidence": 0.5360074662442245,
+              "accuracy": 0.3735973597359736,
+              "absolute_gap": 0.16241010650825088
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 265,
+              "share": 0.014863424757417691,
+              "mean_confidence": 0.6455249233962265,
+              "accuracy": 0.44150943396226416,
+              "absolute_gap": 0.2040154894339623
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 87,
+              "share": 0.0048796903920578834,
+              "mean_confidence": 0.7302884148275861,
+              "accuracy": 0.5862068965517241,
+              "absolute_gap": 0.14408151827586202
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 7,
+              "share": 0.00039261876717707107,
+              "mean_confidence": 0.8073870957142858,
+              "accuracy": 0.42857142857142855,
+              "absolute_gap": 0.37881566714285725
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.06617111371922152,
+            "confidence_min": 0.3345542,
+            "confidence_max": 0.81789917
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 2959,
+              "mean_predicted_probability": 0.4256288332882731,
+              "empirical_precision": 0.3643122676579926,
+              "calibration_gap": 0.06131656563028054
+            },
+            "HOLD": {
+              "predicted_rows": 917,
+              "mean_predicted_probability": 0.40883813912759,
+              "empirical_precision": 0.34023991275899673,
+              "calibration_gap": 0.06859822636859325
+            },
+            "BUY": {
+              "predicted_rows": 13953,
+              "mean_predicted_probability": 0.4402224966114814,
+              "empirical_precision": 0.3731813946821472,
+              "calibration_gap": 0.06704110192933416
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": -0.010050081601448824,
+          "expected_calibration_error": -0.022114712743283402,
+          "mean_confidence": -0.011009210471703446,
+          "accuracy_from_native_argmax": 0.01110550227157997,
+          "reliability_mean_confidence_minus_accuracy": -0.022114712743283416
+        }
+      },
+      "1": {
+        "A": {
+          "rows": 14629,
+          "multiclass_brier_score": 0.6676196202064393,
+          "expected_calibration_error": 0.06173026180873609,
+          "mean_confidence": 0.44681030829174934,
+          "accuracy_from_native_argmax": 0.3851254357782487,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 3253,
+              "share": 0.22236653223050107,
+              "mean_confidence": 0.37637257915770056,
+              "accuracy": 0.35874577313249306,
+              "absolute_gap": 0.017626806025207498
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 8657,
+              "share": 0.5917697723699501,
+              "mean_confidence": 0.44226868430172117,
+              "accuracy": 0.3885872704170036,
+              "absolute_gap": 0.05368141388471759
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 2457,
+              "share": 0.16795406384578576,
+              "mean_confidence": 0.535010175010175,
+              "accuracy": 0.4033374033374033,
+              "absolute_gap": 0.1316727716727717
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 238,
+              "share": 0.016269054617540503,
+              "mean_confidence": 0.6349411764705881,
+              "accuracy": 0.42016806722689076,
+              "absolute_gap": 0.21477310924369736
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 22,
+              "share": 0.0015038621915373573,
+              "mean_confidence": 0.7283636363636364,
+              "accuracy": 0.45454545454545453,
+              "absolute_gap": 0.2738181818181819
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 2,
+              "share": 0.0001367147446852143,
+              "mean_confidence": 0.834,
+              "accuracy": 1.0,
+              "absolute_gap": 0.16600000000000004
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.06168487251350063,
+            "confidence_min": 0.336,
+            "confidence_max": 0.836
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 4412,
+              "mean_predicted_probability": 0.43650407978241157,
+              "empirical_precision": 0.37375339981867634,
+              "calibration_gap": 0.06275067996373523
+            },
+            "HOLD": {
+              "predicted_rows": 1037,
+              "mean_predicted_probability": 0.409940212150434,
+              "empirical_precision": 0.31822565091610416,
+              "calibration_gap": 0.09171456123432986
+            },
+            "BUY": {
+              "predicted_rows": 9180,
+              "mean_predicted_probability": 0.4559285403050109,
+              "empirical_precision": 0.39814814814814814,
+              "calibration_gap": 0.05778039215686276
+            }
+          }
+        },
+        "B": {
+          "rows": 14629,
+          "multiclass_brier_score": 0.6704554952923731,
+          "expected_calibration_error": 0.0694252380039647,
+          "mean_confidence": 0.4445704974201928,
+          "accuracy_from_native_argmax": 0.37514525941622806,
+          "confidence_bin_statistics": [
+            {
+              "lower_inclusive": 0.0,
+              "upper": 0.1,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.1,
+              "upper": 0.2,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.2,
+              "upper": 0.30000000000000004,
+              "count": 0,
+              "share": 0.0,
+              "mean_confidence": null,
+              "accuracy": null,
+              "absolute_gap": null
+            },
+            {
+              "lower_inclusive": 0.30000000000000004,
+              "upper": 0.4,
+              "count": 3044,
+              "share": 0.20807984141089617,
+              "mean_confidence": 0.3776870954829172,
+              "accuracy": 0.3495400788436268,
+              "absolute_gap": 0.028147016639290368
+            },
+            {
+              "lower_inclusive": 0.4,
+              "upper": 0.5,
+              "count": 9629,
+              "share": 0.6582131382869643,
+              "mean_confidence": 0.4412870262758334,
+              "accuracy": 0.3776093052238031,
+              "absolute_gap": 0.06367772105203029
+            },
+            {
+              "lower_inclusive": 0.5,
+              "upper": 0.6000000000000001,
+              "count": 1548,
+              "share": 0.10581721238635587,
+              "mean_confidence": 0.5384177772157623,
+              "accuracy": 0.39857881136950907,
+              "absolute_gap": 0.13983896584625327
+            },
+            {
+              "lower_inclusive": 0.6000000000000001,
+              "upper": 0.7000000000000001,
+              "count": 332,
+              "share": 0.022694647617745575,
+              "mean_confidence": 0.6373844786746988,
+              "accuracy": 0.39759036144578314,
+              "absolute_gap": 0.2397941172289157
+            },
+            {
+              "lower_inclusive": 0.7000000000000001,
+              "upper": 0.8,
+              "count": 52,
+              "share": 0.003554583361815572,
+              "mean_confidence": 0.7367433032692308,
+              "accuracy": 0.5192307692307693,
+              "absolute_gap": 0.2175125340384615
+            },
+            {
+              "lower_inclusive": 0.8,
+              "upper": 0.9,
+              "count": 13,
+              "share": 0.000888645840453893,
+              "mean_confidence": 0.8669087715384616,
+              "accuracy": 0.3076923076923077,
+              "absolute_gap": 0.5592164638461539
+            },
+            {
+              "lower_inclusive": 0.9,
+              "upper": 1.0,
+              "count": 11,
+              "share": 0.0007519310957686786,
+              "mean_confidence": 0.9206072954545454,
+              "accuracy": 0.7272727272727273,
+              "absolute_gap": 0.19333456818181816
+            }
+          ],
+          "reliability_summary": {
+            "mean_confidence_minus_accuracy": 0.06942523800396472,
+            "confidence_min": 0.3345995,
+            "confidence_max": 0.9528139
+          },
+          "calibration_by_predicted_class": {
+            "SELL": {
+              "predicted_rows": 3162,
+              "mean_predicted_probability": 0.4529939637507907,
+              "empirical_precision": 0.3709677419354839,
+              "calibration_gap": 0.08202622181530683
+            },
+            "HOLD": {
+              "predicted_rows": 959,
+              "mean_predicted_probability": 0.4364685644421272,
+              "empirical_precision": 0.28154327424400416,
+              "calibration_gap": 0.15492529019812307
+            },
+            "BUY": {
+              "predicted_rows": 10508,
+              "mean_predicted_probability": 0.44277517511229547,
+              "empirical_precision": 0.38494480395888847,
+              "calibration_gap": 0.057830371153407
+            }
+          }
+        },
+        "B_minus_A": {
+          "multiclass_brier_score": 0.002835875085933859,
+          "expected_calibration_error": 0.007694976195228617,
+          "mean_confidence": -0.002239810871556558,
+          "accuracy_from_native_argmax": -0.009980176362020643,
+          "reliability_mean_confidence_minus_accuracy": 0.007740365490464085
+        }
+      }
+    }
+  }
+}

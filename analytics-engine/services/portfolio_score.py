@@ -1,5 +1,28 @@
+"""
+Portfolio score engine.
+
+Evaluates overall portfolio health (0 to 1000 points) across 4 dimensions:
+1. Downside Protection (max 400) - PORTFOLIO-LEVEL max drawdown & VaR
+2. Risk-Adjusted Return (max 300) - PORTFOLIO-LEVEL Sharpe ratio
+3. Allocation Quality (max 200) - ASSET-LEVEL concentration & diversification
+4. Stress Resilience (max 100) - PORTFOLIO-LEVEL drawdown resilience
+
+All risk and return inputs are evaluated at the true portfolio level rather than
+averaging individual asset statistics.
+"""
+from typing import Optional, List, Dict, Any
 import numpy as np
 import pandas as pd
+
+from services.financial_metrics import (
+    canonical_portfolio_returns,
+    compute_annualized_volatility,
+    compute_annualized_return,
+    compute_sharpe_ratio,
+    compute_wealth_index_drawdown,
+    compute_var_cvar,
+    DEFAULT_RISK_FREE_RATE,
+)
 
 
 def get_currency_symbol(currency_map: dict) -> str:
@@ -85,7 +108,6 @@ INDIA_TICKERS = {
     'ADANIGREEN.NS': 'Energy',
     'ADANIPORTS.NS': 'Industrials',
     'TATAMOTORS.NS': 'Consumer Cyclical',
-    'WIPRO.NS': 'Technology',
     'LTIM.NS': 'Technology',
     'HINDALIBAR.NS': 'Consumer Defensive',
     'MOTHERSLJS.NS': 'Financial',
@@ -107,89 +129,124 @@ def get_asset_category(ticker: str) -> str:
     return 'Other'
 
 
+def compute_asset_allocation(tickers: list, weights: list) -> list:
+    """Group weights by asset category."""
+    cats = {}
+    for t, w in zip(tickers, weights):
+        c = get_asset_category(t)
+        cats[c] = cats.get(c, 0.0) + float(w)
+    return [{"category": k, "weight": round(v, 4)} for k, v in cats.items()]
+
+
 def compute_portfolio_score(
     tickers: list,
     weights: list,
-    risk_summary: pd.DataFrame,
-    returns: pd.DataFrame,
+    risk_summary: Optional[pd.DataFrame] = None,
+    returns: Optional[pd.DataFrame] = None,
     portfolio_value: float = 100000,
+    portfolio_metrics: Optional[dict] = None,
+    risk_free_rate: float = DEFAULT_RISK_FREE_RATE,
 ) -> dict:
-    if not tickers or not weights or risk_summary is None:
+    """
+    Score the portfolio (0-1000) using true portfolio-level risk and performance metrics.
+    """
+    if not tickers or not weights:
         return {
             'score': 0,
             'max_score': 1000,
             'grading': 'N/A',
             'components': {},
             'risks_identified': [],
+            'metric_provenance': {},
         }
 
-    vol_data = risk_summary['Volatility (Annual)'] if 'Volatility (Annual)' in risk_summary else pd.Series(dtype=float)
-    var_data = risk_summary['VaR (95%)'] if 'VaR (95%)' in risk_summary else pd.Series(dtype=float)
-    drawdown_data = risk_summary['Max Drawdown'] if 'Max Drawdown' in risk_summary else pd.Series(dtype=float)
+    # Step 1: Extract or calculate PORTFOLIO-LEVEL metrics
+    port_vol: Optional[float] = None
+    port_var: Optional[float] = None
+    port_drawdown: Optional[float] = None
+    port_sharpe: Optional[float] = None
+    port_ann_return: Optional[float] = None
 
-    avg_volatility = float(np.mean(list(vol_data.values))) if len(vol_data) > 0 else 0
-    avg_var = float(np.mean(list(var_data.values))) if len(var_data) > 0 else 0
-    avg_drawdown = float(np.mean(list(drawdown_data.values))) if len(drawdown_data) > 0 else 0
+    if portfolio_metrics and isinstance(portfolio_metrics, dict):
+        port_vol = portfolio_metrics.get("portfolio_volatility")
+        port_var = portfolio_metrics.get("portfolio_var_95")
+        port_drawdown = portfolio_metrics.get("portfolio_max_drawdown")
+        port_sharpe = portfolio_metrics.get("portfolio_sharpe")
+        port_ann_return = portfolio_metrics.get("portfolio_annualized_return")
 
-    avg_return = float(returns.mean().mean() * 252) if returns is not None and not returns.empty else 0
+    # If portfolio metrics are not provided or incomplete, compute from canonical portfolio returns
+    if (port_vol is None or port_drawdown is None or port_sharpe is None) and returns is not None and not returns.empty:
+        try:
+            port_ret = canonical_portfolio_returns(returns, weights, tickers)
+            if not port_ret.empty and len(port_ret) >= 2:
+                if port_vol is None:
+                    port_vol = compute_annualized_volatility(port_ret, ddof=1)
+                if port_var is None:
+                    port_var, _ = compute_var_cvar(port_ret, confidence_level=0.95)
+                if port_drawdown is None:
+                    port_drawdown, _ = compute_wealth_index_drawdown(port_ret)
+                if port_sharpe is None:
+                    port_sharpe = compute_sharpe_ratio(port_ret, risk_free_rate_annual=risk_free_rate)
+                if port_ann_return is None:
+                    port_ann_return = compute_annualized_return(port_ret)
+        except Exception:
+            pass
+
+    # Safe defaults if data is missing
+    vol_val = port_vol if port_vol is not None else 0.0
+    var_val = port_var if port_var is not None else 0.0
+    dd_val = port_drawdown if port_drawdown is not None else 0.0
+    sharpe_val = port_sharpe if port_sharpe is not None else 0.0
+    return_val = port_ann_return if port_ann_return is not None else 0.0
 
     components = {}
 
-    # 1. Downside Protection (max 400 points)
-    # Lower drawdown and VaR = higher score
-    drawdown_abs = abs(avg_drawdown)
-    var_abs = abs(avg_var)
-    downside_score = min(400, max(0, 400 * (1 - drawdown_abs / 0.5) * (1 - var_abs / 0.1)))
+    # 1. Downside Protection (max 400 points) — PORTFOLIO-LEVEL
+    # Lower portfolio drawdown and portfolio VaR = higher score
+    drawdown_abs = abs(dd_val)
+    var_abs = abs(var_val)
+    downside_score = min(400, max(0, 400 * (1.0 - drawdown_abs / 0.5) * (1.0 - var_abs / 0.1)))
     components['downside_protection'] = {
         'score': round(downside_score, 1),
         'max': 400,
         'label': 'Downside Protection',
-        'detail': f'Avg Max Drawdown: {avg_drawdown*100:.1f}%, Avg VaR(95%): {avg_var*100:.2f}%',
+        'provenance': 'PORTFOLIO-LEVEL',
+        'detail': f'Portfolio Max Drawdown: {dd_val*100:.1f}%, Portfolio VaR(95%): {var_val*100:.2f}%',
     }
 
-    # 2. Risk-Adjusted Return (max 300 points)
-    # Sharpe ratio proxy: return / volatility
-    if avg_volatility > 0:
-        sharpe = avg_return / avg_volatility
-    else:
-        sharpe = 0
-    sharpe_score = min(300, max(0, 150 + sharpe * 50))
+    # 2. Risk-Adjusted Return (max 300 points) — PORTFOLIO-LEVEL
+    # Uses canonical daily-excess annualized portfolio Sharpe
+    sharpe_score = min(300, max(0, 150 + sharpe_val * 50))
     components['risk_adjusted_return'] = {
         'score': round(sharpe_score, 1),
         'max': 300,
         'label': 'Risk-Adjusted Return',
-        'detail': f'Proxy Sharpe: {sharpe:.2f} (annual return: {avg_return*100:.1f}%, vol: {avg_volatility*100:.1f}%)',
+        'provenance': 'PORTFOLIO-LEVEL',
+        'detail': f'Portfolio Sharpe: {sharpe_val:.2f} (ann return: {return_val*100:.1f}%, vol: {vol_val*100:.1f}%)',
     }
 
-    # 3. Allocation Quality (max 200 points)
-    # Fewer concentrated positions = higher score
+    # 3. Allocation Quality (max 200 points) — ASSET-LEVEL & HEURISTIC
+    # Rewards diversification across unique holdings and penalizes heavy concentration
     max_weight = max(weights) if weights else 1.0
     unique_holdings = len(tickers)
-    concentration_penalty = 0
-    if max_weight > 0.5:
-        concentration_penalty = (max_weight - 0.5) * 200
-    elif max_weight > 0.3:
-        concentration_penalty = (max_weight - 0.3) * 50
-    diversification_bonus = min(100, unique_holdings * 10)
-    allocation_score = min(200, max(0, 200 - concentration_penalty + diversification_bonus - 100))
-    # Simpler: more tickers + less concentration = higher score
-    allocation_score = min(200, unique_holdings * 25 + (1 - max_weight) * 50)
+    allocation_score = min(200, unique_holdings * 25 + (1.0 - max_weight) * 50)
     components['allocation_quality'] = {
         'score': round(allocation_score, 1),
         'max': 200,
         'label': 'Allocation Quality',
+        'provenance': 'ASSET-LEVEL',
         'detail': f'{unique_holdings} holdings, max position: {max_weight*100:.0f}%',
     }
 
-    # 4. Stress Resilience (max 100 points)
-    # Based on how well the portfolio handles stress scenarios
-    # Lower average drawdown and VaR → better stress resilience
-    stress_score = min(100, max(0, 100 * (1 - drawdown_abs / 0.5)))
+    # 4. Stress Resilience (max 100 points) — PORTFOLIO-LEVEL
+    # Evaluates how well the true portfolio bounded historical drawdown
+    stress_score = min(100, max(0, 100 * (1.0 - drawdown_abs / 0.5)))
     components['stress_resilience'] = {
         'score': round(stress_score, 1),
         'max': 100,
         'label': 'Stress Resilience',
-        'detail': 'Based on historical drawdown & VaR',
+        'provenance': 'PORTFOLIO-LEVEL',
+        'detail': 'Based on canonical portfolio historical drawdown & VaR',
     }
 
     total_score = round(
@@ -200,7 +257,7 @@ def compute_portfolio_score(
     )
 
     # Grading
-    pct = total_score / 1000
+    pct = total_score / 1000.0
     if pct >= 0.9:
         grade = 'A+'
     elif pct >= 0.8:
@@ -214,29 +271,40 @@ def compute_portfolio_score(
     else:
         grade = 'F'
 
-    # Risk identification
-    risks = identify_portfolio_risks(tickers, weights, avg_volatility, avg_drawdown)
+    # Risk identification using portfolio-level metrics
+    risks = identify_portfolio_risks(tickers, weights, vol_val, dd_val)
+
+    metric_provenance = {
+        "portfolio_volatility": "PORTFOLIO-LEVEL",
+        "portfolio_drawdown": "PORTFOLIO-LEVEL",
+        "portfolio_var": "PORTFOLIO-LEVEL",
+        "portfolio_sharpe": "PORTFOLIO-LEVEL",
+        "allocation_concentration": "ASSET-LEVEL",
+        "diversification_count": "HEURISTIC",
+    }
 
     return {
         'score': total_score,
         'max_score': 1000,
         'grade': grade,
         'grading': grade,
-        'pct': round(pct * 100, 1),
+        'pct': round(pct * 100.0, 1),
         'components': components,
         'risks_identified': risks,
+        'metric_provenance': metric_provenance,
     }
 
 
 def identify_portfolio_risks(
     tickers: list,
     weights: list,
-    avg_volatility: float,
-    avg_drawdown: float,
+    port_volatility: float,
+    port_drawdown: float,
 ) -> list:
+    """Identify key risks using portfolio-level metrics and concentration thresholds."""
     risks = []
 
-    # Concentration risk
+    # Concentration risk (ASSET-LEVEL)
     max_weight = max(weights) if weights else 0
     if max_weight > 0.5:
         risks.append({
@@ -249,114 +317,33 @@ def identify_portfolio_risks(
         risks.append({
             'type': 'concentration',
             'severity': 'medium',
-            'label': 'Moderate Concentration Risk',
-            'description': f'Largest position is {max_weight*100:.0f}% of portfolio.',
+            'label': 'Moderate Concentration',
+            'description': f"Largest position is {max_weight*100:.0f}% of portfolio.",
         })
 
-    # Sector concentration
-    sector_weights = {}
-    for t, w in zip(tickers, weights):
-        cat = get_asset_category(t)
-        sector_weights[cat] = sector_weights.get(cat, 0) + w
-
-    dominant_sector = max(sector_weights, key=sector_weights.get) if sector_weights else 'Unknown'
-    dominant_pct = sector_weights.get(dominant_sector, 0)
-    if dominant_pct > 0.5:
-        risks.append({
-            'type': 'sector',
-            'severity': 'high',
-            'label': f'{dominant_sector} Sector Concentration',
-            'description': f'{dominant_pct*100:.0f}% of portfolio in {dominant_sector} stocks. Sector-specific shocks could significantly impact value.',
-        })
-    elif dominant_pct > 0.35:
-        risks.append({
-            'type': 'sector',
-            'severity': 'medium',
-            'label': f'Moderate {dominant_sector} Exposure',
-            'description': f'{dominant_pct*100:.0f}% in {dominant_sector} sector.',
-        })
-
-    # Volatility risk
-    if avg_volatility > RISK_TOLERANCE_THRESHOLDS['HIGH_RISK_THRESHOLD']:
+    # Portfolio Volatility risk (PORTFOLIO-LEVEL)
+    if port_volatility > RISK_TOLERANCE_THRESHOLDS['HIGH_RISK_THRESHOLD']:
         risks.append({
             'type': 'volatility',
             'severity': 'high',
-            'label': 'High Volatility Risk',
-            'description': f'Portfolio volatility ({avg_volatility*100:.1f}%) exceeds typical risk thresholds. Expect significant price swings.',
+            'label': 'High Portfolio Volatility',
+            'description': f"Annualized portfolio volatility is {port_volatility*100:.1f}%, exceeding the 35% high-risk threshold.",
         })
-    elif avg_volatility > RISK_TOLERANCE_THRESHOLDS['MEDIUM_RISK_THRESHOLD']:
+    elif port_volatility > RISK_TOLERANCE_THRESHOLDS['MEDIUM_RISK_THRESHOLD']:
         risks.append({
             'type': 'volatility',
             'severity': 'medium',
-            'label': 'Elevated Volatility',
-            'description': f'Portfolio volatility: {avg_volatility*100:.1f}% annualized.',
+            'label': 'Moderate Portfolio Volatility',
+            'description': f"Annualized portfolio volatility is {port_volatility*100:.1f}%.",
         })
 
-    # Drawdown risk
-    if abs(avg_drawdown) > 0.30:
+    # Portfolio Drawdown risk (PORTFOLIO-LEVEL)
+    if port_drawdown < RISK_TOLERANCE_THRESHOLDS['HIGH_DRAWDOWN_THRESHOLD']:
         risks.append({
             'type': 'drawdown',
             'severity': 'high',
-            'label': 'Severe Drawdown Risk',
-            'description': f'Historical max drawdown of {avg_drawdown*100:.1f}% indicates significant downside potential.',
-        })
-    elif abs(avg_drawdown) > 0.20:
-        risks.append({
-            'type': 'drawdown',
-            'severity': 'medium',
-            'label': 'Moderate Drawdown Risk',
-            'description': f'Historical max drawdown: {avg_drawdown*100:.1f}%.',
-        })
-
-    # Inflation risk (all stocks = no inflation hedge)
-    has_inflation_hedge = any(
-        t.upper() in ('GLD', 'TLT', 'VNQ', 'SLV', 'PDBC', 'VAW', 'GSG')
-        or t.upper().endswith(('G', 'S', '.NS'))
-        for t in tickers
-    )
-    if not has_inflation_hedge:
-        risks.append({
-            'type': 'inflation',
-            'severity': 'medium',
-            'label': 'Inflation Risk',
-            'description': 'No dedicated inflation-hedging assets (e.g., TIPS, commodities, real estate) in portfolio.',
-        })
-
-    # Geography risk (US-only stocks)
-    all_us = all(not t.upper().endswith(('.NS', '.BO', '.L', '.T')) for t in tickers)
-    if all_us and len(tickers) > 1:
-        risks.append({
-            'type': 'geography',
-            'severity': 'low',
-            'label': 'Geography Risk',
-            'description': 'Portfolio is concentrated in US markets. Consider international diversification.',
-        })
-
-    # Credit risk (high-yield concentration)
-    credit_weights = 0
-    for t in tickers:
-        t_upper = t.upper()
-        if t_upper in ('JNK', 'HYG', 'IJR', 'IWM') or t_upper.endswith('.NS') and 'FINANCE' in t_upper:
-            credit_weights += 0.1
-    if credit_weights > 0.3:
-        risks.append({
-            'type': 'credit',
-            'severity': 'medium',
-            'label': 'Credit Risk',
-            'description': 'Significant exposure to credit-sensitive instruments may suffer during rate hikes.',
+            'label': 'High Portfolio Historical Drawdown',
+            'description': f"Portfolio suffered a historical peak-to-trough decline of {abs(port_drawdown)*100:.1f}%.",
         })
 
     return risks
-
-
-def compute_asset_allocation(tickers: list, weights: list) -> list:
-    allocations = []
-    for t, w in zip(tickers, weights):
-        cat = get_asset_category(t)
-        allocations.append({
-            'ticker': t.upper(),
-            'weight': round(w * 100, 1),
-            'category': cat,
-            'value': None,
-        })
-    return allocations

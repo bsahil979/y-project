@@ -1,0 +1,34 @@
+{
+  "original_run": "regime_holdout_2026-09-27_v2",
+  "reproduction_run": "regime_reproduction_2026-10-12",
+  "tolerance": 1e-10,
+  "csv_comparisons": {
+    "metrics.csv": {
+      "rows": 4,
+      "max_absolute_difference": 0.0
+    },
+    "holdout_metrics.csv": {
+      "rows": 4,
+      "max_absolute_difference": 0.0
+    },
+    "equity.csv": {
+      "rows": 1471,
+      "max_absolute_difference": 0.0
+    },
+    "daily_ledger.csv": {
+      "rows": 5880,
+      "max_absolute_difference": 0.0
+    },
+    "sensitivity.csv": {
+      "rows": 24,
+      "max_absolute_difference": 0.0
+    }
+  },
+  "status": "matched",
+  "snapshot_sha256": "ed367e3dce5a3c58fb856b02fd2b2ae109286256f1073c56bc4d325dea041ab9",
+  "configuration_matches": true,
+  "bootstrap_matches": true,
+  "changed_source_files": [
+    "services/regime_allocation.py"
+  ]
+}

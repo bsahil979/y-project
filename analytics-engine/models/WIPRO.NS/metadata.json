@@ -1,0 +1,48 @@
+{
+  "ticker": "WIPRO.NS",
+  "trained_at": "2026-05-15T18:24:53.408265",
+  "training_duration_seconds": 20.8,
+  "dataset": {
+    "period": "5y",
+    "interval": "1d",
+    "rows": 1039,
+    "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+  },
+  "hyperparameters": {
+    "lstm_epochs": 25,
+    "lstm_lookback": 60,
+    "lstm_hidden_size": 64,
+    "lstm_num_layers": 2,
+    "rf_estimators": 200,
+    "hmm_n_regimes": 3,
+    "ppo_timesteps": 10000
+  },
+  "metrics": {
+    "lstm": {
+      "train_loss": 0.051488716155290604,
+      "val_rmse": 25.664575255150755,
+      "val_mae": 23.678249893544574
+    },
+    "rf": {
+      "evaluation_status": "invalidated_in_sample_overlap",
+      "quarantined_metrics": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "hmm": {
+      "n_components": 3,
+      "current_regime": "Bullish",
+      "converged": true,
+      "n_iter": 34
+    }
+  },
+  "model_versions": {
+    "lstm": "1.0",
+    "rf": "1.0",
+    "hmm": "1.0",
+    "ppo": "1.0"
+  }
+}

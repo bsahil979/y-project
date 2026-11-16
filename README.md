@@ -5,17 +5,25 @@
 [![Supabase](https://img.shields.io/badge/Database-Supabase-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
 [![TensorFlow](https://img.shields.io/badge/AI-TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow)](https://www.tensorflow.org/)
 
-A professional-grade quantitative analytics and financial advisory platform. This system leverages advanced machine learning models (LSTM, Random Forest, HMM, PPO) to provide institutional-level insights for retail investors.
+A portfolio-analysis application and research prototype. The current focus is explaining portfolio risk and testing whether HMM market-state information improves allocation. See [what we are building](./PROJECT_DIRECTION.md) and the [implemented research study](./analytics-engine/research/REGIME_STUDY.md). Other model modules remain exploratory extensions.
+
+See the [complete project roadmap](./PROJECT_ROADMAP.md) for the delivery phases, paper plan, research checks and optional extensions. The [literature matrix](./LITERATURE_MATRIX.md) maps key portfolio and regime-switching papers to the project design and its limitations.
 
 ---
 
 ## 🏗️ System Architecture
+
+See [ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md) for the full visual system diagram.
 
 | Component | Technology Stack | Core Responsibility |
 | :--- | :--- | :--- |
 | **Frontend** | React 18, Tailwind CSS, Recharts | Dynamic Dashboard, Real-time Visualizations, AI Advisor Chat |
 | **Analytics Engine** | Python 3.9+, FastAPI, PyTorch | Market Regime Detection, LSTM Forecasting, Signal Classification |
 | **Persistence Layer**| Supabase (PostgreSQL) | Secure User Auth, Portfolio Tracking, Historical Data Cache |
+
+### PPO fallback and backtesting
+
+The portfolio decision engine uses PPO when a model artifact exists. If PPO is missing, stale, or fails to load, the engine automatically falls back to the RF + regime rule set and continues generating a recommendation instead of failing. The backtesting module also returns safe neutral metrics when no valid price or signal data is present, preventing crashes during degraded market or data conditions.
 
 ---
 
@@ -57,7 +65,7 @@ cd analytics-engine
 python -m venv venv
 source venv/bin/activate  # venv\Scripts\activate on Windows
 pip install -r requirements.txt
-uvicorn main:app --port 8000 --reload
+uvicorn api:app --port 8000 --reload
 ```
 
 ### 2. Frontend Setup

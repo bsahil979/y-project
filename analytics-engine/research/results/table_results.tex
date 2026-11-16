@@ -1,0 +1,17 @@
+\begin{table}
+\caption{Out-of-sample performance comparison across strategies (3-fold walk-forward backtest).}
+\label{tab:results}
+\begin{tabular}{lrrrrrrrrrrrr}
+\toprule
+ & total\_return & cagr & ann\_vol & sharpe & sortino & calmar & max\_drawdown & win\_rate & var\_95 & cvar\_95 & turnover & n\_days \\
+name &  &  &  &  &  &  &  &  &  &  &  &  \\
+\midrule
+PPO-Regime (Ours) & 25.70 & 16.33 & 12.95 & 0.78 & 1.21 & 1.84 & -8.87 & 54.55 & -1.28 & -1.77 & 0.04 & 381 \\
+PPO-NoRegime & 25.47 & 16.19 & 12.96 & 0.77 & 1.20 & 1.81 & -8.95 & 54.55 & -1.28 & -1.77 & 0.02 & 381 \\
+Markowitz-MaxSharpe & 208.21 & 32.54 & 34.07 & 0.81 & 1.22 & 0.67 & -48.66 & 63.27 & -3.40 & -3.70 & 0.02 & 1007 \\
+Markowitz-MinVol & 377.68 & 47.90 & 42.46 & 0.95 & 2.48 & 1.35 & -35.39 & 67.35 & -4.22 & -3.01 & 0.00 & 1007 \\
+Equal-Weight & 427.72 & 51.63 & 42.83 & 1.00 & 2.58 & 1.38 & -37.31 & 69.39 & -4.25 & -3.07 & 0.00 & 1007 \\
+Buy-and-Hold & 545.16 & 59.45 & 48.50 & 1.02 & 3.08 & 1.64 & -36.36 & 67.35 & -4.81 & -3.02 & 0.00 & 1007 \\
+\bottomrule
+\end{tabular}
+\end{table}

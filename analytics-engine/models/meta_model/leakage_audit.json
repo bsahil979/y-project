@@ -1,0 +1,54 @@
+{
+  "status": "passed",
+  "rows": 3456,
+  "tickers": [
+    "AAPL",
+    "GOOGL",
+    "MSFT"
+  ],
+  "date_range": {
+    "start": "2022-01-18T00:00:00+00:00",
+    "end": "2026-08-20T00:00:00+00:00"
+  },
+  "horizon_days": 5,
+  "features": [
+    "returns",
+    "rsi",
+    "macd",
+    "macd_signal",
+    "macd_diff",
+    "adx",
+    "volatility",
+    "ema_50",
+    "ema_200",
+    "trend_strength",
+    "momentum_5d",
+    "momentum_10d",
+    "sentiment_score",
+    "regime_code"
+  ],
+  "future_columns_excluded_from_inputs": [
+    "forecast_magnitude",
+    "forecast_signal",
+    "future_return",
+    "label",
+    "predicted_return",
+    "prediction",
+    "target"
+  ],
+  "feature_timestamp_checks": {},
+  "feature_provenance": {
+    "ohlcv": "observation timestamp t",
+    "technical_indicators": "backward-looking OHLCV through t",
+    "regime": "backward-looking returns through t",
+    "sentiment": "historical article date <= observation timestamp t; neutral fallback when unavailable",
+    "label": "future return from t to t+h; target is not an input feature"
+  },
+  "split_requirements": {
+    "chronological": true,
+    "same_date_group_kept_together": true,
+    "imputation_fit_window_only": true,
+    "scaler_fit_window_only": true,
+    "feature_selection_fit_window_only": true
+  }
+}

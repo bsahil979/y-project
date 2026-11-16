@@ -48,6 +48,9 @@ coverage.xml
 !package.json
 !composer.json
 !trading_memory.json
+!analytics-engine/docs/midterm_analysis.json
+!analytics-engine/research/regime_results/manifest.json
+!analytics-engine/research/regime_results/decisions.json
 
 # IDEs
 .vscode/
@@ -57,3 +60,13 @@ coverage.xml
 
 # Project specific
 training_log.txt
+*.log
+analytics-engine/training_100_log.txt
+analytics-engine/models/timesfm_cache/
+document_build/*_render/
+!analytics-engine/config/*.json
+!analytics-engine/data/knowledge_base.json
+!analytics-engine/leakage_acceptance_2c3.json
+!analytics-engine/models/**/*.json
+!analytics-engine/research/**/*.json
+!analytics-engine/evaluations/*.json

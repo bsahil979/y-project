@@ -2,168 +2,196 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+
 
 // Initialize the live Supabase client connected to the user's provisioned instance
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-// Custom Auth Wrapper with Development Fallback
-export const AuthService = {
-  createDemoAccount() {
-    const timestamp = Date.now();
-    const demoUser = {
-      id: `demo_${timestamp}`,
-      email: `demo_${timestamp}@smartadvisor.ai`,
-      user_metadata: {
-        full_name: `Demo User ${Math.floor(Math.random() * 10000)}`,
+let supabase;
+if (isSupabaseConfigured) {
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
+} else {
+  // Development fallback: avoid throwing at import time so the app can render
+  console.warn('VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY not set — using local fallback.');
+  supabase = {
+    auth: {
+      signUp: async () => ({ data: null, error: new Error('Supabase not configured') }),
+      signInWithPassword: async () => ({ data: null, error: new Error('Supabase not configured') }),
+      signOut: async () => ({}),
+      getUser: async () => ({ data: { user: null } }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
+    },
+    from: () => ({
+      select: () => {
+        const eq = async () => ({ data: [], error: new Error('Supabase not configured') });
+        eq.maybeSingle = async () => ({ data: null, error: new Error('Supabase not configured') });
+        eq.in = async () => ({ data: [], error: new Error('Supabase not configured') });
+        return { eq, maybeSingle: eq.maybeSingle };
       },
+      delete: () => ({
+        eq: () => ({ in: async () => ({ data: null, error: new Error('Supabase not configured') }) }),
+      }),
+      upsert: async () => ({ data: null, error: new Error('Supabase not configured') })
+    })
+  };
+}
+
+export { supabase, isSupabaseConfigured };
+
+const DEMO_KEY = 'smart_portfolio_mock_user';
+const LOCAL_USER_KEY = 'smart_portfolio_local_user';
+const notifyAuthChange = () => window.dispatchEvent(new Event('auth-change'));
+
+export function getDemoUser() {
+  try {
+    const user = JSON.parse(localStorage.getItem(DEMO_KEY) || 'null');
+    return user?.isDemo === true && String(user.id).startsWith('demo_') ? user : null;
+  } catch {
+    return null;
+  }
+}
+
+function getLocalUser() {
+  try {
+    const user = JSON.parse(localStorage.getItem(LOCAL_USER_KEY) || 'null');
+    return user?.isLocal === true && String(user.id).startsWith('usr_') ? user : null;
+  } catch {
+    return null;
+  }
+}
+
+function requireCloudAuth() {
+  if (!isSupabaseConfigured) {
+    throw new Error('Cloud sign-in is not configured. Use Try Demo or configure the Supabase connection.');
+  }
+}
+
+function authError(error) {
+  if (['user_already_exists', 'email_exists'].includes(error?.code) || /already registered|already exists/i.test(error?.message || '')) {
+    return new Error('This email is already registered. Please sign in instead.');
+  }
+  if (error instanceof TypeError || /fetch|network|connection/i.test(error?.message || '')) {
+    return new Error('Cannot connect to cloud sign-in. Check your internet connection and whether the Supabase project is active.');
+  }
+  return error;
+}
+
+// Cloud credentials never fall back to a password-free local account.
+// Demo mode is entered only through the explicit Try Demo button.
+export const AuthService = {
+  getLocalUser,
+
+  createDemoAccount() {
+    const demoUser = {
+      id: `demo_${crypto.randomUUID()}`,
+      email: 'demo@smartadvisor.local',
+      user_metadata: { full_name: 'Demo User' },
       isDemo: true,
     };
-
-    localStorage.setItem('smart_portfolio_mock_user', JSON.stringify(demoUser));
-    window.dispatchEvent(new Event('auth-change'));
+    localStorage.setItem(DEMO_KEY, JSON.stringify(demoUser));
+    localStorage.removeItem(LOCAL_USER_KEY);
+    notifyAuthChange();
     return { data: { user: demoUser } };
   },
 
-  async register(email, password, fullName, isDemo = false) {
+  createLocalAccount(email, fullName = '') {
+    const cleanEmail = String(email || '').trim().toLowerCase();
+    if (!cleanEmail || !cleanEmail.includes('@')) {
+      throw new Error('Please enter a valid email address.');
+    }
+    const name = fullName?.trim() || cleanEmail.split('@')[0];
+    const user = {
+      id: `usr_${cleanEmail.replace(/[^a-zA-Z0-9]/g, '_')}`,
+      email: cleanEmail,
+      user_metadata: { full_name: name },
+      isLocal: true,
+    };
+    localStorage.setItem(LOCAL_USER_KEY, JSON.stringify(user));
+    localStorage.removeItem(DEMO_KEY);
+    notifyAuthChange();
+    return { data: { user } };
+  },
+
+  async register(email, password, fullName) {
+    requireCloudAuth();
+    if (typeof password !== 'string' || password.length < 6) {
+      throw new Error('Password must be at least 6 characters.');
+    }
     try {
       const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
+        email: email.trim().toLowerCase(), password,
         options: {
-          data: { full_name: fullName },
+          data: { full_name: fullName.trim(), onboarding_status: 'pending' },
+          emailRedirectTo: `${window.location.origin}/auth`,
         },
       });
       if (error) throw error;
-      return data;
-    } catch (err) {
-      console.warn("Supabase Signup failed, using local fallback:", err.message);
-      // Fallback for development/offline use
-      const mockUser = { 
-        id: `mock_${Date.now()}`, 
-        email, 
-        user_metadata: { full_name: fullName },
-        isDemo: isDemo 
-      };
-      
-      if (isDemo) {
-        // Demo account - stored only in session (removed on logout)
-        localStorage.setItem('smart_portfolio_mock_user', JSON.stringify(mockUser));
-      } else {
-        // Real account - stored persistently
-        const realAccounts = JSON.parse(localStorage.getItem('smart_portfolio_real_accounts') || '[]');
-        realAccounts.push(mockUser);
-        localStorage.setItem('smart_portfolio_real_accounts', JSON.stringify(realAccounts));
-        // Also set as current user
-        localStorage.setItem('smart_portfolio_mock_user', JSON.stringify(mockUser));
+      // Confirmed duplicate signups can be obfuscated by Supabase instead
+      // of returning an error. No new identity is created in that response.
+      if (!data?.session && Array.isArray(data?.user?.identities) && data.user.identities.length === 0) {
+        throw new Error('This email is already registered. Please sign in instead.');
       }
-      
-      window.dispatchEvent(new Event('auth-change'));
-      return { data: { user: mockUser } };
-    }
+      localStorage.removeItem(DEMO_KEY);
+      localStorage.removeItem(LOCAL_USER_KEY);
+      notifyAuthChange();
+      return { ...data, user: data?.session?.user || null };
+    } catch (error) { throw authError(error); }
   },
 
   async login(email, password) {
+    requireCloudAuth();
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim().toLowerCase(), password });
       if (error) throw error;
-      window.dispatchEvent(new Event('auth-change'));
+      if (!data?.session || !data?.user) throw new Error('Cloud sign-in did not create a session. Please try again.');
+      localStorage.removeItem(DEMO_KEY);
+      localStorage.removeItem(LOCAL_USER_KEY);
+      notifyAuthChange();
       return data;
-    } catch (err) {
-      console.warn("Supabase Login failed, using local fallback:", err.message);
-      
-      // Check if this is a real registered account
-      const realAccounts = JSON.parse(localStorage.getItem('smart_portfolio_real_accounts') || '[]');
-      const existingAccount = realAccounts.find(acc => acc.email === email);
-      
-      if (existingAccount) {
-        // Login to real account
-        localStorage.setItem('smart_portfolio_mock_user', JSON.stringify(existingAccount));
-        window.dispatchEvent(new Event('auth-change'));
-        return { data: { user: existingAccount } };
-      }
-      
-      // Fallback: Allow any login in dev mode to prevent lockouts (temporary session)
-      const mockUser = { 
-        id: `mock_${email}`, 
-        email, 
-        user_metadata: { full_name: email.split('@')[0] },
-        isDemo: true 
-      };
-      localStorage.setItem('smart_portfolio_mock_user', JSON.stringify(mockUser));
-      window.dispatchEvent(new Event('auth-change'));
-      return { data: { user: mockUser } };
-    }
+    } catch (error) { throw authError(error); }
   },
 
   async logout() {
-    await supabase.auth.signOut();
-    // Only remove temporary accounts
-    const currentUser = JSON.parse(localStorage.getItem('smart_portfolio_mock_user') || '{}');
-    if (currentUser.isDemo) {
-      localStorage.removeItem('smart_portfolio_mock_user');
-    } else {
-      // Real account - keep it for next login
-      localStorage.removeItem('smart_portfolio_mock_user');
+    // Local scope signs out this browser without logging out other devices.
+    try {
+      if (isSupabaseConfigured) {
+        await supabase.auth.signOut({ scope: 'local' });
+      }
+    } catch (err) {
+      console.warn('Remote sign out failed, clearing local session:', err);
+    } finally {
+      localStorage.removeItem(DEMO_KEY);
+      localStorage.removeItem(LOCAL_USER_KEY);
+      try {
+        if (typeof localStorage.key === 'function' && typeof localStorage.length === 'number') {
+          for (let i = localStorage.length - 1; i >= 0; i--) {
+            const k = localStorage.key(i);
+            if (k && (k.startsWith('sb-') || k.includes('auth-token'))) {
+              localStorage.removeItem(k);
+            }
+          }
+        }
+      } catch {}
+      notifyAuthChange();
     }
-    window.dispatchEvent(new Event('auth-change'));
   },
 
   async getCurrentUser() {
-    const { data } = await supabase.auth.getUser();
-    if (data?.user) return { data };
-
-    // Check local fallback
-    const mockUser = localStorage.getItem('smart_portfolio_mock_user');
-    if (mockUser) {
-      return { data: { user: JSON.parse(mockUser) } };
-    }
-    return { data: { user: null } };
-  }
-};
-
-// Persistent User-Scoped Portfolio Storage Engine
-export const PortfolioStorageService = {
-  async getUserPortfolio(userId) {
-    if (!userId) return [];
+    const demoUser = getDemoUser();
+    if (demoUser) return { data: { user: demoUser } };
+    const localUser = getLocalUser();
+    if (localUser) return { data: { user: localUser } };
+    if (!isSupabaseConfigured) return { data: { user: null } };
+    // Cached session restores the app shell; cloud tables still enforce RLS.
+    // Supabase handles persisted tokens, refresh and confirmation redirects.
     try {
-      // Try querying the persistent remote Supabase DB ledger
-      const { data, error } = await supabase
-        .from('user_portfolios')
-        .select('tickers')
-        .eq('user_id', userId)
-        .maybeSingle();
-        
-      if (!error && data?.tickers) {
-        return data.tickers;
+      const { data, error } = await supabase.auth.getSession();
+      if (error) throw authError(error);
+      return { data: { user: data?.session?.user || null } };
+    } catch (err) {
+      if (/network|fetch|connection/i.test(err?.message || '')) {
+        return { data: { user: null } };
       }
-    } catch (e) {
-      console.warn("Supabase table lookup warning:", e);
+      throw err;
     }
-    
-    // Automatic local fallback layer mapped exactly to the authenticated user UUID
-    const localData = localStorage.getItem(`smart_portfolio_${userId}`);
-    return localData ? JSON.parse(localData) : [];
   },
-
-  async saveUserPortfolio(userId, tickers) {
-    if (!userId) return;
-    try {
-      // Upsert directly into user_portfolios ledger table
-      await supabase
-        .from('user_portfolios')
-        .upsert({ 
-          user_id: userId, 
-          tickers, 
-          updated_at: new Date().toISOString() 
-        }, { onConflict: 'user_id' });
-    } catch (e) {
-      console.warn("Supabase table update warning:", e);
-    }
-    
-    // Mirror synchronization locally scoped to prevent account state cross-contamination
-    localStorage.setItem(`smart_portfolio_${userId}`, JSON.stringify(tickers));
-  }
 };

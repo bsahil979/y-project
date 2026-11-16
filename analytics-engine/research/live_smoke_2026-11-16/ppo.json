@@ -1,0 +1,14 @@
+{
+  "model": "PPO Portfolio RL Agent",
+  "status": "experimental",
+  "ready": true,
+  "warning": "PPO is EXPERIMENTAL and must not be used for production recommendations until: training is verified, reward function validated, backtest exists, out-of-sample evaluation done, transaction costs included, and performance compared against baselines. Use the Conservative/Balanced decision options from the analyze endpoint for production decisions.",
+  "requirements_met": {
+    "training_verified": false,
+    "reward_function_validated": false,
+    "backtest_exists": false,
+    "out_of_sample_evaluation": false,
+    "transaction_costs_included": false,
+    "baseline_comparison": false
+  }
+}

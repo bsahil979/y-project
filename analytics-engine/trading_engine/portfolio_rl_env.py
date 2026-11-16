@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import gymnasium as gym
 from gymnasium import spaces
-from hmmlearn.hmm import GaussianHMM
+from services.hmm_engine import causal_regime_features
 
 FEATURES_PER_ASSET = 5  # momentum, vol, signal, current_weight, asset_drawdown
 GLOBAL_FEATURES = 9     # regime(3), port_vol, port_dd, sharpe, cash_w, turnover, step_frac
@@ -23,27 +23,13 @@ def _softmax(x):
     return e / (e.sum() + 1e-12)
 
 
-def _fit_regime_states(portfolio_returns: np.ndarray, n_regimes: int = 3) -> np.ndarray:
-    """HMM regime id per timestep on portfolio return series."""
-    r = portfolio_returns.reshape(-1, 1)
-    valid = ~np.isnan(r.flatten())
-    states = np.zeros(len(r), dtype=np.int32)
-    if valid.sum() < 30:
-        return states
-    try:
-        hmm = GaussianHMM(n_components=n_regimes, covariance_type='diag', n_iter=80, random_state=42)
-        hmm.fit(r[valid])
-        states[valid] = hmm.predict(r[valid])
-    except Exception:
-        pass
-    return states
-
-
 def build_market_tensors(prices: pd.DataFrame, returns: pd.DataFrame):
     """
     Precompute per-timestep asset features and portfolio-level series for the env.
     prices, returns: aligned DataFrames (index=dates, columns=tickers).
     """
+    if not prices.index.equals(returns.index) or not prices.columns.equals(returns.columns):
+        raise ValueError('PPO requires aligned prices and returns')
     tickers = list(returns.columns)
     ret = returns.values.astype(np.float64)
     px = prices.values.astype(np.float64)
@@ -60,7 +46,8 @@ def build_market_tensors(prices: pd.DataFrame, returns: pd.DataFrame):
 
     port_ret = np.nanmean(ret, axis=1)
     port_ret = np.nan_to_num(port_ret, nan=0.0)
-    regimes = _fit_regime_states(port_ret, n_regimes=3)
+    features = causal_regime_features(pd.Series(port_ret, index=returns.index))
+    regimes = features['regime_code'].where(features['regime_available'], -1).to_numpy(dtype=np.int32)
 
     port_vol = pd.Series(port_ret).rolling(21, min_periods=5).std().fillna(0.01).values
     equity = np.cumprod(1.0 + port_ret)
@@ -84,6 +71,7 @@ def build_market_tensors(prices: pd.DataFrame, returns: pd.DataFrame):
         'prices': px,
         'asset_features': asset_features,
         'regimes': regimes,
+        'causal_preprocessing': True,
         'port_vol': port_vol,
         'port_dd': port_dd,
         'sharpe_roll': sharpe_roll,
@@ -111,6 +99,7 @@ class PortfolioRLEnv(gym.Env):
         lookback_warmup: int = 60,
     ):
         super().__init__()
+        self.metadata = {**self.metadata, 'causal_preprocessing': tensors.get('causal_preprocessing') is True}
         self.tensors = tensors
         self.tickers = tensors['tickers']
         self.returns = tensors['returns']
@@ -151,7 +140,8 @@ class PortfolioRLEnv(gym.Env):
     def _regime_onehot(self, t):
         r = int(self.regimes[t]) if t < len(self.regimes) else 0
         oh = np.zeros(3, dtype=np.float32)
-        oh[min(r, 2)] = 1.0
+        if 0 <= r <= 2:
+            oh[r] = 1.0
         return oh
 
     def _observation(self, t):

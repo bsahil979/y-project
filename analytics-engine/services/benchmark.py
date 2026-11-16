@@ -3,12 +3,24 @@ Benchmark engine — compares portfolio performance against benchmarks.
 
 Supports configurable benchmarks (S&P 500, NIFTY 50, NASDAQ-100, custom tickers).
 Calculates total return, annualized return, volatility, Sharpe, Sortino,
-max drawdown, beta, alpha, tracking error, and information ratio.
+max drawdown, beta, alpha, tracking error, and information ratio using
+canonical financial formulas.
 """
+from typing import Optional, List, Dict, Any
 import numpy as np
 import pandas as pd
-from typing import Optional
 
+from services.financial_metrics import (
+    canonical_portfolio_returns,
+    compute_cumulative_return,
+    compute_annualized_return,
+    compute_annualized_volatility,
+    compute_sharpe_ratio,
+    compute_sortino_ratio,
+    compute_wealth_index_drawdown,
+    compute_beta_and_alpha,
+    DEFAULT_RISK_FREE_RATE,
+)
 
 BENCHMARKS = {
     "S&P 500": "SPY",
@@ -29,124 +41,156 @@ def _safe_returns(prices: pd.DataFrame) -> pd.DataFrame:
     return returns
 
 
-def _portfolio_returns(returns: pd.DataFrame, weights: np.ndarray) -> pd.Series:
-    """Calculate portfolio daily returns from asset returns and weights."""
-    aligned = returns.iloc[:, :len(weights)].fillna(0)
-    weights_arr = np.array(weights)[:len(aligned.columns)]
-    port_ret = aligned @ weights_arr
-    return port_ret
-
-
 def compute_benchmark_comparison(
     prices: pd.DataFrame,
-    weights: list[float],
+    weights: List[float],
     portfolio_value: float = 100000,
     benchmark_ticker: str = "SPY",
-    risk_free_rate: float = 0.02,
+    risk_free_rate: float = DEFAULT_RISK_FREE_RATE,
+    tickers: Optional[List[str]] = None,
+    portfolio_returns: Optional[pd.Series] = None,
+    base_currency: Optional[str] = None,
 ) -> dict:
     """
-    Compare portfolio against a benchmark.
+    Compare portfolio against a benchmark using canonical financial metrics.
 
-    Returns a dict of portfolio_vs_benchmark metrics and raw return series.
+    Returns a dict of portfolio_vs_benchmark metrics and aligned return series.
     """
-    weights = np.array(weights, dtype=float)
-    weights = weights / weights.sum()
+    bench_clean = benchmark_ticker.strip().upper()
 
-    port_prices = prices.ffill().bfill()
-    port_returns_df = _safe_returns(port_prices)
+    # Step 1: Obtain canonical daily portfolio returns
+    if portfolio_returns is not None and isinstance(portfolio_returns, pd.Series) and not portfolio_returns.empty:
+        port_daily = portfolio_returns.dropna()
+    else:
+        port_prices = prices.ffill().bfill()
+        port_returns_df = _safe_returns(port_prices)
+        if tickers is None:
+            # If tickers not passed, try matching columns excluding the benchmark if possible
+            cand_cols = [c for c in port_returns_df.columns if str(c).upper().strip() != bench_clean]
+            if len(cand_cols) == len(weights):
+                tickers = cand_cols
+            else:
+                tickers = list(port_returns_df.columns[:len(weights)])
+        port_daily = canonical_portfolio_returns(port_returns_df, weights, tickers)
 
-    # Portfolio daily returns
-    port_daily = _portfolio_returns(port_returns_df, weights)
+    # Step 2: Obtain benchmark daily returns
+    bench_col = None
+    if isinstance(prices, pd.DataFrame):
+        col_lookup = {str(c).upper().strip(): c for c in prices.columns}
+        if bench_clean in col_lookup:
+            bench_col = col_lookup[bench_clean]
 
-    # Benchmark returns — get from same price data if ticker exists in columns
-    bench_col = {str(c).upper(): c for c in port_prices.columns}.get(benchmark_ticker.upper())
     if bench_col is not None:
-        bench_prices = port_prices[bench_col]
+        bench_prices = prices[bench_col].dropna()
+        bench_daily = bench_prices.pct_change().dropna()
     else:
         # Fetch benchmark separately
-        from services.data_fetcher import fetch_price_data
-        bench_prices = fetch_price_data([benchmark_ticker],
-                                         port_prices.index[0].strftime('%Y-%m-%d'),
-                                         port_prices.index[-1].strftime('%Y-%m-%d'))
-        if isinstance(bench_prices, pd.DataFrame):
-            bench_prices = bench_prices.iloc[:, 0]
+        try:
+            from services.data_fetcher import fetch_price_data
+            start_date = prices.index[0].strftime('%Y-%m-%d') if hasattr(prices.index[0], 'strftime') else str(prices.index[0])
+            end_date = (prices.index[-1] + pd.Timedelta(days=1)).strftime('%Y-%m-%d') if hasattr(prices.index[-1], 'strftime') else str(prices.index[-1])
+            bench_data = fetch_price_data([benchmark_ticker], start_date, end_date)
+            if base_currency:
+                from services.data_fetcher import get_currency_metadata, normalize_currency_prices
+                if bench_clean == '^NSEI' or bench_clean.endswith(('.NS', '.BO')):
+                    original = 'INR'
+                elif bench_clean in BENCHMARKS.values():
+                    original = 'USD'
+                else:
+                    original = get_currency_metadata([bench_clean])[bench_clean]
+                bench_data, _, _ = normalize_currency_prices(bench_data, {benchmark_ticker: original},
+                    base_currency, start_date, end_date)
+                bench_data = bench_data.reindex(prices.index)
+            if isinstance(bench_data, pd.DataFrame):
+                bench_prices = bench_data.iloc[:, 0]
+            else:
+                bench_prices = bench_data.dropna()
+            bench_daily = bench_prices.pct_change(fill_method=None).dropna()
+        except Exception as exc:
+            return {
+                "error": f"Failed to fetch benchmark data for '{benchmark_ticker}': {exc}",
+                "benchmark_ticker": benchmark_ticker,
+            }
 
-    bench_daily = bench_prices.pct_change().dropna()
-
-    # Align dates
-    common_idx = port_daily.index.intersection(bench_daily.index)
-    port_aligned = port_daily.reindex(common_idx).fillna(0)
-    bench_aligned = bench_daily.reindex(common_idx).fillna(0)
-
+    # Step 3: Strictly align on common dates
+    common_idx = port_daily.dropna().index.intersection(bench_daily.dropna().index)
     if len(common_idx) < 2:
         return {
             "error": "Insufficient overlapping data for benchmark comparison",
             "benchmark_ticker": benchmark_ticker,
+            "observation_count": len(common_idx),
         }
 
-    # --- Performance metrics ---
-    port_total = float((1 + port_aligned).prod() - 1)
-    bench_total = float((1 + bench_aligned).prod() - 1)
+    port_aligned = port_daily.loc[common_idx]
+    bench_aligned = bench_daily.loc[common_idx]
 
-    n_days = len(common_idx)
-    n_years = n_days / 252
-    port_annualized = float((1 + port_total) ** (1 / n_years) - 1) if n_years > 0 else 0
-    bench_annualized = float((1 + bench_total) ** (1 / n_years) - 1) if n_years > 0 else 0
+    # Step 4: Compute canonical metrics using standardized formulas
+    port_total = compute_cumulative_return(port_aligned)
+    bench_total = compute_cumulative_return(bench_aligned)
 
-    # --- Risk metrics ---
-    port_vol = float(port_aligned.std() * np.sqrt(252))
-    bench_vol = float(bench_aligned.std() * np.sqrt(252))
+    port_annualized = compute_annualized_return(port_aligned)
+    bench_annualized = compute_annualized_return(bench_aligned)
 
+    port_vol = compute_annualized_volatility(port_aligned, ddof=1)
+    bench_vol = compute_annualized_volatility(bench_aligned, ddof=1)
+
+    port_sharpe = compute_sharpe_ratio(port_aligned, risk_free_rate_annual=risk_free_rate)
+    bench_sharpe = compute_sharpe_ratio(bench_aligned, risk_free_rate_annual=risk_free_rate)
+
+    port_sortino = compute_sortino_ratio(port_aligned, risk_free_rate_annual=risk_free_rate)
+    bench_sortino = compute_sortino_ratio(bench_aligned, risk_free_rate_annual=risk_free_rate)
+
+    port_dd, _ = compute_wealth_index_drawdown(port_aligned)
+    bench_dd, _ = compute_wealth_index_drawdown(bench_aligned)
+
+    beta_alpha = compute_beta_and_alpha(port_aligned, bench_aligned, risk_free_rate_annual=risk_free_rate)
+    beta = beta_alpha["beta"]
+    alpha = beta_alpha["alpha"]
+
+    # Tracking error & Information ratio
     excess = port_aligned - bench_aligned
-    tracking_error = float(excess.std() * np.sqrt(252))
+    tracking_error = compute_annualized_volatility(excess, ddof=1)
+    if tracking_error is not None and tracking_error > 1e-12:
+        ir = float(excess.mean() * 252 / tracking_error)
+    else:
+        ir = None
 
-    # Downside deviation (Sortino)
-    target = 0
-    downside = excess[excess < target]
-    downside_dev = float(downside.std() * np.sqrt(252)) if len(downside) > 1 else 0
-    sortino = (port_annualized - risk_free_rate) / downside_dev if downside_dev > 0 else 0
+    outperf = (port_total - bench_total) if (port_total is not None and bench_total is not None) else None
+    outperf_pct = (outperf * 100.0) if outperf is not None else None
 
-    sharpe = (port_annualized - risk_free_rate) / port_vol if port_vol > 0 else 0
-
-    # Beta and Alpha (linear regression)
-    beta = float(np.cov(port_aligned, bench_aligned)[0, 1] / np.var(bench_aligned)) if np.var(bench_aligned) > 0 else 0
-    alpha_daily = port_aligned.mean() - beta * bench_aligned.mean()
-    alpha_annualized = float(alpha_daily * 252)
-
-    # Information ratio
-    ir = float(excess.mean() * 252 / tracking_error) if tracking_error > 0 else 0
-
-    # Drawdowns
-    port_cum = (1 + port_aligned).cumprod()
-    bench_cum = (1 + bench_aligned).cumprod()
-    port_dd = float((port_cum / port_cum.cummax() - 1).min())
-    bench_dd = float((bench_cum / bench_cum.cummax() - 1).min())
+    aligned_start = str(common_idx[0].date()) if hasattr(common_idx[0], 'date') else str(common_idx[0])
+    aligned_end = str(common_idx[-1].date()) if hasattr(common_idx[-1], 'date') else str(common_idx[-1])
 
     return {
         "benchmark_ticker": benchmark_ticker,
         "benchmark_display": BENCHMARKS.get(benchmark_ticker, benchmark_ticker),
-        "period_days": n_days,
+        "period_days": len(common_idx),
+        "aligned_start": aligned_start,
+        "aligned_end": aligned_end,
+        "observation_count": len(common_idx),
         "portfolio": {
-            "total_return": round(port_total, 4),
-            "annualized_return": round(port_annualized, 4),
-            "volatility": round(port_vol, 4),
-            "sharpe_ratio": round(sharpe, 4),
-            "sortino_ratio": round(sortino, 4),
-            "max_drawdown": round(port_dd, 4),
+            "total_return": round(port_total, 4) if port_total is not None else None,
+            "annualized_return": round(port_annualized, 4) if port_annualized is not None else None,
+            "volatility": round(port_vol, 4) if port_vol is not None else None,
+            "sharpe_ratio": round(port_sharpe, 4) if port_sharpe is not None else None,
+            "sortino_ratio": round(port_sortino, 4) if port_sortino is not None else None,
+            "max_drawdown": round(port_dd, 4) if port_dd is not None else None,
         },
         "benchmark": {
-            "total_return": round(bench_total, 4),
-            "annualized_return": round(bench_annualized, 4),
-            "volatility": round(bench_vol, 4),
-            "max_drawdown": round(bench_dd, 4),
+            "total_return": round(bench_total, 4) if bench_total is not None else None,
+            "annualized_return": round(bench_annualized, 4) if bench_annualized is not None else None,
+            "volatility": round(bench_vol, 4) if bench_vol is not None else None,
+            "sharpe_ratio": round(bench_sharpe, 4) if bench_sharpe is not None else None,
+            "sortino_ratio": round(bench_sortino, 4) if bench_sortino is not None else None,
+            "max_drawdown": round(bench_dd, 4) if bench_dd is not None else None,
         },
         "comparison": {
-            "alpha": round(alpha_annualized, 4),
-            "beta": round(beta, 4),
-            "tracking_error": round(tracking_error, 4),
-            "information_ratio": round(ir, 4),
-            "outperformance": round(port_total - bench_total, 4),
-            "outperformance_pct": round((port_total - bench_total) * 100, 2),
+            "alpha": round(alpha, 4) if alpha is not None else None,
+            "beta": round(beta, 4) if beta is not None else None,
+            "tracking_error": round(tracking_error, 4) if tracking_error is not None else None,
+            "information_ratio": round(ir, 4) if ir is not None else None,
+            "outperformance": round(outperf, 4) if outperf is not None else None,
+            "outperformance_pct": round(outperf_pct, 2) if outperf_pct is not None else None,
         },
         "return_series": {
             "portfolio_daily": _clean_series(port_aligned),
@@ -158,7 +202,7 @@ def compute_benchmark_comparison(
 def _clean_series(s: pd.Series) -> list:
     """Convert pandas Series to JSON-friendly list for API response."""
     return [
-        {"date": idx.strftime('%Y-%m-%d'), "return": float(v)}
+        {"date": idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx), "return": float(v)}
         for idx, v in s.items()
     ]
 

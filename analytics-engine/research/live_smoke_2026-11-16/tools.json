@@ -1,0 +1,48 @@
+{
+  "tools": [
+    {
+      "name": "get_portfolio",
+      "description": "Get portfolio summary: value, score, allocation"
+    },
+    {
+      "name": "analyze_portfolio",
+      "description": "Full portfolio analytics: returns, score, allocation"
+    },
+    {
+      "name": "analyze_risk",
+      "description": "Risk metrics: VaR, CVaR, volatility, drawdown, risk budget"
+    },
+    {
+      "name": "compare_benchmark",
+      "description": "Compare portfolio vs benchmark: alpha, beta, IR, tracking error"
+    },
+    {
+      "name": "analyze_attribution",
+      "description": "Return attribution: security, sector, asset-class contribution"
+    },
+    {
+      "name": "analyze_risk_budget",
+      "description": "Risk contribution: MCR, CCR, PCR per asset"
+    },
+    {
+      "name": "optimize_portfolio",
+      "description": "Get PPO RL optimization suggestions (experimental)"
+    },
+    {
+      "name": "run_stress_test",
+      "description": "Run stress tests: 2008 crisis, COVID, rate shocks"
+    },
+    {
+      "name": "analyze_goal",
+      "description": "Goal-based analysis: Monte Carlo, success probability"
+    },
+    {
+      "name": "forecast_asset",
+      "description": "ML price forecast for a specific ticker"
+    },
+    {
+      "name": "get_market_regime",
+      "description": "Current market regime via HMM"
+    }
+  ]
+}

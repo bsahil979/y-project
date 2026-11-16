@@ -1,0 +1,41 @@
+{
+  "dataset_version": "marketmind-v1",
+  "selected_model": "random_forest",
+  "metrics": {
+    "random_forest": {
+      "accuracy": 0.4199134199134199,
+      "f1_macro": 0.34971193486540536,
+      "precision_macro": 0.36257649381182233,
+      "recall_macro": 0.3632124486411937
+    },
+    "hist_gradient_boost": {
+      "accuracy": 0.3852813852813853,
+      "f1_macro": 0.3378397212543554,
+      "precision_macro": 0.3379935301924353,
+      "recall_macro": 0.34257426652205886
+    }
+  },
+  "features": [
+    "returns",
+    "rsi",
+    "macd",
+    "macd_signal",
+    "macd_diff",
+    "adx",
+    "volatility",
+    "ema_50",
+    "ema_200",
+    "trend_strength",
+    "momentum_5d",
+    "momentum_10d",
+    "sentiment_score",
+    "regime_code"
+  ],
+  "test_size": 0.2,
+  "split": "chronological_final_block",
+  "rows": 3456,
+  "date_range": {
+    "train_end": "2025-09-18 00:00:00",
+    "test_start": "2025-09-19 00:00:00"
+  }
+}

@@ -1,0 +1,220 @@
+[
+  {
+    "check": "models",
+    "status": 200,
+    "passed": true,
+    "seconds": 0.09,
+    "keys": [
+      "models",
+      "server"
+    ]
+  },
+  {
+    "check": "research",
+    "status": 200,
+    "passed": true,
+    "seconds": 0.09,
+    "keys": [
+      "schema_version",
+      "read_only",
+      "sources",
+      "regime",
+      "personalized",
+      "marketmind",
+      "forecasting",
+      "integrity"
+    ]
+  },
+  {
+    "check": "advisor",
+    "status": 200,
+    "passed": true,
+    "seconds": 0.03,
+    "keys": [
+      "llm_configured",
+      "provider",
+      "base_url",
+      "model",
+      "max_output_tokens",
+      "input_budget_bytes",
+      "knowledge_base_path",
+      "rag_documents_available"
+    ]
+  },
+  {
+    "check": "ppo",
+    "status": 200,
+    "passed": true,
+    "seconds": 0.03,
+    "keys": [
+      "model",
+      "status",
+      "ready",
+      "warning",
+      "requirements_met"
+    ]
+  },
+  {
+    "check": "tools",
+    "status": 200,
+    "passed": true,
+    "seconds": 0.0,
+    "keys": [
+      "tools"
+    ]
+  },
+  {
+    "check": "invalid_horizon",
+    "status": 400,
+    "passed": true,
+    "seconds": 0.03,
+    "keys": [
+      "detail"
+    ]
+  },
+  {
+    "check": "portfolio",
+    "status": 200,
+    "passed": true,
+    "seconds": 1.44,
+    "keys": [
+      "analysis_id",
+      "portfolio_id",
+      "portfolio_revision",
+      "snapshot_as_of",
+      "analysis_as_of",
+      "base_currency",
+      "original_currency",
+      "fx_conversion_applied",
+      "fx_pair_used",
+      "fx_rate_inr_per_usd",
+      "valuation_date",
+      "fx_dropped_dates",
+      "weight_source",
+      "position_values_base",
+      "currency",
+      "currency_symbol"
+    ]
+  },
+  {
+    "check": "mixed_fx",
+    "status": 200,
+    "passed": true,
+    "seconds": 2.12,
+    "keys": [
+      "analysis_id",
+      "portfolio_id",
+      "portfolio_revision",
+      "snapshot_as_of",
+      "analysis_as_of",
+      "base_currency",
+      "original_currency",
+      "fx_conversion_applied",
+      "fx_pair_used",
+      "fx_rate_inr_per_usd",
+      "valuation_date",
+      "fx_dropped_dates",
+      "weight_source",
+      "position_values_base",
+      "currency",
+      "currency_symbol"
+    ]
+  },
+  {
+    "check": "optimization",
+    "status": 200,
+    "passed": true,
+    "seconds": 0.02,
+    "keys": [
+      "applied_profile",
+      "effective_profile",
+      "investment_horizon_years",
+      "horizon_source",
+      "horizon_modifier",
+      "baseline_max_weight_cap",
+      "feasibility_floor",
+      "feasibility_floor_applied",
+      "volatility_penalty",
+      "max_weight_cap",
+      "objective_used",
+      "sector_weight_cap",
+      "rebalance_threshold",
+      "beta_penalty",
+      "horizon_usage",
+      "evaluation"
+    ]
+  },
+  {
+    "check": "forecast",
+    "status": 200,
+    "passed": true,
+    "seconds": 2.48,
+    "keys": [
+      "ticker",
+      "forecast",
+      "raw_forecast",
+      "status",
+      "currency",
+      "spot_price",
+      "price_as_of",
+      "model",
+      "requested_model",
+      "fallback_reason",
+      "horizon",
+      "horizon_unit",
+      "warning",
+      "validation",
+      "output_version",
+      "model_family"
+    ]
+  },
+  {
+    "check": "marketmind",
+    "status": 200,
+    "passed": true,
+    "seconds": 20.62,
+    "keys": [
+      "ticker",
+      "marketmind_model",
+      "status"
+    ]
+  },
+  {
+    "check": "sentiment",
+    "status": 200,
+    "passed": true,
+    "seconds": 8.77,
+    "keys": [
+      "ticker",
+      "status",
+      "finbert_score",
+      "finbert_articles_analyzed",
+      "models_used",
+      "overall_sentiment",
+      "overall_score",
+      "confidence",
+      "articles_analyzed",
+      "sources_used",
+      "articles",
+      "sentiment_breakdown"
+    ]
+  },
+  {
+    "check": "chat",
+    "status": 200,
+    "passed": true,
+    "seconds": 4.3,
+    "keys": [
+      "role",
+      "content",
+      "grounding_check",
+      "advisor_provenance",
+      "llm_used",
+      "model",
+      "provider",
+      "usage",
+      "context",
+      "retrieved_docs"
+    ]
+  }
+]

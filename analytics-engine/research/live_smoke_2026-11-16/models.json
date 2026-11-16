@@ -1,0 +1,6862 @@
+{
+  "models": [
+    {
+      "ticker": "AAPL",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "AAPL",
+        "trained_at": "2026-08-24T12:46:48.232715",
+        "training_duration_seconds": 24.3,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03637323155999184,
+            "val_rmse": 41.96542874338859,
+            "val_mae": 36.58040527191487
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 18
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "hmm_model.joblib",
+        "lstm.pt",
+        "lstm_state.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "rf_model.joblib",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "ABBV",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "ABBV",
+        "trained_at": "2026-08-24T12:53:18.179817",
+        "training_duration_seconds": 24.2,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03401436284184456,
+            "val_rmse": 35.314971954833446,
+            "val_mae": 27.974593829402995
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 38
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "ACN",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "ACN",
+        "trained_at": "2026-08-24T12:57:46.123446",
+        "training_duration_seconds": 15.9,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03022160567343235,
+            "val_rmse": 169.30698520908004,
+            "val_mae": 167.69100398411695
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 100
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "ADANIENT.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "ADANIENT.NS",
+        "trained_at": "2026-05-15T18:27:41.362812",
+        "training_duration_seconds": 22.8,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03344514220952988,
+            "val_rmse": 254.88825126642854,
+            "val_mae": 205.90896716575094
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 100
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "ADANIPORTS.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "ADANIPORTS.NS",
+        "trained_at": "2026-05-15T18:33:17.035707",
+        "training_duration_seconds": 23.7,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04524742811918259,
+            "val_rmse": 497.13573948861267,
+            "val_mae": 487.02537193089984
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 100
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "ADBE",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "ADBE",
+        "trained_at": "2026-08-24T12:58:06.869241",
+        "training_duration_seconds": 20.7,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.05848439410328865,
+            "val_rmse": 217.54017988712204,
+            "val_mae": 216.55457328802677
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 41
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "AMD",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "AMD",
+        "trained_at": "2026-08-24T12:56:18.414255",
+        "training_duration_seconds": 13.8,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.010939311236143112,
+            "val_rmse": 281.100945796353,
+            "val_mae": 262.6818220295869
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 100
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "AMGN",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "AMGN",
+        "trained_at": "2026-05-15T18:14:00.603057",
+        "training_duration_seconds": 25.2,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.02559157833456993,
+            "val_rmse": 80.03300839598253,
+            "val_mae": 73.11997483605036
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 29
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "AMZN",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "AMZN",
+        "trained_at": "2026-08-24T12:48:00.111648",
+        "training_duration_seconds": 23.5,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04379962012171745,
+            "val_rmse": 21.58957192427564,
+            "val_mae": 18.00899105230235
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 17
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "APOLLOHOSP.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "APOLLOHOSP.NS",
+        "trained_at": "2026-05-15T18:33:40.255780",
+        "training_duration_seconds": 23.2,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04269818961620331,
+            "val_rmse": 2213.0444037693737,
+            "val_mae": 2189.574799652958
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 53
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "ASIANPAINT.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "ASIANPAINT.NS",
+        "trained_at": "2026-05-15T18:23:02.536826",
+        "training_duration_seconds": 22.1,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04316320642828941,
+            "val_rmse": 308.2767956504456,
+            "val_mae": 264.7995212343801
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 20
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "AVGO",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "AVGO",
+        "trained_at": "2026-08-24T12:54:15.466841",
+        "training_duration_seconds": 14.0,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03837300091981888,
+            "val_rmse": 117.44186066137112,
+            "val_mae": 113.6533585173341
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 39
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "AXISBANK.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "AXISBANK.NS",
+        "trained_at": "2026-05-15T18:22:40.432496",
+        "training_duration_seconds": 22.1,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03724784776568413,
+            "val_rmse": 289.6712856987417,
+            "val_mae": 273.50559283499683
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 8
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "BAC",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "BAC",
+        "trained_at": "2026-08-24T12:55:50.594940",
+        "training_duration_seconds": 13.2,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03827584534883499,
+            "val_rmse": 8.040609454994307,
+            "val_mae": 6.502364877209999
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 18
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "BAJAJ-AUTO.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "BAJAJ-AUTO.NS",
+        "trained_at": "2026-05-15T18:35:59.017671",
+        "training_duration_seconds": 22.9,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.05485500395298004,
+            "val_rmse": 3348.4664602329444,
+            "val_mae": 3305.11300887638
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 22
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "BAJAJFINSV.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "BAJAJFINSV.NS",
+        "trained_at": "2026-05-15T18:29:55.128960",
+        "training_duration_seconds": 23.1,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.033372994512319565,
+            "val_rmse": 419.27531567724714,
+            "val_mae": 400.1072066416741
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 50
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "BAJFINANCE.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "BAJFINANCE.NS",
+        "trained_at": "2026-05-15T18:24:10.875319",
+        "training_duration_seconds": 23.2,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.024496562778949738,
+            "val_rmse": 282.07879709321867,
+            "val_mae": 274.36166490068325
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 44
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "BEL.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "BEL.NS",
+        "trained_at": "2026-05-15T18:34:26.963117",
+        "training_duration_seconds": 22.9,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04484137147665024,
+            "val_rmse": 232.32175944579143,
+            "val_mae": 230.9346591137637
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 19
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "BHARTIARTL.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "BHARTIARTL.NS",
+        "trained_at": "2026-05-15T18:21:34.020644",
+        "training_duration_seconds": 22.0,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.05091051757335663,
+            "val_rmse": 858.3224189366621,
+            "val_mae": 851.4151396664793
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 26
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "BPCL.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "BPCL.NS",
+        "trained_at": "2026-05-15T18:32:30.066357",
+        "training_duration_seconds": 22.0,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.049167048186063766,
+            "val_rmse": 126.30261223909424,
+            "val_mae": 122.71136194868133
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 58
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "BRK-B",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "BRK-B",
+        "trained_at": "2026-08-24T12:49:36.891791",
+        "training_duration_seconds": 24.7,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.021564168855547905,
+            "val_rmse": 30.226209487026644,
+            "val_mae": 27.432290268008554
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 14
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "CAT",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "CAT",
+        "trained_at": "2026-05-15T18:15:12.232552",
+        "training_duration_seconds": 24.1,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.006806911434978247,
+            "val_rmse": 362.659606620078,
+            "val_mae": 334.55966909350946
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 33
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "CIPLA.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "CIPLA.NS",
+        "trained_at": "2026-05-15T18:30:39.736532",
+        "training_duration_seconds": 21.9,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.05669325590133667,
+            "val_rmse": 250.87325847781938,
+            "val_mae": 221.64133715253917
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 38
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "CMCSA",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "CMCSA",
+        "trained_at": "2026-08-24T12:58:55.967138",
+        "training_duration_seconds": 25.6,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.045111387968063354,
+            "val_rmse": 5.640743448877749,
+            "val_mae": 5.311254986894345
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 19
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "COALINDIA.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "COALINDIA.NS",
+        "trained_at": "2026-05-15T18:32:53.345504",
+        "training_duration_seconds": 23.3,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.060978539288043976,
+            "val_rmse": 134.43252541181798,
+            "val_mae": 129.18574624476975
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 87
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "COST",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "COST",
+        "trained_at": "2026-08-24T12:54:56.530169",
+        "training_duration_seconds": 13.9,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.02355901710689068,
+            "val_rmse": 37.39266644439665,
+            "val_mae": 31.17632369056534
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 5
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "CRM",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "CRM",
+        "trained_at": "2026-08-24T12:56:04.631001",
+        "training_duration_seconds": 14.0,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.054816748946905136,
+            "val_rmse": 75.92053112121103,
+            "val_mae": 74.72090182949188
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 76
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "CSCO",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "CSCO",
+        "trained_at": "2026-08-24T12:57:02.459450",
+        "training_duration_seconds": 13.8,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.011719767935574055,
+            "val_rmse": 44.45771306754324,
+            "val_mae": 42.065214601787616
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 6
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "CVX",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "CVX",
+        "trained_at": "2026-08-24T12:54:01.422345",
+        "training_duration_seconds": 16.3,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04014245793223381,
+            "val_rmse": 33.22011409587862,
+            "val_mae": 32.058000416574984
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 20
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "DIA",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "DIA",
+        "trained_at": "2026-05-15T18:17:47.339969",
+        "training_duration_seconds": 39.4,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03558974340558052,
+            "val_rmse": 120.05754098793898,
+            "val_mae": 118.71153577803467
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 100
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "DIS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "DIS",
+        "trained_at": "2026-08-24T12:55:37.344101",
+        "training_duration_seconds": 13.8,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04305805638432503,
+            "val_rmse": 8.960464333327241,
+            "val_mae": 8.282101214440713
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 9
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "DIVISLAB.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "DIVISLAB.NS",
+        "trained_at": "2026-05-15T18:30:17.814836",
+        "training_duration_seconds": 22.7,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.05854698643088341,
+            "val_rmse": 2165.1946714582127,
+            "val_mae": 2150.15505391247
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 21
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "DRREDDY.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "DRREDDY.NS",
+        "trained_at": "2026-05-15T18:31:01.280590",
+        "training_duration_seconds": 21.5,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.05100744962692261,
+            "val_rmse": 185.74430106889474,
+            "val_mae": 181.77409112818737
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 50
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "EICHERMOT.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "EICHERMOT.NS",
+        "trained_at": "2026-05-15T18:31:45.244613",
+        "training_duration_seconds": 22.6,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.019798099994659424,
+            "val_rmse": 3217.85744980383,
+            "val_mae": 3170.653027879445
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 67
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "GE",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "GE",
+        "trained_at": "2026-05-15T18:14:48.090052",
+        "training_duration_seconds": 23.3,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03335903212428093,
+            "val_rmse": 181.98364341254745,
+            "val_mae": 181.0088473383663
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 20
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "GOOGL",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "GOOGL",
+        "trained_at": "2026-08-24T12:47:36.596579",
+        "training_duration_seconds": 24.1,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.056971654295921326,
+            "val_rmse": 104.69217014202535,
+            "val_mae": 101.71445563736931
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 47
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "GRASIM.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "GRASIM.NS",
+        "trained_at": "2026-05-15T18:32:08.059129",
+        "training_duration_seconds": 22.8,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.053329091519117355,
+            "val_rmse": 795.446951972686,
+            "val_mae": 790.8558693097216
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 26
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "HCLTECH.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "HCLTECH.NS",
+        "trained_at": "2026-05-15T18:24:32.630265",
+        "training_duration_seconds": 21.8,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.053788453340530396,
+            "val_rmse": 261.6309524672671,
+            "val_mae": 231.7297367060119
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 7
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "HD",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "HD",
+        "trained_at": "2026-08-24T12:52:29.387746",
+        "training_duration_seconds": 27.0,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03534657880663872,
+            "val_rmse": 44.96951863488006,
+            "val_mae": 42.38911759651919
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 40
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "HDFCBANK.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "HDFCBANK.NS",
+        "trained_at": "2026-05-15T18:19:21.187360",
+        "training_duration_seconds": 23.4,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03351089358329773,
+            "val_rmse": 176.8988067751178,
+            "val_mae": 158.57975640514644
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 11
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "HDFCLIFE.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "HDFCLIFE.NS",
+        "trained_at": "2026-05-15T18:35:12.587661",
+        "training_duration_seconds": 22.3,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.037004727870225906,
+            "val_rmse": 133.13352125844509,
+            "val_mae": 119.17178986702076
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 26
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "HEROMOTOCO.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "HEROMOTOCO.NS",
+        "trained_at": "2026-05-15T18:31:22.622906",
+        "training_duration_seconds": 21.3,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04319187253713608,
+            "val_rmse": 2083.731391857065,
+            "val_mae": 2047.262663235898
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 40
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "HINDALCO.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "HINDALCO.NS",
+        "trained_at": "2026-05-15T18:29:31.990807",
+        "training_duration_seconds": 22.8,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.01908363215625286,
+            "val_rmse": 371.85712686015626,
+            "val_mae": 355.15932593573933
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 22
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "HINDUNILVR.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "HINDUNILVR.NS",
+        "trained_at": "2026-05-15T18:20:28.461634",
+        "training_duration_seconds": 22.2,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.020288048312067986,
+            "val_rmse": 158.03095910726262,
+            "val_mae": 129.30389368312962
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 18
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "HON",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "HON",
+        "trained_at": "2026-05-15T18:13:11.196499",
+        "training_duration_seconds": 23.7,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.02364218607544899,
+            "val_rmse": 36.949021331323934,
+            "val_mae": 32.751345651575676
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 29
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "IBM",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "IBM",
+        "trained_at": "2026-05-15T18:14:24.812221",
+        "training_duration_seconds": 24.2,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04104870930314064,
+            "val_rmse": 107.0221989460644,
+            "val_mae": 103.06534423556423
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 13
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "ICICIBANK.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "ICICIBANK.NS",
+        "trained_at": "2026-05-15T18:19:43.016933",
+        "training_duration_seconds": 21.8,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.051278140395879745,
+            "val_rmse": 378.83937974274073,
+            "val_mae": 374.80162397215196
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 33
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "INDUSINDBK.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "INDUSINDBK.NS",
+        "trained_at": "2026-05-15T18:28:25.579322",
+        "training_duration_seconds": 22.3,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04931436851620674,
+            "val_rmse": 259.49654212255183,
+            "val_mae": 250.86792474510293
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 33
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "INFY.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "INFY.NS",
+        "trained_at": "2026-05-15T18:20:06.270726",
+        "training_duration_seconds": 23.3,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04664016142487526,
+            "val_rmse": 146.34145977710534,
+            "val_mae": 121.46600796060906
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 9
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "INTC",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "INTC",
+        "trained_at": "2026-08-24T12:56:48.656851",
+        "training_duration_seconds": 16.6,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.004884139634668827,
+            "val_rmse": 74.7651763047627,
+            "val_mae": 71.43673147609452
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 81
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "ITC.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "ITC.NS",
+        "trained_at": "2026-05-15T18:20:50.273688",
+        "training_duration_seconds": 21.8,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.033810727298259735,
+            "val_rmse": 44.33396135648273,
+            "val_mae": 43.15294949059493
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 48
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "IWM",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "IWM",
+        "trained_at": "2026-05-15T18:17:07.962926",
+        "training_duration_seconds": 38.2,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.021634072065353394,
+            "val_rmse": 64.97579702258697,
+            "val_mae": 63.05119527527215
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 15
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "JNJ",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "JNJ",
+        "trained_at": "2026-08-24T12:51:38.146698",
+        "training_duration_seconds": 23.9,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04387565329670906,
+            "val_rmse": 64.26418304261195,
+            "val_mae": 62.41250570323514
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 12
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "JPM",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "JPM",
+        "trained_at": "2026-08-24T12:50:01.085201",
+        "training_duration_seconds": 24.2,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.0331551693379879,
+            "val_rmse": 51.565147894604756,
+            "val_mae": 46.488722823242675
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 18
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "JSWSTEEL.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "JSWSTEEL.NS",
+        "trained_at": "2026-05-15T18:28:47.111308",
+        "training_duration_seconds": 21.5,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.023409388959407806,
+            "val_rmse": 373.2152590611323,
+            "val_mae": 366.8694367352248
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 56
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "KO",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "KO",
+        "trained_at": "2026-08-24T12:54:42.662877",
+        "training_duration_seconds": 13.6,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.02341783046722412,
+            "val_rmse": 11.970620009744188,
+            "val_mae": 11.20902969120535
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 15
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "KOTAKBANK.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "KOTAKBANK.NS",
+        "trained_at": "2026-05-15T18:21:56.251413",
+        "training_duration_seconds": 22.2,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03184572234749794,
+            "val_rmse": 52.496970204251845,
+            "val_mae": 47.471333667727464
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 19
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "LIN",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "LIN",
+        "trained_at": "2026-05-15T18:12:47.475918",
+        "training_duration_seconds": 24.0,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.052361033856868744,
+            "val_rmse": 98.53972943368983,
+            "val_mae": 93.11211905419981
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 52
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "LLY",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "LLY",
+        "trained_at": "2026-08-24T12:53:45.161820",
+        "training_duration_seconds": 27.0,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.035907719284296036,
+            "val_rmse": 194.07643330183024,
+            "val_mae": 163.60382183563735
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 12
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "LT.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "LT.NS",
+        "trained_at": "2026-05-15T18:22:18.357609",
+        "training_duration_seconds": 22.1,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.0501435287296772,
+            "val_rmse": 1189.6355310986999,
+            "val_mae": 1168.7990632959302
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 28
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "M&M.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "M&M.NS",
+        "trained_at": "2026-05-15T18:27:18.521971",
+        "training_duration_seconds": 19.1,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04232964292168617,
+            "val_rmse": 1626.560512688777,
+            "val_mae": 1609.6088018415803
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 72
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "MA",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "MA",
+        "trained_at": "2026-08-24T12:52:53.975900",
+        "training_duration_seconds": 24.6,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.02579181082546711,
+            "val_rmse": 51.04560482507894,
+            "val_mae": 44.81019071256993
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 6
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "MARUTI.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "MARUTI.NS",
+        "trained_at": "2026-05-15T18:23:24.883357",
+        "training_duration_seconds": 22.3,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.02132071740925312,
+            "val_rmse": 5097.892095138826,
+            "val_mae": 4904.188662081271
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 25
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "META",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "META",
+        "trained_at": "2026-08-24T12:48:47.980481",
+        "training_duration_seconds": 23.9,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.051495570689439774,
+            "val_rmse": 40.977305712430514,
+            "val_mae": 35.08799250848629
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 100
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "MRK",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "MRK",
+        "trained_at": "2026-08-24T12:55:10.165414",
+        "training_duration_seconds": 13.6,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.02830740250647068,
+            "val_rmse": 26.589769834561714,
+            "val_mae": 25.02533443997775
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 30
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "MSFT",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "MSFT",
+        "trained_at": "2026-08-24T12:47:12.481216",
+        "training_duration_seconds": 24.2,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.07123672217130661,
+            "val_rmse": 67.0918976530574,
+            "val_mae": 61.35732868456351
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 15
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "NESTLEIND.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "NESTLEIND.NS",
+        "trained_at": "2026-05-15T18:26:55.236412",
+        "training_duration_seconds": 20.5,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03075801394879818,
+            "val_rmse": 221.9014697190814,
+            "val_mae": 204.64743507425237
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 7
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "NFLX",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "NFLX",
+        "trained_at": "2026-08-24T12:56:32.038898",
+        "training_duration_seconds": 13.6,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.07260662317276001,
+            "val_rmse": 28.92796937882768,
+            "val_mae": 27.098579898937576
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 24
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "NKE",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "NKE",
+        "trained_at": "2026-08-24T12:59:17.694235",
+        "training_duration_seconds": 21.7,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.021902402862906456,
+            "val_rmse": 33.4246248123684,
+            "val_mae": 33.36870004474342
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 8
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "NTPC.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "NTPC.NS",
+        "trained_at": "2026-05-15T18:25:33.563035",
+        "training_duration_seconds": 20.2,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.055783383548259735,
+            "val_rmse": 104.15678587062537,
+            "val_mae": 100.41760252907062
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 9
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "NVDA",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "NVDA",
+        "trained_at": "2026-08-24T12:48:24.096036",
+        "training_duration_seconds": 24.0,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04942382499575615,
+            "val_rmse": 26.71203063695067,
+            "val_mae": 24.282768991755095
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 43
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "ONGC.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "ONGC.NS",
+        "trained_at": "2026-05-15T18:26:14.470740",
+        "training_duration_seconds": 20.6,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.046918533742427826,
+            "val_rmse": 68.49965969486287,
+            "val_mae": 64.0295453806603
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 61
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "PEP",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "PEP",
+        "trained_at": "2026-08-24T12:54:29.042785",
+        "training_duration_seconds": 13.6,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.05656006187200546,
+            "val_rmse": 8.985094203861896,
+            "val_mae": 7.816516786565221
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 5
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "PG",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "PG",
+        "trained_at": "2026-08-24T12:52:02.365236",
+        "training_duration_seconds": 24.2,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04045155271887779,
+            "val_rmse": 12.721145529854699,
+            "val_mae": 12.384861465013635
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 10
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "PIIND.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "PIIND.NS",
+        "trained_at": "2026-05-16T08:26:20.321375",
+        "training_duration_seconds": 51.8,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 50,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.023306716233491898,
+            "val_rmse": 382.6610385122115,
+            "val_mae": 321.25781179313157
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 65
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "PM",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "PM",
+        "trained_at": "2026-05-15T18:12:23.521617",
+        "training_duration_seconds": 24.6,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.040874183177948,
+            "val_rmse": 63.59907178274227,
+            "val_mae": 62.64975604178579
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 48
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "POWERGRID.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "POWERGRID.NS",
+        "trained_at": "2026-05-15T18:26:34.750099",
+        "training_duration_seconds": 20.3,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.07291402667760849,
+            "val_rmse": 65.57371400247577,
+            "val_mae": 62.96807343353352
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 33
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "QCOM",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "QCOM",
+        "trained_at": "2026-05-15T18:13:35.443137",
+        "training_duration_seconds": 24.2,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.02847100980579853,
+            "val_rmse": 31.76528857904183,
+            "val_mae": 26.071884537208508
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 20
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "QQQ",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "QQQ",
+        "trained_at": "2026-05-15T18:16:29.729545",
+        "training_duration_seconds": 38.4,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.027746623381972313,
+            "val_rmse": 221.91967819296954,
+            "val_mae": 219.52767228212352
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 57
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "RELIANCE.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "RELIANCE.NS",
+        "trained_at": "2026-05-15T18:18:17.745832",
+        "training_duration_seconds": 30.4,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.046789973974227905,
+            "val_rmse": 204.39729654378922,
+            "val_mae": 191.93854260368727
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 34
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "SBILIFE.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "SBILIFE.NS",
+        "trained_at": "2026-05-15T18:35:36.076252",
+        "training_duration_seconds": 23.5,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.031022727489471436,
+            "val_rmse": 550.8351386513384,
+            "val_mae": 541.8361300295472
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 7
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "SBIN.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "SBIN.NS",
+        "trained_at": "2026-05-15T18:21:12.033762",
+        "training_duration_seconds": 21.8,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.02194437012076378,
+            "val_rmse": 372.97442321574783,
+            "val_mae": 355.5649089384227
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 87
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "SHRIRAMFIN.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "SHRIRAMFIN.NS",
+        "trained_at": "2026-05-15T18:34:50.309720",
+        "training_duration_seconds": 23.3,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.029368197545409203,
+            "val_rmse": 497.7006867846949,
+            "val_mae": 468.4470939556011
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 73
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "SPY",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "SPY",
+        "trained_at": "2026-05-15T18:15:51.347748",
+        "training_duration_seconds": 39.1,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1057,
+          "date_range": "2022-03-01 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03594318777322769,
+            "val_rmse": 215.73717988182727,
+            "val_mae": 214.17116973489414
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 40
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "SUNPHARMA.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "SUNPHARMA.NS",
+        "trained_at": "2026-05-15T18:25:53.857338",
+        "training_duration_seconds": 20.3,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.06075594946742058,
+            "val_rmse": 458.3439288892503,
+            "val_mae": 451.1550133006146
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 13
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "TATACONSUM.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "TATACONSUM.NS",
+        "trained_at": "2026-05-15T18:34:04.101859",
+        "training_duration_seconds": 23.8,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.04992242157459259,
+            "val_rmse": 227.66297023328565,
+            "val_mae": 222.29512155572905
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 20
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "TATASTEEL.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "TATASTEEL.NS",
+        "trained_at": "2026-05-15T18:29:09.206641",
+        "training_duration_seconds": 22.1,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.026739850640296936,
+            "val_rmse": 69.28919684110406,
+            "val_mae": 66.8049071055287
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 48
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "TCS.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "TCS.NS",
+        "trained_at": "2026-05-15T18:18:57.795092",
+        "training_duration_seconds": 40.0,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.039539024233818054,
+            "val_rmse": 474.04919190442314,
+            "val_mae": 382.85036413107684
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 55
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "TECHM.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "TECHM.NS",
+        "trained_at": "2026-05-15T18:28:03.288453",
+        "training_duration_seconds": 21.9,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.0514659620821476,
+            "val_rmse": 279.7410804288798,
+            "val_mae": 262.07777251585173
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 20
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "TITAN.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "TITAN.NS",
+        "trained_at": "2026-05-15T18:23:47.659260",
+        "training_duration_seconds": 22.8,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.027171235531568527,
+            "val_rmse": 1025.1704073709623,
+            "val_mae": 972.4445762937211
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 10
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "TMO",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "TMO",
+        "trained_at": "2026-08-24T12:57:30.185015",
+        "training_duration_seconds": 27.7,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.06449399143457413,
+            "val_rmse": 81.3330695037267,
+            "val_mae": 70.84287223441231
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 62
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "TRENT.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "TRENT.NS",
+        "trained_at": "2026-05-15T18:36:23.088202",
+        "training_duration_seconds": 24.1,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1038,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-14 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.05195983499288559,
+            "val_rmse": 1068.8251136864299,
+            "val_mae": 928.7054439011129
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 99
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "TSLA",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "TSLA",
+        "trained_at": "2026-08-24T12:49:12.188873",
+        "training_duration_seconds": 24.2,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03944685682654381,
+            "val_rmse": 61.252063920576255,
+            "val_mae": 50.27007520416297
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 32
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "TXN",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "TXN",
+        "trained_at": "2026-08-24T12:58:30.340377",
+        "training_duration_seconds": 23.5,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.012800796888768673,
+            "val_rmse": 88.68596408088827,
+            "val_mae": 83.11900784573376
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 15
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "ULTRACEMCO.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "ULTRACEMCO.NS",
+        "trained_at": "2026-05-15T18:25:13.393119",
+        "training_duration_seconds": 20.0,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.05132848024368286,
+            "val_rmse": 3293.109095910546,
+            "val_mae": 3246.6665529042534
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bearish",
+            "converged": true,
+            "n_iter": 57
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "UNH",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "UNH",
+        "trained_at": "2026-08-24T12:50:49.584878",
+        "training_duration_seconds": 24.3,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.08233330398797989,
+            "val_rmse": 67.57090529107761,
+            "val_mae": 57.875988122505994
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 95
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "V",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "V",
+        "trained_at": "2026-08-24T12:50:25.227375",
+        "training_duration_seconds": 24.1,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.10035481303930283,
+            "val_rmse": 38.35600102640584,
+            "val_mae": 32.144233247787966
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 14
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "WIPRO.NS",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "WIPRO.NS",
+        "trained_at": "2026-05-15T18:24:53.408265",
+        "training_duration_seconds": 20.8,
+        "dataset": {
+          "period": "5y",
+          "interval": "1d",
+          "rows": 1039,
+          "date_range": "2022-03-02 00:00:00 -> 2026-05-15 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 25,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.051488716155290604,
+            "val_rmse": 25.664575255150755,
+            "val_mae": 23.678249893544574
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Bullish",
+            "converged": true,
+            "n_iter": 34
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "WMT",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "WMT",
+        "trained_at": "2026-08-24T12:55:23.532475",
+        "training_duration_seconds": 13.4,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03190348669886589,
+            "val_rmse": 16.42856530301327,
+            "val_mae": 14.651525650612076
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 32
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "XOM",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": true
+      },
+      "metadata": {
+        "ticker": "XOM",
+        "trained_at": "2026-08-24T12:51:14.275327",
+        "training_duration_seconds": 24.7,
+        "dataset": {
+          "period": "3y",
+          "interval": "1d",
+          "rows": 554,
+          "date_range": "2024-06-06 00:00:00 -> 2026-08-21 00:00:00"
+        },
+        "hyperparameters": {
+          "lstm_epochs": 15,
+          "lstm_lookback": 60,
+          "lstm_hidden_size": 64,
+          "lstm_num_layers": 2,
+          "rf_estimators": 200,
+          "hmm_n_regimes": 3,
+          "ppo_timesteps": 10000
+        },
+        "metrics": {
+          "lstm": {
+            "train_loss": 0.03399749845266342,
+            "val_rmse": 35.12696735416013,
+            "val_mae": 34.33279546694793
+          },
+          "rf": {
+            "evaluation_status": "invalidated_in_sample_overlap",
+            "quarantined_metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0
+            }
+          },
+          "hmm": {
+            "n_components": 3,
+            "current_regime": "Sideways",
+            "converged": true,
+            "n_iter": 5
+          }
+        },
+        "model_versions": {
+          "lstm": "1.0",
+          "rf": "1.0",
+          "hmm": "1.0",
+          "ppo": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "ppo_policy.zip",
+        "rf.pkl",
+        "scaler_lstm.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "_portfolio_rl",
+      "loaded": false,
+      "artifacts": {
+        "lstm": false,
+        "rf": false,
+        "hmm": false,
+        "ppo": true
+      },
+      "metadata": {},
+      "files": [
+        "ppo_policy.zip",
+        "universe.json"
+      ]
+    },
+    {
+      "ticker": "_universal",
+      "loaded": true,
+      "artifacts": {
+        "lstm": true,
+        "rf": true,
+        "hmm": true,
+        "ppo": false
+      },
+      "metadata": {
+        "trained_at": "2026-05-15T19:20:28.574744",
+        "type": "universal_hybrid",
+        "model_versions": {
+          "rf": "1.0",
+          "hmm": "1.0",
+          "lstm": "1.0"
+        }
+      },
+      "files": [
+        "hmm.pkl",
+        "lstm.pt",
+        "metadata.json",
+        "rf.pkl",
+        "scaler_returns.pkl",
+        "scaler_rf.pkl"
+      ]
+    },
+    {
+      "ticker": "forecast_v2",
+      "loaded": false,
+      "artifacts": {
+        "lstm": false,
+        "rf": false,
+        "hmm": false,
+        "ppo": false
+      },
+      "metadata": {},
+      "files": [
+        "MSFT"
+      ]
+    },
+    {
+      "ticker": "meta_model",
+      "loaded": false,
+      "artifacts": {
+        "lstm": false,
+        "rf": false,
+        "hmm": false,
+        "ppo": false
+      },
+      "metadata": {},
+      "files": [
+        "coverage_existing.csv",
+        "coverage_existing.json",
+        "coverage_existing_v2.csv",
+        "coverage_existing_v2.json",
+        "coverage_report.csv",
+        "coverage_report.json",
+        "dataset_manifest.json",
+        "feature_columns.json",
+        "leakage_audit.json",
+        "meta_dataset.csv",
+        "meta_model.pkl",
+        "meta_model_metrics.json",
+        "phase_2c3_acceptance.json"
+      ]
+    },
+    {
+      "ticker": "meta_model_b",
+      "loaded": false,
+      "artifacts": {
+        "lstm": false,
+        "rf": false,
+        "hmm": false,
+        "ppo": false
+      },
+      "metadata": {},
+      "files": [
+        "feature_columns.json",
+        "market_to_index.json",
+        "marketmind_b.pt",
+        "model_config.json",
+        "sector_to_index.json",
+        "ticker_to_index.json"
+      ]
+    },
+    {
+      "ticker": "phase_2d",
+      "loaded": false,
+      "artifacts": {
+        "lstm": false,
+        "rf": false,
+        "hmm": false,
+        "ppo": false
+      },
+      "metadata": {},
+      "files": [
+        "experiment_a",
+        "experiment_b",
+        "phase_2d_ab_report.json"
+      ]
+    },
+    {
+      "ticker": "phase_2e",
+      "loaded": false,
+      "artifacts": {
+        "lstm": false,
+        "rf": false,
+        "hmm": false,
+        "ppo": false
+      },
+      "metadata": {},
+      "files": [
+        "holdout_predictions.csv",
+        "phase_2e_attribution_report.json",
+        "phase_2e_calibration_report.json",
+        "phase_2e_classification_report.json",
+        "phase_2e_prediction_manifest.json",
+        "phase_2e_trading_report.json",
+        "phase_2f_stresstest_report.json"
+      ]
+    },
+    {
+      "ticker": "timesfm_cache",
+      "loaded": false,
+      "artifacts": {
+        "lstm": false,
+        "rf": false,
+        "hmm": false,
+        "ppo": false
+      },
+      "metadata": {},
+      "files": [
+        "CACHEDIR.TAG",
+        "models--google--timesfm-2.5-200m-pytorch"
+      ]
+    }
+  ],
+  "server": {
+    "train_on_missing": false
+  }
+}

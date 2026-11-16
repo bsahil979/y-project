@@ -125,45 +125,47 @@ const ResearchView = ({ tickers = [] }) => {
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-12">
-
-      {/* Hero Description */}
-      <div>
-        <div className="flex items-center gap-2 mb-3">
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+    <div className="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="rounded-[28px] border border-white/10 bg-slate-900/60 p-6 shadow-[0_20px_60px_rgba(15,23,42,0.45)] backdrop-blur-sm">
+        <div className="mb-4 flex flex-wrap items-center gap-2">
+          <span className="rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-indigo-300">
             Research Hub
           </span>
-          <span className="text-xs text-gray-500 font-bold">•</span>
-          <span className="text-xs text-emerald-400 font-bold flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> {tickers.length} Active Instruments
+          <span className="text-xs text-slate-500">•</span>
+          <span className="inline-flex items-center gap-2 text-xs font-bold text-emerald-400">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            {tickers.length} Active Instruments
           </span>
         </div>
-        <p className="text-sm text-gray-400 max-w-2xl leading-relaxed">
+        <p className="max-w-3xl text-sm leading-relaxed text-slate-300">
           Multi-model analysis suite integrating LSTM forecasting, HMM regime detection, VADER sentiment NLP, Random Forest classification, and PPO Reinforcement Learning agents.
         </p>
       </div>
 
-      {/* Top Row: Tech Stack Feature Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
         {topCards.map((card, idx) => {
           const c = getColorClasses(card.color);
           return (
             <Link
               key={idx}
               to={card.path}
-              className={`group block bg-[#11131a]/80 backdrop-blur-xl border ${c.border} rounded-2xl p-6 shadow-xl ${c.glow} transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl relative overflow-hidden`}
+              className={`group relative block overflow-hidden rounded-[26px] border bg-slate-900/60 p-6 shadow-xl shadow-slate-950/20 transition-all duration-300 hover:-translate-y-0.5 hover:border-white/20 ${c.border}`}
             >
-              <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${c.gradient} rounded-t-2xl`} />
-              
-              <p className="text-xs text-gray-400 leading-relaxed mb-5 min-h-[72px]">
+              <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${c.gradient}`} />
+              <div className="mb-5 flex items-start justify-between gap-3">
+                <div className="inline-flex rounded-xl border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">
+                  Intelligence layer
+                </div>
+              </div>
+              <p className="mb-5 min-h-[72px] text-xs leading-relaxed text-slate-400">
                 {card.description}
               </p>
 
               <div className="space-y-2.5">
                 {card.features.map((feature, fIdx) => (
                   <div key={fIdx} className="flex items-start gap-2.5">
-                    <CheckCircle2 className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${c.accent}`} />
-                    <span className="text-xs text-gray-300 font-medium leading-relaxed">{feature}</span>
+                    <CheckCircle2 className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${c.accent}`} />
+                    <span className="text-xs font-medium leading-relaxed text-slate-300">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -172,69 +174,68 @@ const ResearchView = ({ tickers = [] }) => {
         })}
       </div>
 
-      {/* Divider */}
       <div className="flex items-center gap-4">
-        <div className="flex-1 border-t border-gray-800/40" />
-        <span className="w-2 h-2 rounded-full bg-indigo-500/40" />
-        <div className="flex-1 border-t border-gray-800/40" />
+        <div className="h-px flex-1 bg-white/10" />
+        <span className="h-2 w-2 rounded-full bg-indigo-500/60" />
+        <div className="h-px flex-1 bg-white/10" />
       </div>
 
-      {/* Bottom Row: Named Tool Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
         {bottomCards.map((card, idx) => (
           <Link
             key={idx}
             to={card.path}
-            className="group block bg-[#11131a]/60 backdrop-blur-xl border border-gray-800/50 hover:border-gray-700/60 rounded-2xl p-6 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+            className="group block rounded-[26px] border border-white/10 bg-slate-900/60 p-6 shadow-xl shadow-slate-950/20 transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-500/30"
           >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-xl">{card.emoji}</span>
-              <h3 className="text-sm font-bold text-white tracking-tight group-hover:text-indigo-300 transition-colors">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-xl shadow-inner shadow-slate-950/50">
+                {card.emoji}
+              </span>
+              <h3 className="text-sm font-bold tracking-tight text-white transition-colors group-hover:text-indigo-300">
                 {card.title}
               </h3>
             </div>
 
-            <p className="text-xs text-gray-400 leading-relaxed mb-5 min-h-[60px]">
+            <p className="mb-5 min-h-[60px] text-xs leading-relaxed text-slate-400">
               {card.description}
             </p>
 
             <div className="space-y-2.5">
               {card.features.map((feature, fIdx) => (
                 <div key={fIdx} className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 shrink-0 text-emerald-500" />
-                  <span className="text-xs text-gray-300 font-medium leading-relaxed">{feature}</span>
+                  <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-400" />
+                  <span className="text-xs font-medium leading-relaxed text-slate-300">{feature}</span>
                 </div>
               ))}
             </div>
 
-            <div className="mt-5 pt-4 border-t border-gray-800/40 flex items-center justify-between">
-              <span className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Launch Tool</span>
-              <ArrowRight className="w-4 h-4 text-gray-600 group-hover:text-indigo-400 group-hover:translate-x-1 transition-all" />
+            <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
+              <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Launch Tool</span>
+              <ArrowRight className="h-4 w-4 text-slate-500 transition-all group-hover:translate-x-1 group-hover:text-indigo-300" />
             </div>
           </Link>
         ))}
       </div>
 
-      {/* AI Chat Advisor CTA Banner */}
-      <Link 
+      <Link
         to="/dashboard/chat"
-        className="block bg-gradient-to-r from-indigo-600/10 via-[#11131a] to-purple-600/10 border border-indigo-500/20 hover:border-indigo-500/40 rounded-2xl p-8 transition-all hover:shadow-xl hover:shadow-indigo-500/5 group"
+        className="group block rounded-[28px] border border-indigo-500/25 bg-gradient-to-r from-indigo-600/10 via-slate-900/80 to-purple-600/10 p-8 transition-all duration-300 hover:border-indigo-400/40 hover:shadow-[0_20px_50px_rgba(99,102,241,0.1)]"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-5">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-xl shadow-indigo-600/20 shrink-0 group-hover:scale-105 transition-transform">
-              <Sparkles className="w-7 h-7 text-white" />
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-500 shadow-lg shadow-indigo-600/20 transition-transform duration-300 group-hover:scale-105">
+              <Sparkles className="h-7 w-7 text-white" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white mb-1 group-hover:text-indigo-300 transition-colors">
+              <h3 className="mb-1 text-base font-bold text-white transition-colors group-hover:text-indigo-300">
                 AI Portfolio Advisor — Conversational Intelligence
               </h3>
-              <p className="text-xs text-gray-400 max-w-xl leading-relaxed">
+              <p className="max-w-xl text-xs leading-relaxed text-slate-400">
                 Ask anything about your portfolio in natural language. Get instant AI-powered insights combining outputs from the LSTM forecaster, HMM regime detector, VADER sentiment scores, and RL policy recommendations.
               </p>
             </div>
           </div>
-          <ArrowRight className="w-5 h-5 text-gray-600 group-hover:text-indigo-400 group-hover:translate-x-1 transition-all shrink-0" />
+          <ArrowRight className="h-5 w-5 shrink-0 text-slate-500 transition-all group-hover:translate-x-1 group-hover:text-indigo-300" />
         </div>
       </Link>
     </div>

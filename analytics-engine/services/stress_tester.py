@@ -1,103 +1,87 @@
+"""Window replay and empirical factor stress estimates in portfolio base currency."""
 import numpy as np
 import pandas as pd
 
-# Define historical stress scenarios
+from services.data_fetcher import get_portfolio_data, normalize_currency_prices
+
+# Factor shocks are scenario assumptions. Historical replay uses observed closes.
 SCENARIOS = {
-    "2008 Financial Crisis": {
-        "AAPL":  -0.40,
-        "MSFT":  -0.45,
-        "GOOGL": -0.55,
-        "default": -0.40
-    },
-    "COVID Crash 2020": {
-        "AAPL":  -0.30,
-        "MSFT":  -0.30,
-        "GOOGL": -0.31,
-        "default": -0.30
-    },
-    "Tech Sector Crash": {
-        "AAPL":  -0.35,
-        "MSFT":  -0.38,
-        "GOOGL": -0.40,
-        "default": -0.35
-    },
-    "Rate Hike Shock": {
-        "AAPL":  -0.15,
-        "MSFT":  -0.18,
-        "GOOGL": -0.20,
-        "default": -0.15
-    }
+    '2008 Financial Crisis': (-.40, ('2007-10-09', '2009-03-09')),
+    'COVID Crash 2020': (-.30, ('2020-02-19', '2020-03-23')),
+    'Tech Sector Crash': (-.35, ('2022-01-03', '2022-06-16')),
+    'Rate Hike Shock': (-.15, None),
+    'India VIX Shock': (-.25, None),
 }
 
 
-def run_stress_test(
-    tickers: list,
-    weights: list,
-    portfolio_value: float = 100000
-) -> pd.DataFrame:
-    """
-    Simulates portfolio loss under each stress scenario.
+def get_stress_summary(tickers, weights, portfolio_value=100000, *, prices=None,
+                       benchmark_returns=None, benchmark_name=None):
+    weights = np.asarray(weights, dtype=float)
+    if (len(weights) != len(tickers) or not np.isfinite(weights).all() or
+            (weights < 0).any() or not np.isclose(weights.sum(), 1) or
+            not np.isfinite(portfolio_value) or portfolio_value <= 0):
+        raise ValueError('Stress testing requires valid weights and a positive portfolio value')
+    if prices is None:
+        start, end = '2020-01-01', str(pd.Timestamp.today().date())
+        data = get_portfolio_data(tickers, start, end)
+        currencies = data['currencies']
+        base = 'INR' if 'INR' in currencies.values() else 'USD'
+        prices, _, _ = normalize_currency_prices(data['prices'], currencies, base, start, end)
+    prices = prices.loc[:, tickers].sort_index()
+    returns = prices.pct_change(fill_method=None)
+    reference = benchmark_returns if benchmark_returns is not None else returns.dot(weights)
+    reference_name = benchmark_name or ('supplied benchmark' if benchmark_returns is not None else 'current-weight portfolio')
+    factors = {}
+    for ticker in tickers:
+        sample = pd.concat([returns[ticker], reference], axis=1).dropna()
+        asset, market = sample.iloc[:, 0], sample.iloc[:, 1]
+        if len(sample) < 2 or not np.isfinite(market.var()) or market.var() <= 0:
+            raise ValueError(f'Insufficient reference return variation for {ticker}')
+        beta = asset.cov(market) / market.var()
+        residual_vol = (asset - beta * market).std() * np.sqrt(252)
+        factors[ticker] = float(beta), float(residual_vol)
 
-    Args:
-        tickers:          e.g. ["AAPL", "MSFT", "GOOGL"]
-        weights:          e.g. [0.4, 0.3, 0.3] — must sum to 1.0
-        portfolio_value:  total portfolio value in USD (default $100,000)
-
-    Returns:
-        DataFrame showing loss per scenario
-    """
-
-    if round(sum(weights), 5) != 1.0:
-        raise ValueError(f"Weights must sum to 1.0, got {sum(weights)}")
-
-    results = []
-
-    for scenario_name, shocks in SCENARIOS.items():
-        portfolio_loss = 0.0
-        ticker_losses = {}
-
+    rows, scenarios = [], {}
+    for name, (shock, window) in SCENARIOS.items():
+        contributions, amounts = {}, {}
         for ticker, weight in zip(tickers, weights):
-            # Get shock for this ticker, use default if not defined
-            shock = shocks.get(ticker, shocks["default"])
+            beta, idio = factors[ticker]
+            series = prices[ticker].dropna()
+            replay = window and all(pd.Timestamp(date) in series.index for date in window)
+            if replay:
+                change = float(series.loc[window[1]] / series.loc[window[0]] - 1)
+                method = 'realized_historical_replay'
+            else:
+                change = float(np.clip(beta * shock - .5 * idio, -.95, .20))
+                method = 'beta_idiosyncratic_factor'
+            amount = float(portfolio_value * weight * change)
+            amounts[ticker] = amount
+            contributions[ticker] = {'scenario_method': method, 'holding_shock': change,
+                'weight': float(weight), 'weighted_return_contribution': float(weight * change),
+                'value_change': amount, 'beta_used': None if replay else beta,
+                'benchmark_shock': None if replay else shock, 'idiosyncratic_volatility': None if replay else idio}
+        loss = sum(amounts.values())
+        remaining = portfolio_value + loss
+        methods = {h['scenario_method'] for h in contributions.values()}
+        scenarios[name] = {
+            'scenario_method': methods.pop() if len(methods) == 1 else None,
+            'reference': reference_name, 'benchmark_shock': shock, 'window': window,
+            'holdings': contributions, 'stressed_value': remaining, 'value_change': loss,
+            'recovery_gain_required': max(0., portfolio_value / remaining - 1) if remaining > 0 else None,
+        }
+        rows.append({'Scenario': name, 'Portfolio Loss': round(loss, 2),
+                     'Portfolio Loss (%)': round(loss / portfolio_value * 100, 2),
+                     'Remaining Value': round(remaining, 2), **{t: round(v, 2) for t,v in amounts.items()}})
+    table = pd.DataFrame(rows).set_index('Scenario')
+    worst = min(scenarios, key=lambda key: scenarios[key]['value_change'])
+    worst_change = scenarios[worst]['value_change']
+    return {'stress_table': table, 'scenarios': scenarios, 'worst_scenario': worst,
+            'worst_loss': worst_change, 'worst_loss_pct': worst_change / portfolio_value * 100}
 
-            # Calculate dollar loss for this position
-            position_value = portfolio_value * weight
-            loss = position_value * shock
-            portfolio_loss += loss
-            ticker_losses[ticker] = round(loss, 2)
 
-        results.append({
-            "Scenario":             scenario_name,
-            "Portfolio Loss":       round(portfolio_loss, 2),
-            "Portfolio Loss (%)":   round((portfolio_loss / portfolio_value) * 100, 2),
-            "Remaining Value":      round(portfolio_value + portfolio_loss, 2),
-            **ticker_losses
-        })
-
-    return pd.DataFrame(results).set_index("Scenario")
+def run_stress_test(tickers, weights, portfolio_value=100000, **kwargs):
+    return get_stress_summary(tickers, weights, portfolio_value, **kwargs)['stress_table']
 
 
-def get_worst_scenario(stress_results: pd.DataFrame) -> str:
-    """
-    Returns the name of the worst scenario.
-    """
-    return stress_results["Portfolio Loss"].idxmin()
-
-
-def get_stress_summary(
-    tickers: list,
-    weights: list,
-    portfolio_value: float = 100000
-) -> dict:
-    """
-    Master function — runs stress test and returns full summary.
-    """
-    results = run_stress_test(tickers, weights, portfolio_value)
-    worst = get_worst_scenario(results)
-
-    return {
-        "stress_table": results,
-        "worst_scenario": worst,
-        "worst_loss": results.loc[worst, "Portfolio Loss"],
-        "worst_loss_pct": results.loc[worst, "Portfolio Loss (%)"]
-    }
+def get_worst_scenario(stress_results):
+    return stress_results['Portfolio Loss'].idxmin()

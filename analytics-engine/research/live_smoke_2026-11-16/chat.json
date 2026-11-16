@@ -1,0 +1,81 @@
+{
+  "role": "assistant",
+  "content": "**Portfolio volatility** is a statistical measure of how much the portfolio\u2019s returns tend to fluctuate around their average. It is usually expressed as an annualized standard deviation and captures both upside and downside swings in value. A higher volatility means the portfolio\u2019s value moves more dramatically from day to day, indicating greater overall risk.\n\n**Maximum drawdown** (MDD) looks at a different aspect of risk. It measures the largest peak\u2011to\u2011trough decline the portfolio has experienced over a given period. In other words, it tells you the worst loss you would have seen if you bought at the highest point and sold at the lowest point before a new high was reached. Drawdown focuses solely on downside risk and does not consider the size of upward moves.\n\nFor this portfolio, the specific values for **",
+  "grounding_check": {
+    "status": "no_numeric_claims",
+    "checked_claims": [],
+    "mismatches": [],
+    "retrieval_method": "hybrid_semantic_tfidf"
+  },
+  "advisor_provenance": {
+    "analysis_id": null,
+    "portfolio_revision": null,
+    "retrieval_method": "hybrid_semantic_tfidf",
+    "verification_scope": "recognized_labeled_portfolio_numbers"
+  },
+  "llm_used": true,
+  "model": "openai/gpt-oss-120b",
+  "provider": "groq",
+  "usage": {
+    "prompt_tokens": 983,
+    "completion_tokens": 512,
+    "total_tokens": 1495
+  },
+  "context": {
+    "tickers": [],
+    "portfolio_value": 100000,
+    "portfolio_error": "Provide matching tickers and weights.",
+    "canonical_facts": {
+      "cagr": null,
+      "annualized_volatility": null,
+      "sharpe_ratio": null,
+      "sortino_ratio": null,
+      "max_drawdown": null,
+      "var_95": null,
+      "cvar_95": null,
+      "portfolio_health_score": null,
+      "base_currency": null,
+      "hmm_regime": null,
+      "current_weights": {},
+      "personalized_allocation": {},
+      "ai_black_litterman_allocation": {}
+    }
+  },
+  "retrieved_docs": [
+    {
+      "type": "knowledge",
+      "id": "kb-risk-drawdown",
+      "category": "risk_metrics",
+      "content": "Maximum drawdown is the largest peak-to-trough decline. A drawdown over 30% typically flags a HIGH risk portfolio that needs de-risking.",
+      "source": "knowledge_base:risk_metrics"
+    },
+    {
+      "type": "knowledge",
+      "id": "kb-014",
+      "category": "risk_metrics",
+      "content": "Portfolio risk is classified as HIGH when two or more of these thresholds are breached: annualized volatility > 35%, VaR(95%) < -3%, or max drawdown < -30%. MEDIUM when one threshold is breached. LOW when none are breached. This classification drives the decision-option generation logic.",
+      "source": "knowledge_base:risk_metrics"
+    },
+    {
+      "type": "knowledge",
+      "id": "kb-004",
+      "category": "risk_metrics",
+      "content": "Maximum Drawdown (MDD) is the largest peak-to-trough decline of a portfolio over a period. It measures the worst loss experienced from the highest point to the lowest point before a new peak is reached. MDD indicates downside risk unrelated to volatility and helps assess how long large losses may persist.",
+      "source": "knowledge_base:risk_metrics"
+    },
+    {
+      "type": "knowledge",
+      "id": "kb-003",
+      "category": "risk_metrics",
+      "content": "Volatility is the standard deviation of returns, annualized by multiplying the daily standard deviation by the square root of 252 (trading days in a year). Higher volatility means greater price swings and higher risk. A stock with 35% annual volatility swings about 5x more than one with 15% volatility.",
+      "source": "knowledge_base:risk_metrics"
+    },
+    {
+      "type": "knowledge",
+      "id": "kb-decision-options",
+      "category": "portfolio_theory",
+      "content": "Three decision options are generated: Conservative (50% equity cut + bonds), Balanced (25% equity cut + bonds), Aggressive (full equity). Risk level is HIGH if 2+ thresholds breached (>35% vol, <-3% VaR, <-30% drawdown), MEDIUM if 1 breached, LOW if none.",
+      "source": "knowledge_base:portfolio_theory"
+    }
+  ]
+}

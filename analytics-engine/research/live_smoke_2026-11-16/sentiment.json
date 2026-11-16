@@ -1,0 +1,173 @@
+{
+  "ticker": "MSFT",
+  "status": "ok",
+  "finbert_score": -0.13330714106559755,
+  "finbert_articles_analyzed": 10,
+  "models_used": [
+    "FinBERT"
+  ],
+  "overall_sentiment": "Slightly Bearish",
+  "overall_score": -0.1333,
+  "confidence": 0.67,
+  "articles_analyzed": 10,
+  "sources_used": [
+    "Google News"
+  ],
+  "articles": [
+    {
+      "title": "Microsoft Corporation (MSFT) Surged 38% as Azure Accelerated, but One Investor Remains Skeptical: Here\u2019s Why - Yahoo Finance",
+      "publisher": "Yahoo Finance",
+      "link": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPVUUtLU8zLUxkd3AtdURVaDZLYWJwSHN0bnZwU1pZclp5dXpGQWJqZ0U5cnNtdzVad3l3RGwyejYwYVRxLU5MemF1ZjJIOHdlMnh5NUY2c0k2RUFDMzRQZU1Dbng4OUJ6VWd2bTlnZXhNaThrYWY3NnNzZWlGRkpGdTFQa0hPbVZPelc2SnZ4YWs3M3gtZy1Na3JpMGkxc1ZOX1g0?oc=5&hl=en-IN&gl=IN&ceid=IN:en",
+      "published": "Tue, 10 Nov 2026 16:16:49 GMT",
+      "source": "Google News",
+      "sentiment": "Positive",
+      "score": 0.572,
+      "model": "FinBERT",
+      "scores": {
+        "positive": 0.613,
+        "negative": 0.04,
+        "neutral": 0.347
+      }
+    },
+    {
+      "title": "Can Microsoft overtaking Nvidia in market value support MSFT stock? - Traders Union",
+      "publisher": "Traders Union",
+      "link": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPbjhGdmZPaElqa05wSDlMcVNOLXdESzNNemlaR1dkZmloa3dfSVFIVVZKc0NBbWJReVZHbXAyZ0NwN0djTWtJVHc2dHF1OEpBQ2dKS05MVUhncWM3MHRDMEVkYlM0OTY2dThZZHpCTFhlVEt0LUZjQlR6Q0c4cWlLUlpWbGpMU293Si05ZUFRRnJLV3dHS2c?oc=5&hl=en-IN&gl=IN&ceid=IN:en",
+      "published": "Thu, 12 Nov 2026 16:59:45 GMT",
+      "source": "Google News",
+      "sentiment": "Positive",
+      "score": 0.214,
+      "model": "FinBERT",
+      "scores": {
+        "positive": 0.232,
+        "negative": 0.018,
+        "neutral": 0.75
+      }
+    },
+    {
+      "title": "Microsoft (MSFT) stock price forecast: Wall Street analysts see 22% upside - Beinsure",
+      "publisher": "Beinsure",
+      "link": "https://news.google.com/rss/articles/CBMingFBVV95cUxQYXJNSTlyS19oSERrUGpmR2pyQ0F4Y1FDZ0hqY0d5R2c4U1o3QlBaRnVJOHZOSmFqMW1kNGYwSGZhY0lZMU4zN3JTZlBzWVFtdWlXSFpYUGE0VWlZVHlwbzVOM1BlQUVjdzJ0alZIc0pXV2dPOXZrN0hxSlE4aEpFTWtlUlpSVFl2MGNsRHQxOHBubVBkbFY0N1VuT05UZw?oc=5&hl=en-IN&gl=IN&ceid=IN:en",
+      "published": "Fri, 13 Nov 2026 09:04:05 GMT",
+      "source": "Google News",
+      "sentiment": "Positive",
+      "score": 0.202,
+      "model": "FinBERT",
+      "scores": {
+        "positive": 0.467,
+        "negative": 0.265,
+        "neutral": 0.268
+      }
+    },
+    {
+      "title": "Microsoft | MSFT Stock Price, Company Overview & News - Forbes",
+      "publisher": "Forbes",
+      "link": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9MT2g0RzdRaGRDUHFQc1ZnOGVxdmN0VEVKUFpzOHFCU0dIWjJwWEdWVHl5bWV2TFlQblZyM3ZpZDJKZ2VXSnk1NHF2TXBnbUJCb1JlUWpn?oc=5&hl=en-IN&gl=IN&ceid=IN:en",
+      "published": "Thu, 12 Nov 2026 10:00:00 GMT",
+      "source": "Google News",
+      "sentiment": "Neutral",
+      "score": -0.014,
+      "model": "FinBERT",
+      "scores": {
+        "positive": 0.023,
+        "negative": 0.036,
+        "neutral": 0.941
+      }
+    },
+    {
+      "title": "Microsoft Stock Price Forecast. Should You Buy MSFT? - StockInvest.us",
+      "publisher": "StockInvest.us",
+      "link": "https://news.google.com/rss/articles/CBMiSEFVX3lxTE5NY3JNdjlSVG94RGd0ZnlmdTd1S3l1dFEwSFJtaGZUZ0VLZGlZV25hdkdqb0xkMHFRZ29ZYzQ0cEM0TE1fSHZNWA?oc=5&hl=en-IN&gl=IN&ceid=IN:en",
+      "published": "Fri, 13 Nov 2026 22:17:33 GMT",
+      "source": "Google News",
+      "sentiment": "Neutral",
+      "score": 0.016,
+      "model": "FinBERT",
+      "scores": {
+        "positive": 0.036,
+        "negative": 0.02,
+        "neutral": 0.945
+      }
+    },
+    {
+      "title": "Microsoft (MSFT) Expands AI Ties With Ohio State, Is The Stock Fully Priced? - Yahoo Finance",
+      "publisher": "Yahoo Finance",
+      "link": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPQ0V4dEwwZFBZemhPR1JhbjhURGpybkgxV2VMdEo0THFhd2xFU1htc2djMjFQUGVCMXlCQ19xUGJFTVdDSndaQk03ZXVHSjhxYjB5S2o3ZS1WLW5DUjF3MFRCOUlCX1ZpZUN1UHA0UjMwUHhzb1h2NEthTnZhakF0bmVwNXhIdDNJVjNyN1ZIdndnUmRHNk5MWjV4Yw?oc=5&hl=en-IN&gl=IN&ceid=IN:en",
+      "published": "Thu, 12 Nov 2026 19:10:40 GMT",
+      "source": "Google News",
+      "sentiment": "Positive",
+      "score": 0.235,
+      "model": "FinBERT",
+      "scores": {
+        "positive": 0.246,
+        "negative": 0.011,
+        "neutral": 0.743
+      }
+    },
+    {
+      "title": "MSFT Stock Reverses and Heads to $500 After Microsoft 365 Services Impacted by Outlook Outage - FXLeaders",
+      "publisher": "FXLeaders",
+      "link": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPOUNTZlZadnBKQW1nMEZ0a2ZlQVZrRDhhWkxjOGl1YjdYV0pacElSdkJ3OVRTU0ptaWx2WGFwRG9HU2RhNnQta0JfcTN6XzlwcTR6Q0xySGxycVJyWTlOcENlNXk1NDRUZi1QU3FMTWNoSGh0SGRjLXdqSFZiSVdhamxDanpVd1dLVnNfUW9xX1dnbXlGRVZFUTVGM3F3YVo3QTEyengyeDdMMkxmY2NmTGJTQkxLLTN4cDNDM2VuVF9vcFdjZXY2Q0VkVUlaRy1o?oc=5&hl=en-IN&gl=IN&ceid=IN:en",
+      "published": "Thu, 12 Nov 2026 19:54:28 GMT",
+      "source": "Google News",
+      "sentiment": "Negative",
+      "score": -0.955,
+      "model": "FinBERT",
+      "scores": {
+        "positive": 0.011,
+        "negative": 0.966,
+        "neutral": 0.023
+      }
+    },
+    {
+      "title": "How Big Could Microsoft Stock\u2019s Next Fall Be? - Trefis",
+      "publisher": "Trefis",
+      "link": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQdWpVM3R6MlUwVEVFaTR5NktpdnhuZzBfUEluX0dLS0JIRXV6QlJVRXM0VXctZDlmWDUyYTdZTE9GaHFqUUVWX0x2OVVjRnZqTzhTNGo1VTJUb3poWjJhLTJlelRJQnVZWmNQSWhwZDlKS2NZM1UtVWE5dVNlVXJudnRVampfYng5WmtRWTdkT2lZcDdhV3hnZFdIODQzUzlLbE5zTFJzZw?oc=5&hl=en-IN&gl=IN&ceid=IN:en",
+      "published": "Thu, 12 Nov 2026 08:26:10 GMT",
+      "source": "Google News",
+      "sentiment": "Negative",
+      "score": -0.278,
+      "model": "FinBERT",
+      "scores": {
+        "positive": 0.037,
+        "negative": 0.315,
+        "neutral": 0.648
+      }
+    },
+    {
+      "title": "Microsoft Service Outage Gives Software Giant Black Eye - Investor's Business Daily",
+      "publisher": "Investor's Business Daily",
+      "link": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPVERZREpDa055TVUzUktQNXhoTVE4LXQxTm0zMmFSdTR0cDBGeTFESHhETEl0c3UwbjNianF4ZEUtR2FvRXV1NktGMzJLOG83clczNXNfRm5MVE56emE0bjZLeC0xTmczRXdFVGcwN1lPdTB6S0VTUkd6M0VhaUJiZDZXWGFnNFh3MTFsODZHUFc?oc=5&hl=en-IN&gl=IN&ceid=IN:en",
+      "published": "Fri, 13 Nov 2026 21:21:00 GMT",
+      "source": "Google News",
+      "sentiment": "Negative",
+      "score": -0.938,
+      "model": "FinBERT",
+      "scores": {
+        "positive": 0.01,
+        "negative": 0.947,
+        "neutral": 0.043
+      }
+    },
+    {
+      "title": "What's Going On With Microsoft Stock Wednesday? - Benzinga",
+      "publisher": "Benzinga",
+      "link": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQSWd3REhYZ1hQUlJRbjBNa2kwOURNLWU5ZnBIX1ZZdW1pYmp2bHVmLTljVURoNmJXWGswSkxJTy16MnFVd0FUSmFlNkh3TnR5Z005RkpXeXd0Q3RyQ3k2c0dOMlJaSFg3eTZ1cmxvaU9kSzY3SzNtY3NFci1LZ3d2VGZqUkktS19tcW51WmFGR1ZIT0w5aU1QWXo3cm5Tak16THc?oc=5&hl=en-IN&gl=IN&ceid=IN:en",
+      "published": "Wed, 11 Nov 2026 17:30:07 GMT",
+      "source": "Google News",
+      "sentiment": "Negative",
+      "score": -0.389,
+      "model": "FinBERT",
+      "scores": {
+        "positive": 0.025,
+        "negative": 0.413,
+        "neutral": 0.562
+      }
+    }
+  ],
+  "sentiment_breakdown": {
+    "positive": 4,
+    "negative": 4,
+    "neutral": 2
+  }
+}

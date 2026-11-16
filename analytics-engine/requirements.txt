@@ -12,3 +12,11 @@ gymnasium
 ta
 requests
 python-multipart
+gnews
+vaderSentiment
+transformers
+timesfm==3.0.0
+openai
+google-generativeai
+google-genai
+python-dotenv
