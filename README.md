@@ -17,8 +17,8 @@ See [ARCHITECTURE_DIAGRAM.md](./ARCHITECTURE_DIAGRAM.md) for the full visual sys
 
 | Component | Technology Stack | Core Responsibility |
 | :--- | :--- | :--- |
-| **Frontend** | React 18, Tailwind CSS, Recharts | Dynamic Dashboard, Real-time Visualizations, AI Advisor Chat |
-| **Analytics Engine** | Python 3.9+, FastAPI, PyTorch | Market Regime Detection, LSTM Forecasting, Signal Classification |
+| **Frontend** | React 19, Tailwind CSS, Recharts | Dynamic Dashboard, Real-time Visualizations, AI Advisor Chat |
+| **Analytics Engine** | Python 3.10, FastAPI, PyTorch | Market Regime Detection, LSTM Forecasting, Signal Classification |
 | **Persistence Layer**| Supabase (PostgreSQL) | Secure User Auth, Portfolio Tracking, Historical Data Cache |
 
 ### PPO fallback and backtesting
@@ -54,32 +54,41 @@ smart-portfolio-advisor/
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Node.js (v16+)
-- Python 3.9+
-- Git
+Use 64-bit Python 3.10, Node.js 24 LTS with npm, and Git. The root `requirements.txt` installs the Python backend. The frontend uses `frontend/package-lock.json`.
 
-### 1. Analytics Engine Setup
-```bash
-cd analytics-engine
-python -m venv venv
-source venv/bin/activate  # venv\Scripts\activate on Windows
-pip install -r requirements.txt
-uvicorn api:app --port 8000 --reload
+### Windows setup
+
+Run these commands in PowerShell from the cloned repository:
+
+```powershell
+py -3.10 -m venv analytics-engine/venv
+.\analytics-engine\venv\Scripts\python.exe -m pip install --upgrade pip
+.\analytics-engine\venv\Scripts\python.exe -m pip install -r requirements.txt
+npm.cmd --prefix frontend ci --legacy-peer-deps
+.\run_all.bat
 ```
 
-### 2. Frontend Setup
+### macOS or Linux setup
+
+Run these commands from the repository root:
+
 ```bash
-cd frontend
-npm install --legacy-peer-deps
-npm run dev
+python3.10 -m venv analytics-engine/venv
+analytics-engine/venv/bin/python -m pip install --upgrade pip
+analytics-engine/venv/bin/python -m pip install -r requirements.txt
+npm --prefix frontend ci --legacy-peer-deps
+(cd analytics-engine && venv/bin/python -m uvicorn api:app --host 127.0.0.1 --port 8000)
 ```
 
-### 🏎️ Quick Run (Windows)
-For convenience, use the included batch scripts to launch both services:
-```bash
-run_all.bat
-```
+In a second terminal at the repository root, run `npm --prefix frontend run dev -- --host 127.0.0.1 --port 5173 --strictPort`.
+
+Open [SmartPortfolio](http://localhost:5173) and choose **Try Demo** for local access. Open the [API documentation](http://localhost:8000/docs) to check that the backend is responding.
+
+### Connect optional services
+
+- **Cloud login**. Copy `frontend/.env.example` to `frontend/.env` and enter the Supabase project URL and public anon key for the project that owns the account. For a new project, apply `supabase/portfolio_schema.sql`, enable email authentication, and allow the callback URL `http://localhost:5173/auth`. Restart Vite after editing its environment.
+- **LLM chat**. Copy `analytics-engine/.env.example` to `analytics-engine/.env`, configure a provider using the example, and restart the API.
+- **Market data and model weights**. Live quotes require internet access. TimesFM downloads its checkpoint on first use. To reproduce predictions from trained model artifacts stored outside Git, copy those trusted artifacts into the corresponding paths under `analytics-engine/models/`. For optional semantic retrieval, use the backend environment to cache the embedding model with `python -c "from huggingface_hub import snapshot_download; snapshot_download('sentence-transformers/all-MiniLM-L6-v2')"`. The advisor uses TF-IDF when embeddings are unavailable.
 
 ---
 
