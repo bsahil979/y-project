@@ -58,6 +58,8 @@ def get_currency_symbol(currency_map: dict) -> str:
 app = FastAPI()
 from services.upstox_connection import router as upstox_router
 app.include_router(upstox_router)
+from services.zerodha_connection import router as zerodha_router
+app.include_router(zerodha_router)
 from services.fund_nav import router as fund_nav_router
 from services import fund_advisor  # registers NAV analytics on the fund router
 app.include_router(fund_nav_router)
@@ -158,11 +160,13 @@ def get_quotes(req: QuotesRequest):
     analytics pipeline. Missing symbols are returned with an error per ticker so
     one bad symbol does not hide the prices for the rest of the portfolio.
     """
+    from services.market_symbols import market_data_symbol
     symbols = list(dict.fromkeys(str(ticker).upper().strip() for ticker in req.tickers if str(ticker).strip()))
     results = {}
     now = datetime.datetime.now(datetime.timezone.utc).timestamp()
 
     for symbol in symbols:
+        provider_symbol = market_data_symbol(symbol)
         cached = quote_cache.get(symbol)
         if cached and now - cached["timestamp"] < 60:
             results[symbol] = cached["quote"]
@@ -173,7 +177,7 @@ def get_quotes(req: QuotesRequest):
             history = None
             pct_change_30d = None
             try:
-                ticker = yf.Ticker(symbol)
+                ticker = yf.Ticker(provider_symbol)
                 fast_info = ticker.fast_info
                 current_value = fast_info.get("last_price")
                 current = float(current_value) if current_value is not None else 0
@@ -191,7 +195,7 @@ def get_quotes(req: QuotesRequest):
                 except Exception:
                     logging.getLogger(__name__).warning("Quote history unavailable for %s", symbol)
             except Exception:
-                current, previous, price_source, session = _fallback_quote(symbol)
+                current, previous, price_source, session = _fallback_quote(provider_symbol)
             if pct_change_30d is None and previous is not None and previous > 0:
                 pct_change_30d = _fallback_pct_change_from_previous(current, previous)
             if pct_change_30d is None:
@@ -203,6 +207,7 @@ def get_quotes(req: QuotesRequest):
                 raise ValueError("No current price returned")
             quote = {
                 "ticker": symbol,
+                "provider_symbol": provider_symbol,
                 "price": current,
                 "previous_close": previous,
                 "currency": currency,
@@ -221,6 +226,7 @@ def get_quotes(req: QuotesRequest):
             error_code = "invalid_symbol" if any(marker in diagnostic for marker in invalid_markers) else "provider_unavailable"
             results[symbol] = {
                 "ticker": symbol,
+                "provider_symbol": provider_symbol,
                 "error_code": error_code,
                 "error": "No market data found for this symbol." if error_code == "invalid_symbol" else "Market data provider could not return a price. Try refreshing later.",
             }

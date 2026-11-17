@@ -71,6 +71,15 @@ def fetch_price_data(tickers: list, start: str, end: str) -> pd.DataFrame:
 
     Results are cached for 60 seconds to avoid duplicate network calls.
     """
+    from services.market_symbols import market_data_symbol
+    provider_symbols = [market_data_symbol(ticker) for ticker in tickers]
+    if provider_symbols != list(tickers):
+        # Fetch each listing once, then restore ledger column identities.
+        source = fetch_price_data(list(dict.fromkeys(provider_symbols)), start, end)
+        mapped = pd.DataFrame({ticker: source[provider] for ticker, provider in zip(tickers, provider_symbols)})
+        mapped.attrs.update(source.attrs)
+        mapped.attrs['provider_symbols'] = dict(zip(tickers, provider_symbols))
+        return mapped
     cache_key = (tuple(tickers), start, end)
     cached = _price_cache.get(cache_key)
     now = time.time()

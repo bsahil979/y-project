@@ -117,12 +117,15 @@ export function normalizeBrokerPortfolio(snapshot) {
   const rows = [], warnings = [], funds = new Map(), seen = new Set();
   const sections = snapshot.sections || {};
   for (const r of sections.equities?.data || []) {
-    try {rows.push(...normalizeImport([r], 'holdings'));}
+    try {
+      const equity = snapshot.source === 'Zerodha' ? {...r, instrument_token:undefined} : r;
+      rows.push(...normalizeImport([equity], 'holdings'));
+    }
     catch (e) {warnings.push(`Equity ${r.trading_symbol || r.instrument_token || 'unknown'}: ${e.message}`);}
   }
   for (const r of sections.mutual_funds?.data || []) {
     try {
-      const isin = String(r.instrument_key || '').trim().toUpperCase();
+      const isin = String(r.instrument_key || (snapshot.source === 'Zerodha' ? r.tradingsymbol : '') || '').trim().toUpperCase();
       const number = (v, name, positive = false) => {
         if (v == null || String(v).trim() === '' || !Number.isFinite(Number(v)) || (positive ? Number(v) <= 0 : Number(v) < 0)) throw new Error(`${name} unavailable or invalid`);
         return Number(v);
@@ -140,7 +143,7 @@ export function normalizeBrokerPortfolio(snapshot) {
         existing.quantity += quantity;
         if (date > existing.valuation_date) {existing.manual_value = nav; existing.valuation_date = date;}
       } else funds.set(isin, {ticker:'MF:' + isin, asset_type:'mutual_fund', asset_name:String(r.fund || isin), quantity, price,
-        currency:'INR', manual_value:nav, valuation_date:date, valuation_source:'Upstox NAV'});
+        currency:'INR', manual_value:nav, valuation_date:date, valuation_source:r.valuation_source || `${snapshot.source || 'Upstox'} NAV`});
     } catch(e) {warnings.push(`Mutual fund ${r.fund || r.instrument_key || 'unknown'}: ${e.message}`);}
   }
   return {rows:[...rows, ...funds.values()], warnings};

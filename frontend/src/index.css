@@ -159,3 +159,89 @@ a {
 .account-import-dialog button:disabled { opacity:.45; }
 .account-import-dialog input, .account-import-dialog select { margin:8px; padding:8px; border:1px solid #d8dfe9; border-radius:6px; max-width:100%; }
 .account-import-dialog td, .account-import-dialog th { padding:9px; text-align:left; border-bottom:1px solid #e5e7eb; }
+
+/* Clear reference-style typography for the signed-in portfolio workspace. */
+.portfolio-app {
+  font-family: "Segoe UI", Arial, sans-serif;
+  --pp-ink: #202426;
+  --pp-muted: #626a73;
+  -webkit-font-smoothing: antialiased;
+}
+.portfolio-app h1, .portfolio-app h2, .portfolio-app h3 {
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #202426;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+.portfolio-app .assessment-banner h2 { color: #fff; }
+.portfolio-app .workspace-tabs a { color: #252a2e; font-size: 17px; }
+.portfolio-app .workspace-tabs a.selected { color: #1468d4; }
+.holdings-map-panel h2 { font-size: 21px; }
+.holdings-map-panel svg text { font-family: "Segoe UI", Arial, sans-serif; }
+.allocation-tooltip { min-width: 235px; padding: 16px; background: #fff; border: 1px solid #e5e7eb; border-radius: 7px; box-shadow: 0 8px 24px #18223026; color: #252a2e; }
+.allocation-tooltip strong { display: block; font-size: 22px; font-weight: 650; padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid #e5e7eb; }
+.allocation-tooltip p { display: flex; justify-content: space-between; gap: 24px; margin: 7px 0; font-size: 14px; }
+.allocation-tooltip b { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Track workspace: compact navigation and a generous holdings-first canvas. */
+.workspace-topbar { position: sticky; top: 0; z-index: 30; background: #fff; min-height: 72px; gap: 24px; }
+.workspace-search { display:flex; align-items:center; gap:12px; position:relative; max-width:400px; flex:1; border:1px solid #dedede; border-radius:9px; padding:10px 14px; color:#737373; }
+.portfolio-app .workspace-search input { width:100%; border:0; outline:none; background:transparent; font-size:14px; }
+.workspace-search-results { position:absolute; top:calc(100% + 6px); left:0; right:0; background:white; border:1px solid #e5e7eb; border-radius:8px; box-shadow:0 8px 20px #18223018; padding:8px; }
+.workspace-search-results a { display:block; padding:10px; color:#202426; border-radius:5px; }
+.workspace-search-results a:hover { background:#edf5ff; }
+.workspace-page-heading > div > p:first-child { display:none; }
+.workspace-page-heading > div > p:nth-child(2) { font-weight:600; font-size:28px; color:#252a2e; }
+.workspace-sidebar { width:300px; padding:18px 15px; }
+.workspace-main { margin-left:300px; padding-left:25px; padding-right:25px; }
+.workspace-sidebar > a:first-child { font-size:22px; font-weight:650; margin-bottom:25px; }
+.workspace-sidebar select { min-height:45px; font-size:16px; }
+.workspace-sidebar section a { line-height:1.7; }
+.portfolio-overview-grid { grid-template-columns:minmax(0,2.5fr) minmax(270px,1fr); gap:20px; }
+.holdings-map-panel, .portfolio-pulse { padding:20px; border-radius:9px; border-color:#e3e3e3; }
+.holdings-map-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:15px; margin-bottom:18px; }
+.holdings-map-total { font-size:28px; font-weight:600; color:#252a2e; font-variant-numeric:tabular-nums; margin:4px 0; }
+.holdings-view-label { border:1px solid #d8e2ed; border-radius:7px; padding:9px 18px; color:#1468d4; font-weight:600; background:#f8fbff; }
+.holdings-map-canvas { height:500px; }
+.portfolio-pulse h2 { font-size:22px; }
+.portfolio-pulse h3 { font-size:16px; color:#303438; }
+.portfolio-pulse p { font-size:15px; color:#626a73; line-height:1.6; }
+@media(min-width:1600px) { .holdings-map-canvas { height:570px; } }
+@media(max-width:1200px) { .workspace-search { max-width:230px; } .workspace-tabs { gap:12px; } .portfolio-overview-grid { grid-template-columns:1fr; } }
+@media(max-width:900px) { .workspace-sidebar { width:100%; } .workspace-main { margin-left:0; padding:0 16px 20px; } .workspace-topbar { position:relative; flex-wrap:wrap; } .workspace-search { order:3; max-width:none; flex-basis:100%; margin-bottom:12px; } .holdings-map-canvas { height:380px; } }
+
+/* Measured reference proportions with SmartPortfolio's own content. */
+.portfolio-app, .portfolio-app h1, .portfolio-app h2, .portfolio-app h3,
+.portfolio-app button, .portfolio-app input, .portfolio-app select,
+.holdings-map-panel svg text { font-family: Inter, system-ui, sans-serif; }
+.portfolio-app { font-size:14px; color:#11181c; --pp-ink:#11181c; --pp-muted:#687076; }
+.workspace-sidebar { width:256px; padding:16px 12px; }
+.workspace-main { margin-left:256px; padding-left:24px; padding-right:24px; }
+.workspace-sidebar > a:first-child { font-size:20px; margin-bottom:20px; padding-left:4px; }
+.workspace-topbar { min-height:65px; }
+.workspace-tabs { gap:16px; }
+.workspace-tabs a { padding:20px 6px; font-size:16px; font-weight:600; }
+.workspace-actions { gap:10px; }
+.workspace-actions a { font-size:14px; padding:9px 13px; border-radius:7px; }
+.workspace-search { max-width:350px; padding:9px 12px; }
+.workspace-page-heading { padding-top:20px; margin-bottom:20px; }
+.workspace-page-heading > div > p:nth-child(2) { font-size:24px; font-weight:700; letter-spacing:-.035em; color:#292929; }
+.workspace-greeting-note { color:#85898e; font-weight:600; }
+.workspace-page-heading nav { font-size:13px; }
+.assessment-banner { padding:20px; border-radius:8px; }
+.assessment-banner h2 { font-size:16px; }
+.portfolio-overview-grid { grid-template-columns:minmax(0,2.55fr) minmax(275px,1fr); gap:16px; }
+.holdings-map-panel, .portfolio-pulse { padding:16px; border-color:#e5e5e5; border-radius:8px; }
+.holdings-map-panel h2, .portfolio-pulse h2 { font-size:18px; font-weight:600; letter-spacing:-.02em; }
+.holdings-map-total { font-size:28px; font-weight:600; margin:3px 0 8px; }
+.holdings-map-total small { font-size:15px; margin-left:5px; }
+.holdings-map-canvas { height:510px; }
+.portfolio-pulse section { padding:17px 0; }
+.portfolio-pulse p { font-size:14px; line-height:1.55; }
+.track-quick-actions { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.track-quick-actions a { display:flex; align-items:center; gap:20px; border:1px solid #e5e5e5; border-radius:8px; padding:24px; }
+.track-quick-actions svg { color:#1668ce; flex-shrink:0; }
+.track-quick-actions strong { font-size:16px; font-weight:600; }
+.track-quick-actions p { color:#687076; margin-top:6px; }
+@media(max-width:1200px) { .workspace-greeting-note { display:block; font-size:18px; margin-top:5px; } .workspace-search { max-width:220px; } .portfolio-overview-grid { grid-template-columns:1fr; } }
+@media(max-width:900px) { .workspace-sidebar { width:100%; } .workspace-main { margin-left:0; padding:0 16px 20px; } .workspace-search { max-width:none; } .track-quick-actions { grid-template-columns:1fr; } .holdings-map-canvas { height:380px; } }

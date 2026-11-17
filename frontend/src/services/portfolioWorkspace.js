@@ -109,7 +109,9 @@ export const normalizeWorkspace = (workspace) => {
       portfolio_id: row.portfolio_id ? ensureId(row.portfolio_id) : legacyPortfolioId,
       account_id: row.account_id ? ensureId(row.account_id) : null,
     })),
-    goals: (Array.isArray(source.goals) ? source.goals : []).map((row) => ({ ...row, id: ensureId(row.id) })),
+    // Goals belong to the user, not a portfolio (matches the cloud schema).
+    // Strip the field also from pending snapshots made by older combine code.
+    goals: (Array.isArray(source.goals) ? source.goals : []).map(({portfolio_id, ...row}) => ({ ...row, id: ensureId(row.id) })),
   };
 };
 
@@ -130,4 +132,15 @@ export function ensureSelectedPortfolio(workspace, currency) {
   if (workspace.portfolios.length) throw new Error('Select a portfolio before adding positions.');
   const portfolio = { id: createId(), name: 'My Portfolio', base_currency: currency };
   return { ...workspace, portfolios: [portfolio], selectedPortfolioId: portfolio.id };
+}
+
+/** Explicitly consolidate owned portfolios while preserving account and row IDs. */
+export function combineOwnedPortfolios(workspace) {
+  if (!workspace.portfolios.length) return workspace;
+  const target = workspace.selectedPortfolioId || workspace.portfolios[0].id;
+  const move = rows => rows.map(row => ({...row, portfolio_id: target}));
+  return {...workspace, selectedPortfolioId:target,
+    portfolios:[{...workspace.portfolios.find(p => p.id === target), name:'My Portfolio'}],
+    holdings:move(workspace.holdings), transactions:move(workspace.transactions),
+    goals:(workspace.goals || []).map(({portfolio_id, ...goal}) => goal)};
 }

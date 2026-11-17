@@ -79,7 +79,12 @@ def callback_result(result, user_id=None):
 
 
 @router.get("/callback")
-def callback(state: str = "", code: str = ""):
+def callback(state: str = "", code: str = "", request_token: str = "", status: str = ""):
+    # Older Kite developer registrations used this callback URL. Delegate only
+    # Kite-shaped responses; Zerodha still validates its own single-use state.
+    if request_token and not code:
+        from services.zerodha_connection import callback as zerodha_callback
+        return zerodha_callback(state=state, request_token=request_token, status=status)
     with _lock:
         pending = _states.pop(state, None)
     if not pending or pending[1] < time.time() or not code:

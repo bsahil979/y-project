@@ -1,12 +1,13 @@
+import {combineOwnedPortfolios} from '../services/portfolioWorkspace.js';
 import React, {useEffect, useRef, useState} from 'react';
 import {API_BASE_URL} from '../config/api';
 import {supabase} from '../services/supabaseClient';
 import {parseCSV, normalizeImport, applyPortfolioImport, normalizeBrokerPortfolio} from '../services/portfolioImport';
 
-async function broker(path, method = 'POST') {
+async function brokerRequest(provider, path, method = 'POST') {
   const {data} = await supabase.auth.getSession();
-  if (!data?.session?.access_token) throw new Error('Sign in to your cloud account to connect Upstox.');
-  const response = await fetch(API_BASE_URL + '/brokers/upstox/' + path, {
+  if (!data?.session?.access_token) throw new Error('Sign in to your cloud account to connect a brokerage.');
+  const response = await fetch(API_BASE_URL + '/brokers/' + provider.toLowerCase() + '/' + path, {
     method, headers:{Authorization:'Bearer ' + data.session.access_token},
   });
   const result = await response.json();
@@ -27,9 +28,9 @@ const authorizationMessages = {
 
 export default function AccountImport({workspace, setWorkspace}) {
   const dialog = useRef(null);
-  const [selectedBroker, setSelectedBroker] = useState('Upstox');
+  const [selectedBroker, setSelectedBroker] = useState(() => typeof window !== 'undefined' && new URLSearchParams(window.location.search).has('zerodha') ? 'Zerodha' : 'Upstox');
   const [accountName, setAccountName] = useState('Upstox account');
-  const [targetPortfolio, setTargetPortfolio] = useState('');
+  const [targetPortfolio, setTargetPortfolio] = useState(workspace.selectedPortfolioId || '');
   const [brokerSearch, setBrokerSearch] = useState('');
   const [configured, setConfigured] = useState(false);
   const [connected, setConnected] = useState(null);
@@ -42,30 +43,33 @@ export default function AccountImport({workspace, setWorkspace}) {
   const [notice, setNotice] = useState('');
   const [brokerSnapshot, setBrokerSnapshot] = useState(null);
   const [importWarnings, setImportWarnings] = useState([]);
+  const apiBroker = ['Upstox', 'Zerodha'].includes(selectedBroker);
+  const broker = (path, method) => brokerRequest(selectedBroker, path, method);
+  const authMessage = result => (authorizationMessages[result] || '').replaceAll('Upstox', selectedBroker);
   useEffect(() => {
     let active = true;
-    fetch(API_BASE_URL + '/brokers/upstox/status').then(r => r.json()).then(r => {if (active) setConfigured(r.configured === true);}).catch(() => {});
-    const result = new URLSearchParams(window.location.search).get('upstox');
-
-    if (result === 'connected' || authorizationMessages[result]) {
-      dialog.current.showModal();
-      if (result === 'connected') setNotice('Authorization returned. Checking the connection for this signed-in account...');
-      else setError(authorizationMessages[result]);
+    setConfigured(false); setConnected(null);
+    if (!apiBroker) return;
+    const provider = selectedBroker.toLowerCase();
+    fetch(API_BASE_URL + '/brokers/' + provider + '/status').then(r => r.json())
+      .then(r => {if (active) setConfigured(r.configured === true);}).catch(() => {});
+    const result = new URLSearchParams(window.location.search).get(provider);
+    if (result) {
+      if (!dialog.current.open) dialog.current.showModal();
       const url = new URL(window.location.href);
-      url.searchParams.delete('upstox');
+      url.searchParams.delete(provider);
       window.history.replaceState(null, '', url.pathname + url.search + url.hash);
     }
-    broker('connection', 'GET').then(status => {
+    brokerRequest(selectedBroker, 'connection', 'GET').then(status => {
       if (!active) return;
       setConnected(status.connected);
-      if (authorizationMessages[status.authorization_result]) setError(authorizationMessages[status.authorization_result]);
-      if (result === 'connected') {
-        if (status.connected) setNotice('Upstox connected to this account. Click Fetch holdings, review the preview, then Confirm import. No holdings have been imported yet.');
-        else {setNotice(''); setError('No Upstox connection exists for this signed-in account. Authorize again using Connect Upstox. Switching app accounts or restarting the server requires a new connection.');}
-      }
-    }).catch(e => {if (active) {setConnected(null); setError('Could not check Upstox connection: ' + e.message);}});
+      setError(authMessage(status.authorization_result));
+      if (result === 'connected') setNotice(status.connected
+        ? selectedBroker + ' connected. Fetch portfolio, review it, then Confirm import.'
+        : 'Connection not found for this app account. Connect again.');
+    }).catch(e => {if (active) setError('Could not check connection: ' + e.message);});
     return () => {active = false;};
-  }, []);
+  }, [selectedBroker]);
   async function run(action) {
     setError(''); setNotice(''); setBusy(true);
     try {await action();} catch(e) {setError(e.message); if ([401, 409].includes(e.status)) setConnected(false);} finally {setBusy(false);}
@@ -77,19 +81,20 @@ export default function AccountImport({workspace, setWorkspace}) {
     setConnected(true); setBrokerSnapshot(result);
     setMode('holdings'); setFileKey(k => k + 1);
     const imported = normalizeBrokerPortfolio(result);
-    setRows(imported.rows); setImportWarnings(imported.warnings); setName('Upstox portfolio'); setAccountName('Upstox account');
+    setRows(imported.rows); setImportWarnings(imported.warnings); setName(selectedBroker + ' portfolio'); setAccountName(selectedBroker + ' account');
     setNotice(imported.rows.length ? `Fetched ${imported.rows.length} equity/fund holdings. Review and Confirm import to save.` : 'No importable holdings returned. Check each category below for empty results or access errors.');
   }
 
   async function openDialog() {
     dialog.current.showModal();
+    if (!apiBroker) return;
     setConnected(null);
     try {
       const status = await broker('connection', 'GET');
       setConnected(status.connected);
-      setError(authorizationMessages[status.authorization_result] || '');
-      if (status.authorization_result === 'pending') setNotice('Authorization has not completed at this server. Finish the Upstox authorization in the same browser.');
-    } catch(e) {setConnected(null); setError('Could not check Upstox connection: ' + e.message);}
+      setError(authMessage(status.authorization_result));
+      if (status.authorization_result === 'pending') setNotice('Authorization has not completed at this server. Finish the broker authorization in the same browser.');
+    } catch(e) {setConnected(null); setError('Could not check broker connection: ' + e.message);}
   }
   function chooseBroker(value) {
     setSelectedBroker(value); setRows([]); setBrokerSnapshot(null); setImportWarnings([]);
@@ -108,21 +113,22 @@ export default function AccountImport({workspace, setWorkspace}) {
     <dialog ref={dialog} className="account-import-dialog" onCancel={e => {if(busy) e.preventDefault();}}>
       <header><h2>Add an account</h2><button aria-label="Close account import" disabled={busy} onClick={() => dialog.current.close()}>×</button></header>
       <h3>Connect your brokerage or import a statement</h3>
+      {workspace.portfolios.length > 1 && <section><h4>See all your assets together</h4><p>Your holdings are currently split across {workspace.portfolios.length} portfolios. Combine them into My Portfolio while keeping each brokerage account and every holding.</p><button disabled={busy} onClick={() => run(async () => { const combined = combineOwnedPortfolios(workspace); await setWorkspace(combined); setTargetPortfolio(combined.selectedPortfolioId); setNotice('Portfolios combined. Broker accounts and manual holdings are retained.'); })}>Combine all into My Portfolio</button></section>}
       <section><h4>Your brokerage accounts</h4>
         <p>Add several brokers to one portfolio, or keep separate portfolios. Each import creates a separate account. Use a new label only for a genuinely different account, not to refresh existing holdings.</p>
         {workspace.accounts.filter(a => a.account_type === 'brokerage').map(a => <div key={a.id} className="border-b py-3"><strong>{a.name}</strong><span className="ml-3 text-slate-500">{a.institution || 'Broker not specified'} · Saved holdings</span></div>)}
         <label>Find a broker<input value={brokerSearch} onChange={e => setBrokerSearch(e.target.value)} placeholder="Search brokers" /></label>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 my-3">{brokerChoices.filter(b => b.toLowerCase().includes(brokerSearch.toLowerCase())).map(b => <button type="button" disabled={busy} aria-pressed={selectedBroker === b} key={b} onClick={() => chooseBroker(b)} className={selectedBroker === b ? 'border-2 border-blue-600 bg-blue-50 p-3 rounded-lg' : 'border p-3 rounded-lg'}>{b}<small className="block">{b === 'Upstox' ? 'API connection + CSV' : 'CSV import'}</small></button>)}</div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 my-3">{brokerChoices.filter(b => b.toLowerCase().includes(brokerSearch.toLowerCase())).map(b => <button type="button" disabled={busy} aria-pressed={selectedBroker === b} key={b} onClick={() => chooseBroker(b)} className={selectedBroker === b ? 'border-2 border-blue-600 bg-blue-50 p-3 rounded-lg' : 'border p-3 rounded-lg'}>{b}<small className="block">{['Upstox', 'Zerodha'].includes(b) ? 'API connection + CSV' : 'CSV import'}</small></button>)}</div>
         <p>Selected broker: <strong>{selectedBroker}</strong></p>
-        {selectedBroker !== 'Upstox' && <p>Live connection is not implemented for this broker. Export your holdings or trades and arrange the CSV columns shown below before importing.</p>}
+        {!apiBroker && <p>Live connection is not implemented for this broker. Export your holdings or trades and arrange the CSV columns shown below before importing.</p>}
       </section>
-      {selectedBroker === 'Upstox' && <section><h4>Upstox</h4><p>Connect Upstox to fetch equity and mutual fund holdings, positions, SIPs, orders, and funds/margin for review.</p>
-        <p role="status">{connected === null ? 'Checking connection...' : connected ? 'Connected to this app account. Fetch holdings to preview before importing.' : 'Not connected to this app account. Start with Connect Upstox.'}</p>
-        {!configured && <p>Connection setup required. Configure the Upstox developer app and Supabase authentication on the server.</p>}
+      {apiBroker && <section><h4>{selectedBroker}</h4><p>Connect {selectedBroker} to fetch equity and mutual fund holdings, positions, SIPs, orders, and funds/margin for review.</p>
+        <p role="status">{connected === null ? 'Checking connection...' : connected ? 'Connected to this app account. Fetch holdings to preview before importing.' : 'Not connected to this app account. Start with Connect broker.'}</p>
+        {!configured && <p>Connection setup required. Configure the selected broker developer app and Supabase authentication on the server.</p>}
         <div className="flex flex-wrap gap-3 mt-3">
-          <button disabled={busy || !configured} onClick={() => run(async () => {const result = await broker('connect'); window.location.assign(result.url);})}>Connect Upstox</button>
+          <button disabled={busy || !configured} onClick={() => run(async () => {const result = await broker('connect'); window.location.assign(result.url);})}>Connect {selectedBroker}</button>
           <button disabled={busy || !configured || connected !== true} onClick={() => run(fetchHoldings)}>Fetch portfolio</button>
-          <button disabled={busy || !configured} onClick={() => run(async () => {await broker('connection', 'DELETE'); setConnected(false); setRows([]); setNotice('Upstox disconnected from this app.');})}>Disconnect</button>
+          <button disabled={busy || !configured} onClick={() => run(async () => {await broker('connection', 'DELETE'); setConnected(false); setRows([]); setNotice(selectedBroker + ' disconnected from this app.');})}>Disconnect</button>
         </div>
       </section>}
       <section><h4>Import CSV</h4><p>Choose a holdings snapshot or complete buy/sell history. Check the columns in the preview before saving.</p>

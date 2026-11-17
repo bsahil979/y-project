@@ -40,6 +40,7 @@ const PortfolioDashboard = ({ advisor = false }) => {
   if (request && advisor && preview !== 'saved') {
     Object.assign(request, { risk_preference: 'aggressive', investment_horizon_years: Number(preview), horizon_source: 'explicit' });
   }
+  if (request) request.include_optional_ml = advisor;
   const requestJson = request ? JSON.stringify(request) : '';
   const analysisKey = (snapshot.portfolioId || '') + ':' + (snapshot.portfolioRevision || '') + ':' + requestJson + ':' + pricing.revision;
   const isStale = Boolean(analysis.data?.portfolio_revision && snapshot.portfolioRevision && analysis.data.portfolio_revision !== snapshot.portfolioRevision);
@@ -62,11 +63,17 @@ const PortfolioDashboard = ({ advisor = false }) => {
   useEffect(() => {
     if (!requestJson) return;
     let active = true;
+    const timer = setTimeout(() => { if (active) { active = false; setAnalysis({key:analysisKey, data:null, error:'Analysis is taking longer than expected. Your saved holdings are unchanged. Please retry shortly.'}); } }, 120000);
     PortfolioService.getPortfolioAnalysis(JSON.parse(requestJson), pricing.revision > 0)
-      .then((result) => { if (active) setAnalysis({ key: analysisKey, data: result, error: '' }); })
+      .then((result) => { if (active) { clearTimeout(timer); const stale = result?.portfolio_revision && result.portfolio_revision !== snapshot.portfolioRevision; setAnalysis({ key:analysisKey, data:stale ? null : result, error:stale ? 'Analysis returned an older portfolio version. Refresh prices and analysis to retry.' : '' }); } })
       .catch((err) => { if (active) setAnalysis({ key: analysisKey, data: null, error: err?.response?.data?.detail || err?.message || 'Analysis unavailable' }); });
-    return () => { active = false; };
+    return () => { active = false; clearTimeout(timer); };
   }, [requestJson, analysisKey, pricing.revision]);
+
+  const savedOverview = <section className="rounded-xl border p-5"><h2 className="text-lg font-semibold">Your saved holdings</h2><p className="text-sm text-slate-500">Stock analysis is separate from mutual funds and other dated assets.</p><div className="overflow-auto"><table className="w-full text-left mt-3"><thead><tr><th>Asset</th><th>Units</th><th>Market / recorded value</th></tr></thead><tbody>
+    {allHoldings.map((h,i) => <tr key={h.id || i}><td className="py-2">{h.ticker}</td><td>{h.quantity}</td><td>{h.market == null ? 'Price unavailable' : formatMoney(h.market,h.currency)}</td></tr>)}
+    {(snapshot.trackedAssets || []).map((h,i) => <tr key={h.id || `asset-${i}`}><td className="py-2">{h.asset_name || h.ticker}</td><td>{h.quantity}</td><td>{formatMoney(assetValue(h),h.currency)}</td></tr>)}
+  </tbody></table></div><Link className="text-blue-700 underline" to="/dashboard/portfolio">Manage holdings</Link></section>;
 
   if (!snapshot.valid) return <p role="alert" className="text-amber-300">{snapshot.errors.map((item) => item.message).join(" ")}</p>;
   if (!allHoldings.length && snapshot.trackedAssets?.length) {
@@ -84,9 +91,9 @@ const PortfolioDashboard = ({ advisor = false }) => {
     </div>;
   }
   if (!allHoldings.length) return <div className="rounded-2xl border border-gray-800 p-8 text-center text-gray-300"><Briefcase className="mx-auto mb-3 h-10 w-10" /><h2 className="text-xl font-semibold">Start with your holdings</h2><p className="mt-2">Add positions in My Holdings or record transactions. A watchlist alone is not an owned portfolio.</p></div>;
-  if (pricing.loading || loading) return <div className="space-y-5">{currencyControls}<div className="flex items-center gap-3 text-gray-300"><Loader2 className="h-6 w-6 animate-spin" />{pricing.loading ? 'Loading the latest available quotes...' : 'Analyzing current market-value weights...'}</div></div>;
+  if (pricing.loading || loading) return <div className="space-y-5">{currencyControls}<div className="flex items-center gap-3 text-gray-300"><Loader2 className="h-6 w-6 animate-spin" />{pricing.loading ? 'Loading the latest available quotes...' : 'Analyzing current market-value weights...'}</div>{savedOverview}</div>;
   if (!request) return <div className="space-y-4">{currencyControls}<div className="rounded-2xl border border-amber-600/40 p-6 text-gray-300"><h2 className="font-semibold">Complete pricing is required for analysis</h2><p className="mt-2">{pricing.error || (!['INR', 'USD'].includes(currency) ? 'Analysis currently supports INR and USD portfolios.' : 'Some positions have unavailable or mismatched prices. Recorded costs are available in My Holdings; they are not used as substitute prices.')}</p><ul className="mt-3 list-disc pl-5">{group?.missing.map((item, index) => <li key={index}>{item.ticker}: {item.reason}</li>)}</ul></div></div>;
-  if (error) return <div className="space-y-4">{currencyControls}<p role="alert" className="text-amber-300">Analysis unavailable: {error}</p></div>;
+  if (error) return <div className="space-y-4">{currencyControls}<p role="alert" className="text-amber-300">Analysis unavailable: {error}</p>{savedOverview}</div>;
   if (!data) return null;
 
   const riskSummary = data.risk_engine || {};
@@ -216,17 +223,24 @@ const PortfolioDashboard = ({ advisor = false }) => {
   // ── Tab Renderers ──────────────────────────────────────
 
   function renderOverview() {
-    const allocationRows = group.tickers.map((ticker, index) => ({ ticker, market: group.marketByTicker[ticker], weight: group.weights[index] }));
+    const allocationRows = group.tickers.map((ticker, index) => (() => {
+      const positions = allHoldings.filter(h => h.ticker === ticker && h.currency === currency);
+      const cost = positions.reduce((sum,h) => sum + (Number(h.cost) || 0),0);
+      const market = group.marketByTicker[ticker];
+      return {ticker, market, weight:group.weights[index], currency,
+        performance: !combined && cost > 0 ? (market / cost - 1) * 100 : null};
+    })());
     return <div className="space-y-5">
       <div className="assessment-banner"><div><h2>Review your portfolio assessment</h2><p>See your largest risks and allocation suggestions based on your investment profile.</p></div><Link to={`/dashboard/advisor?currency=${currency}&mixed=${combined ? 1 : 0}`}>See assessment →</Link></div>
       <div className="portfolio-overview-grid">
         <section className="holdings-map-panel">
-          <h2>Your holdings at a glance</h2><p>{formatMoney(group.market, currency)} · {allocationRows.length} holdings</p>
-          <div className="h-[390px]"><ResponsiveContainer width="100%" height="100%">
+          <div className="holdings-map-heading"><div><h2>Your holdings at a glance</h2><p className="holdings-map-total" style={{color:group.pnl == null ? '#292929' : group.pnl >= 0 ? '#008653' : '#c40e42'}}>{group.pnl == null ? formatMoney(group.market,currency) : `${group.pnl >= 0 ? '+' : ''}${formatMoney(group.pnl,currency)}`}<small>{group.pnlPct == null ? '' : ` ${group.pnlPct >= 0 ? '+' : ''}${group.pnlPct.toFixed(1)}%`}</small></p><p className="text-sm text-slate-500">{allocationRows.length} holdings · {group.pnl == null ? "current market value" : "unrealized gain/loss since purchase"}</p></div><span className="holdings-view-label">Holdings</span></div>
+          <div className="holdings-map-canvas"><ResponsiveContainer width="100%" height="100%">
             <Treemap data={allocationRows.filter(r => r.market > 0).map(r => ({...r, name:r.ticker}))} dataKey="market" aspectRatio={1.5} isAnimationActive={false}
-              content={<AllocationTile />} />
+              content={<AllocationTile />}><Tooltip content={<AllocationTooltip />} /></Treemap>
           </ResponsiveContainer></div>
-          <p className="text-xs">Tile area represents current market value. Percentages show portfolio weights.</p>
+          <p className="text-xs">Tile area shows current market value. Colors and percentages show unrealized gain/loss against recorded purchase cost, not 30-day returns.</p>
+          <div className="flex flex-wrap gap-4 mt-3 text-xs text-slate-600"><span>🟩 Gain</span><span>🟥 Loss</span><span>Deeper color = larger change</span><span>Gray = unavailable</span></div>
         </section>
         <aside className="portfolio-pulse"><h2>Portfolio pulse</h2>
           <section><h3>Risk concentration</h3><p>{biggestRisk ? `${biggestRisk.ticker} contributes ${biggestRisk.percentage_contribution_to_risk.toFixed(1)}% of portfolio volatility.` : 'Risk contributions are unavailable.'}</p><button onClick={() => setActiveTab('risk')}>Review risk →</button></section>
@@ -234,6 +248,7 @@ const PortfolioDashboard = ({ advisor = false }) => {
           <section><h3>News and sentiment</h3><p>Explore available headlines and sentiment for the stocks you follow.</p><Link to="/dashboard/sentiment">Read market news →</Link></section>
         </aside>
       </div>
+      <div className="track-quick-actions"><Link to="/dashboard/portfolio"><Briefcase size={30}/><div><strong>Connect your accounts →</strong><p>Bring your broker and manual holdings together.</p></div></Link><Link to="/dashboard/advisor"><BarChart3 size={30}/><div><strong>Review your investment strategy →</strong><p>Explore risk and allocation with your saved profile.</p></div></Link></div>
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard label="Holdings value" value={formatMoney(group.market, currency)} subtitle="Latest available quotes" />
         <StatCard label="Risk preference" value={allocation?.applied_profile || request.risk_preference} subtitle={request.investment_horizon_years == null ? 'Horizon unspecified' : request.investment_horizon_years.toFixed(1) + ' year horizon'} />
@@ -691,12 +706,27 @@ const RecommendationCard = ({ rec, onDismiss }) => {
   );
 };
 
-function AllocationTile({x, y, width, height, name, weight}) {
+function performanceColor(value) {
+  if (value == null || !Number.isFinite(value)) return '#eef1f5';
+  if (value >= 0) return value > 15 ? '#49d3a5' : value > 5 ? '#a6ead2' : '#ebfaf4';
+  return value < -15 ? '#cc1749' : value < -5 ? '#f9a9b8' : '#fff0f2';
+}
+function AllocationTile({x, y, width, height, name, weight, performance}) {
   if (!width || !height || !name) return null;
-  return <g><rect x={x + 2} y={y + 2} width={Math.max(0, width - 4)} height={Math.max(0, height - 4)} rx={3} fill="#ecf5ff" stroke="#d5e3f2" />
-    <title>{name} · {(weight * 100).toFixed(1)}% of portfolio</title>
-    {width > 65 && height > 45 && <text x={x + width / 2} y={y + height / 2} textAnchor="middle" fill="#18283c" fontSize={14} fontWeight={600}>{name}<tspan x={x + width / 2} dy={23} fill="#53667d" fontSize={12}>{(weight * 100).toFixed(1)}%</tspan></text>}
+  const label = performance == null ? 'Unavailable' : `${performance >= 0 ? '+' : ''}${performance.toFixed(1)}%`;
+  return <g><rect x={x + 2} y={y + 2} width={Math.max(0,width - 4)} height={Math.max(0,height - 4)} rx={3} fill={performanceColor(performance)} stroke="#dce5e2" />
+    <title>{name} · {(weight * 100).toFixed(1)}% weight · {label} unrealized return</title>
+    {width > 65 && height > 45 && <text x={x + width/2} y={y + height/2} textAnchor="middle" fill={performance != null && performance < -15 ? "#ffffff" : "#15191d"} fontSize={16} fontWeight={600}>{name}<tspan x={x + width/2} dy={23} fill={performance != null && performance < -15 ? "#ffffff" : "#555f60"} fontSize={13}>{label}</tspan></text>}
   </g>;
+}
+function AllocationTooltip({active,payload}) {
+  const row = payload?.[0]?.payload;
+  if (!active || !row?.ticker) return null;
+  return <div className="allocation-tooltip"><strong>{row.ticker}</strong>
+    <p><span>Portfolio weight</span><b>{(row.weight * 100).toFixed(1)}%</b></p>
+    <p><span>Market value</span><b>{formatMoney(row.market,row.currency)}</b></p>
+    <p><span>Unrealized return</span><b style={{color:row.performance == null ? '#626a73' : row.performance >= 0 ? '#008553' : '#c51746'}}>{row.performance == null ? 'Unavailable' : `${row.performance >= 0 ? '+' : ''}${row.performance.toFixed(1)}%`}</b></p>
+  </div>;
 }
 
 export function AllocationComparison({ data }) {

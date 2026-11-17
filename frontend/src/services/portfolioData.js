@@ -32,6 +32,8 @@ const writeLocalWorkspace = (userId, workspace) => {
   localStorage.setItem(workspaceKey(userId), JSON.stringify(normalizeWorkspace(workspace)));
 };
 
+const saveQueues = new Map();
+
 export const PortfolioDataService = {
   getInvestorProfile(userId) {
     return normalizeInvestorProfile(safeParse(localStorage.getItem(`onboarding_data_${userId}`), {}));
@@ -64,6 +66,10 @@ export const PortfolioDataService = {
         supabase.from('watchlists').select('*').eq('user_id', userId),
       ]);
 
+      // Never combine partially loaded cloud tables with local parent/child rows.
+      if (results.some(({error}) => error)) {
+        return {workspace:localWorkspace, status:'sync-failed', error:results.find(({error}) => error).error};
+      }
       const [portfolios, accounts, holdings, transactions, goals, watchlists] = results;
       const remoteWatchlists = watchlists.error ? localWorkspace.watchlists : watchlists.data;
       const remoteWatchlistTickers = remoteWatchlists?.[0]?.tickers;
@@ -96,7 +102,14 @@ export const PortfolioDataService = {
   },
 
   async saveWorkspace(userId, workspace) {
+    const previous = saveQueues.get(userId) || Promise.resolve();
+    const next = previous.catch(() => {}).then(() => this.persistWorkspace(userId, workspace));
+    saveQueues.set(userId, next);
+    try { return await next; } finally { if (saveQueues.get(userId) === next) saveQueues.delete(userId); }
+  },
+  async persistWorkspace(userId, workspace) {
     if (!userId) return { status: 'local-only' };
+    const before = readLocalWorkspace(userId);
     const normalized = normalizeWorkspace(workspace);
     writeLocalWorkspace(userId, normalized);
     // Demo and local-fallback accounts do not exist in auth.users and therefore
@@ -124,7 +137,9 @@ export const PortfolioDataService = {
       const deleteStaleRows = async (table, rows, remoteRows) => {
         const records = rows.map((row) => ({ ...row, user_id: userId }));
         const localIds = new Set(records.map((row) => row.id));
-        const staleIds = remoteRows.filter((row) => !localIds.has(row.id)).map((row) => row.id);
+        const field = table === 'financial_goals' ? 'goals' : table;
+        const knownIds = new Set((before[field] || []).map(row => row.id));
+        const staleIds = remoteRows.filter((row) => knownIds.has(row.id) && !localIds.has(row.id)).map((row) => row.id);
         if (staleIds.length) {
           const { error } = await supabase.from(table).delete().eq('user_id', userId).in('id', staleIds);
           if (error) throw error;

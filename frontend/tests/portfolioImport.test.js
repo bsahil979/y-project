@@ -55,3 +55,30 @@ test('multiple brokers retain separate accounts in one portfolio including ident
   assert.throws(()=>applyPortfolioImport(next,rows,'holdings','Third',{institution:'Groww',accountName:'Groww personal',portfolioId:first.selectedPortfolioId}),/already exists/);
   assert.throws(()=>applyPortfolioImport(next,rows,'holdings','Third',{institution:'Other',portfolioId:'missing'}),/existing portfolio/);
 });
+
+
+test('Zerodha equities and Coin funds normalize with correct provenance', () => {
+  const snapshot = {source:'Zerodha', sections:{equities:{data:[{tradingsymbol:'INFY',exchange:'NSE',instrument_token:123,quantity:2,average_price:100}]}, mutual_funds:{data:[{tradingsymbol:'INF000000001',fund:'Test fund',quantity:3,average_price:10,last_price:12,last_price_date:'2026-11-16'}]}}};
+  const result = normalizeBrokerPortfolio(snapshot);
+  assert.equal(result.rows.length, 2);
+  assert.equal(result.rows[0].ticker, 'INFY.NS');
+  assert.equal(result.rows[1].ticker, 'MF:INF000000001');
+  assert.equal(result.rows[1].valuation_source, 'Zerodha NAV');
+  snapshot.sections.mutual_funds.data[0].last_price_date = '';
+  const missing = normalizeBrokerPortfolio(snapshot);
+  assert.equal(missing.rows.length, 1);
+  assert.match(missing.warnings[0], /NAV date/);
+});
+
+
+import {combineOwnedPortfolios} from '../src/services/portfolioWorkspace.js';
+test('combining portfolios retains broker/manual holdings, transactions and identities', () => {
+ const workspace={selectedPortfolioId:'p1',portfolios:[{id:'p1'},{id:'p2'}],accounts:[{id:'a1'},{id:'a2'}],holdings:[{id:'h1',portfolio_id:'p1',account_id:'a1'},{id:'h2',portfolio_id:'p2',account_id:'a2'},{id:'manual',portfolio_id:'p2',account_id:null}],transactions:[{id:'t1',portfolio_id:'p2'}],goals:[]};
+ const combined=combineOwnedPortfolios(workspace);
+ assert.equal(combined.portfolios.length,1);
+ assert.equal(combined.holdings.length,3);
+ assert.ok(combined.holdings.every(h=>h.portfolio_id==='p1'));
+ assert.equal(combined.transactions[0].portfolio_id,'p1');
+ assert.deepEqual(combined.accounts,workspace.accounts);
+ assert.equal(workspace.holdings[1].portfolio_id,'p2');
+});

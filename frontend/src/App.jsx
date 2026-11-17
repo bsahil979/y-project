@@ -77,6 +77,7 @@ function AppContent() {
   }, [userId]);
 
   const updateWorkspace = async (nextWorkspace) => {
+    if (workspaceOwner !== userId || syncStatus === 'loading') throw new Error('Wait for your saved portfolio to load before making changes.');
     const normalized = PortfolioDataService.normalizeWorkspace(nextWorkspace);
     setWorkspace(normalized);
     setWorkspaceOwner(userId);
@@ -124,7 +125,7 @@ function AppContent() {
         path="/dashboard/*"
         element={
           <RequireAuth>
-            <DashboardLayout tickers={portfolio} setTickers={setTickers} syncStatus={syncStatus} workspace={workspace} />
+            {workspaceOwner !== userId || syncStatus === 'loading' ? <p className="p-8">Loading your saved portfolio...</p> : <DashboardLayout tickers={portfolio} setTickers={setTickers} syncStatus={syncStatus} workspace={currentWorkspace} />}
           </RequireAuth>
         }
       >
