@@ -40,7 +40,7 @@ function RequireAuth({ children }) {
   }
 
   if (!user) {
-    return <Navigate to="/auth" state={{ from: location.pathname }} replace />;
+    return <Navigate to="/auth" state={{ from: location.pathname + location.search + location.hash }} replace />;
   }
 
   return children;
@@ -50,6 +50,7 @@ function AppContent() {
   const [portfolio, setPortfolio] = useState([]);
   const [workspace, setWorkspace] = useState(createEmptyWorkspace());
   const [syncStatus, setSyncStatus] = useState('loading');
+  const [syncError, setSyncError] = useState('');
   const { user } = useAuth();
   const userId = user?.id || user?.email || 'guest';
 
@@ -67,6 +68,7 @@ function AppContent() {
       setWorkspace(result.workspace);
       setWorkspaceOwner(userId);
       setSyncStatus(result.status);
+      setSyncError(result.error?.message || '');
       const nextPortfolio = result.workspace.watchlistTickers || [];
       setPortfolio(nextPortfolio);
     };
@@ -81,6 +83,8 @@ function AppContent() {
     setSyncStatus('saving');
     const result = await PortfolioDataService.saveWorkspace(userId, normalized);
     setSyncStatus(result.status);
+      setSyncError(result.error?.message || '');
+    return result;
   };
 
   useEffect(() => {
@@ -106,6 +110,7 @@ function AppContent() {
 
   const portfolioState = {
     snapshot, pricing, portfolios: currentWorkspace.portfolios,
+    syncStatus, syncError, retrySync: () => updateWorkspace(currentWorkspace),
     selectPortfolio: (id) => updateWorkspace(selectPortfolio(currentWorkspace, id)),
   };
 
@@ -134,7 +139,7 @@ function AppContent() {
         <Route path="training" element={<Navigate to="/dashboard" replace />} />
         <Route path="settings" element={<SettingsView tickers={portfolio} setTickers={setTickers} />} />
         <Route path="fundamentals" element={<FundamentalsView tickers={portfolio} />} />
-        <Route path="forecast" element={<ForecastingView setTickers={setTickers} />} />
+        <Route path="forecast" element={<ForecastingView tickers={portfolio} setTickers={setTickers} />} />
         <Route path="sentiment" element={<SentimentView tickers={portfolio} />} />
         <Route path="chat" element={null} />
         <Route path="trading" element={<TradingView tickers={portfolio} />} />

@@ -1,3 +1,4 @@
+import { normalizeExchangeSuffix } from '../utils/tickerUtils';
 import React, { useState, useEffect, useCallback, useContext, useMemo, useRef } from 'react';
 import { 
   TrendingUp, TrendingDown, Target, Brain, ShieldCheck, AlertTriangle, 
@@ -26,13 +27,13 @@ const POPULAR_TICKERS = [
   { symbol: 'ICICIBANK.NS', name: 'ICICI Bank', region: 'IN' },
 ];
 
-const ForecastingView = ({ setTickers }) => {
+const ForecastingView = ({ tickers = [], setTickers }) => {
   const portfolioContext = useContext(PortfolioContext);
   const snapshot = portfolioContext?.snapshot;
   const valued = snapshot?.valuation;
 
-  const [selectedTicker, setSelectedTicker] = useState('NVDA');
-  const [inputTicker, setInputTicker] = useState('NVDA');
+  const [selectedTicker, setSelectedTicker] = useState(() => normalizeExchangeSuffix(tickers[0] || 'NVDA'));
+  const [inputTicker, setInputTicker] = useState(() => normalizeExchangeSuffix(tickers[0] || 'NVDA'));
   const [proposedWeight, setProposedWeight] = useState(0.05); // 5% default
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -95,14 +96,18 @@ const ForecastingView = ({ setTickers }) => {
 
   const handleSearchSubmit = (e) => {
     e?.preventDefault();
-    const clean = inputTicker.trim().toUpperCase();
+    const input = normalizeExchangeSuffix(inputTicker);
+    const clean = ['JPL', 'JIO PLATFORMS', 'JIO PLATFORMS LIMITED'].includes(input) ? 'JPL.NS' : input;
     if (!clean) return;
-    setSelectedTicker(clean);
+    setInputTicker(clean);
+    if (clean === selectedTicker) fetchEvaluation(clean, proposedWeight);
+    else setSelectedTicker(clean);
   };
 
   const handleQuickSelect = (sym) => {
-    setInputTicker(sym);
-    setSelectedTicker(sym);
+    const clean = normalizeExchangeSuffix(sym);
+    setInputTicker(clean);
+    setSelectedTicker(clean);
   };
 
   const handleAddToWatchlist = () => {
@@ -182,7 +187,7 @@ const ForecastingView = ({ setTickers }) => {
             <Sparkles className="w-3 h-3 text-indigo-400" />
             Quick Test:
           </span>
-          {POPULAR_TICKERS.map((t) => (
+          {[...tickers.map(symbol => ({symbol, name: symbol})), ...POPULAR_TICKERS.filter(t => !tickers.includes(t.symbol))].map((t) => (
             <button
               key={t.symbol}
               onClick={() => handleQuickSelect(t.symbol)}
@@ -257,7 +262,14 @@ const ForecastingView = ({ setTickers }) => {
       )}
 
       {/* Main Results View */}
-      {data && (
+      {data?.status === 'limited_history' && (
+        <section role="status" className="rounded-xl border border-blue-200 bg-blue-50 p-5 text-slate-900">
+          <h3 className="font-semibold">{data.ticker} · Limited price history</h3>
+          <p className="mt-2">Last available close: {currencySymbol}{data.spot_price.toLocaleString()} on {data.price_as_of}.</p>
+          <p className="mt-2 text-sm">Your comparison has {data.price_observations} shared trading dates from {data.first_price_date} to {data.price_as_of}. The forecast and portfolio comparison require {data.required_observations}.</p>
+        </section>
+      )}
+      {data && data.status !== 'limited_history' && (
         <>
           {/* 1. Prominent AI Betterment Verdict Banner */}
           <div className={`relative overflow-hidden rounded-3xl border bg-white p-6 shadow-xl ${

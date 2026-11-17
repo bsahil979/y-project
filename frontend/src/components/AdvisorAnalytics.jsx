@@ -1,0 +1,46 @@
+import React, {useState} from 'react';
+import {ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid, PieChart, Pie, Cell} from 'recharts';
+import {metricText, benchmarkGrowth} from '../services/advisorPresentation';
+import {formatMoney} from '../services/portfolioValuation';
+const palette=['#1668ce','#3b7ff5','#075b53','#df72ef','#354256','#61a2f8'];
+const box='rounded-xl border border-slate-200 bg-white p-5';
+export default function AdvisorAnalytics({data,currency}) {
+ const [tab,setTab]=useState('score');
+ const [component,setComponent]=useState(null);
+ const score=data.portfolio_score || {};
+ const components=Object.entries(score.components || {});
+ const selected=score.components?.[component] || components[0]?.[1];
+ const bench=data.benchmark || {};
+ const growth=benchmarkGrowth(bench);
+ const contributors=(data.attribution?.security_contribution || []).filter(row=>Number.isFinite(row.contribution));
+ const largest=Math.max(...contributors.map(row=>Math.abs(row.contribution)),0.00001);
+ const holdings=(data.tickers || []).map((ticker,i)=>({name:ticker,value:data.weights?.[i]})).filter(row=>Number.isFinite(row.value)&&row.value>0);
+ const metrics=[['annualized_return','Historical annualized return',true],['volatility','Annualized volatility',true],['sharpe_ratio','Sharpe ratio',false],['sortino_ratio','Sortino ratio',false],['max_drawdown','Maximum drawdown',true]];
+ return <section className="space-y-5" aria-label="Analytics engine assessment">
+  <nav aria-label="Advisor analysis sections" className="flex flex-wrap gap-2 border-b border-slate-200 pb-3">
+   {[['score','Portfolio score'],['comparison','Analysis & comparison'],['stress','Stress scenarios']].map(([id,label])=><button key={id} onClick={()=>setTab(id)} aria-pressed={tab===id} className={'rounded-lg px-4 py-2 text-sm font-semibold '+(tab===id?'bg-blue-600 text-white':'text-slate-600 hover:bg-blue-50')}>{label}</button>)}
+   <a href="#advisor-next-steps" className="rounded-lg px-4 py-2 text-sm text-blue-600">Recommendations</a>
+  </nav>
+  {tab==='score' && <>
+   <section className={box}>
+    <h3 className="text-center text-xl font-semibold">Portfolio score: <span className="text-blue-600">{Number.isFinite(score.score)?score.score:'Unavailable'}{Number.isFinite(score.max_score)?' / '+score.max_score:''}</span></h3>
+    <p className="mt-2 text-center text-sm text-slate-500">{score.grading || 'No grade available'} / Analytics engine scoring rules</p>
+    <div className="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">{components.map(([key,item])=><button key={key} onClick={()=>setComponent(key)} aria-pressed={selected===item} className={'rounded-lg border p-4 text-left '+(selected===item?'border-blue-600 bg-blue-600 text-white':'border-slate-200')}><span className="block font-semibold">{item.label}</span><span className="mt-1 block text-sm">{metricText(item.score)} / {item.max}</span></button>)}</div>
+    {selected && <p className="mt-4 rounded-lg bg-blue-50 p-4 text-sm text-slate-700">{selected.detail}</p>}
+    <details className="mt-4 text-sm"><summary className="cursor-pointer text-blue-600">How this score is calculated</summary><p className="mt-2 text-slate-600">The engine combines historical downside risk, risk-adjusted return, concentration and diversification rules. This is a heuristic assessment, not predictive accuracy or a guaranteed outcome.</p></details>
+   </section>
+   <section className={box}><h3 className="text-lg font-semibold">Historical return contributors</h3><p className="mt-1 text-sm text-slate-500">{data.attribution?.period?.start} to {data.attribution?.period?.end}. Daily constant-weight attribution, in percentage points; not realized account profit or efficiency scores.</p>
+    <div className="mt-5 grid gap-5 md:grid-cols-2">{[true,false].map(positive=><div key={String(positive)}><h4 className="mb-3 font-semibold">{positive?'Positive':'Negative'} contributors</h4>{contributors.filter(row=>positive?row.contribution>0:row.contribution<0).sort((a,b)=>Math.abs(b.contribution)-Math.abs(a.contribution)).map(row=><div key={row.ticker} className="mb-4 rounded-lg border border-slate-200 p-3"><div className="flex justify-between gap-2"><strong>{row.ticker}</strong><span className={positive?'text-emerald-700':'text-rose-700'}>{(row.contribution*100).toFixed(2)} pp</span></div><p className="mt-1 text-xs text-slate-500">Weight {metricText(row.weight,true)} / Holding return {metricText(row.return,true)}</p><div className="mt-3 h-2 rounded-full bg-slate-100"><div className={'h-2 rounded-full '+(positive?'bg-emerald-600':'bg-rose-600')} style={{width:Math.abs(row.contribution)/largest*100+'%'}}/></div></div>)}{!contributors.some(row=>positive?row.contribution>0:row.contribution<0)&&<p className="text-sm text-slate-500">No {positive?'positive':'negative'} contributions available.</p>}</div>)}</div>
+   </section>
+  </>}
+  {tab==='comparison' && <>
+   <section className={box}><h3 className="text-xl font-semibold">Analyze & compare</h3><p className="mt-2 text-sm text-slate-500">Aligned historical window: {bench.aligned_start || 'Unavailable'} to {bench.aligned_end || 'Unavailable'}. {bench.observation_count ?? 0} observations.</p>
+    {bench.error && <p role="status" className="mt-3 text-amber-700">{bench.error}</p>}
+    <div className="overflow-x-auto"><table className="mt-4 w-full text-sm"><thead><tr><th className="py-3 text-left">Metric</th><th className="text-right">Your stock portfolio</th><th className="text-right">{bench.benchmark_ticker || data.benchmark_ticker || 'Benchmark'}</th></tr></thead><tbody>{metrics.map(([key,label,percent])=><tr key={key} className="border-t border-slate-200"><td className="py-3">{label}</td><td className="text-right font-semibold">{metricText(bench.portfolio?.[key],percent)}</td><td className="text-right">{metricText(bench.benchmark?.[key],percent)}</td></tr>)}</tbody></table></div>
+   </section>
+   <section className={box}><h3 className="font-semibold">Historical growth / starting index 100</h3><p className="mt-1 text-xs text-slate-500">Compounded from the engine's aligned daily returns. Uses current portfolio weights, not your transaction history.</p>{growth.length?<div className="mt-4 h-72"><ResponsiveContainer><LineChart data={growth}><CartesianGrid strokeDasharray="3 3"/><XAxis dataKey="date" minTickGap={70}/><YAxis domain={['auto','auto']}/><Tooltip formatter={value=>Number(value).toFixed(2)}/><Legend/><Line dataKey="portfolio" name="Your portfolio" stroke="#1668ce" dot={false}/><Line dataKey="benchmark" name={bench.benchmark_ticker || 'Benchmark'} stroke="#f97316" dot={false}/></LineChart></ResponsiveContainer></div>:<p className="mt-4 text-sm text-slate-500">Aligned return series unavailable.</p>}</section>
+   <section className={box}><h3 className="font-semibold">Current stock exposure</h3><div className="grid items-center gap-4 sm:grid-cols-2"><div className="h-64"><ResponsiveContainer><PieChart><Pie data={holdings} dataKey="value" innerRadius={65} outerRadius={95}>{holdings.map((row,i)=><Cell key={row.name} fill={palette[i%palette.length]}/>)}</Pie><Tooltip formatter={value=>metricText(value,true)}/></PieChart></ResponsiveContainer></div><ul className="space-y-2">{holdings.map((row,i)=><li key={row.name} className="flex justify-between text-sm"><span><span className="mr-2 inline-block h-3 w-3 rounded-full" style={{background:palette[i%palette.length]}}/>{row.name}</span><strong>{metricText(row.value,true)}</strong></li>)}</ul></div><p className="text-xs text-slate-500">Direct holdings only. Fund look-through and benchmark constituent weights are not supplied by the engine.</p></section>
+  </>}
+  {tab==='stress' && <section className={box}><h3 className="text-xl font-semibold">Historical and factor stress scenarios</h3><p className="mt-2 text-sm text-slate-500">Historical replay where coverage exists; otherwise beta and residual-volatility shocks. These are scenarios, not forecasts.</p>{Object.entries(data.stress_test?.scenarios || {}).map(([name,result])=><details key={name} className="mt-4 rounded-lg border border-slate-200 p-4"><summary className="flex cursor-pointer justify-between gap-3 font-semibold"><span>{name}</span><span className="text-rose-700">{formatMoney(result.value_change,currency)}</span></summary><p className="my-3 text-sm">Gain required to recover: {metricText(result.recovery_gain_required,true)}</p><div className="overflow-x-auto"><table className="w-full text-sm"><thead><tr><th className="text-left">Holding</th><th>Method</th><th>Shock</th><th>Value change</th></tr></thead><tbody>{Object.entries(result.holdings || {}).map(([ticker,row])=><tr key={ticker} className="border-t"><td className="py-2">{ticker}</td><td className="text-center">{row.scenario_method==='realized_historical_replay'?'Historical replay':'Beta / residual risk'}</td><td className="text-center">{metricText(row.holding_shock,true)}</td><td className="text-center">{formatMoney(row.value_change,currency)}</td></tr>)}</tbody></table></div></details>)}{!Object.keys(data.stress_test?.scenarios || {}).length&&<p className="mt-4 text-sm">{data.stress_test?.error || 'Stress results unavailable.'}</p>}</section>}
+ </section>;
+}

@@ -24,8 +24,8 @@ const AuthPage = () => {
   const { user, loginLocal } = useAuth();
 
   useEffect(() => {
-    if (user && !user.isDemo) navigate('/dashboard', { replace: true });
-  }, [user, navigate]);
+    if (user && !user.isDemo) navigate(location.state?.from?.startsWith('/dashboard') ? location.state.from : '/dashboard', { replace: true });
+  }, [user, navigate, location.state]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,3 +1,6 @@
+import FundAdvisor from './FundAdvisor';
+import {assetValue, trackingTotals} from '../services/assetTracking';
+import AdvisorAnalytics from './AdvisorAnalytics';
 import { Link, useLocation } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import {
@@ -8,13 +11,13 @@ import {
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Cell, Legend,
-  PieChart as RechartsPieChart, Pie,
+  PieChart as RechartsPieChart, Pie, Treemap,
 } from 'recharts';
 import { PortfolioService } from '../services/api';
 import { analysisRequest, combinedAnalysisRequest, formatMoney } from '../services/portfolioValuation';
 import usePortfolioSnapshot from '../hooks/usePortfolioSnapshot';
 
-const COLORS = ['#6366f1', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444', '#3b82f6', '#ec4899', '#14b8a6'];
+const COLORS = ['#2343b5', '#1668ce', '#3b7ff5', '#61a2f8', '#df72ef', '#edacf7', '#075b53', '#354256'];
 
 const PortfolioDashboard = ({ advisor = false }) => {
   const { search } = useLocation();
@@ -66,6 +69,20 @@ const PortfolioDashboard = ({ advisor = false }) => {
   }, [requestJson, analysisKey, pricing.revision]);
 
   if (!snapshot.valid) return <p role="alert" className="text-amber-300">{snapshot.errors.map((item) => item.message).join(" ")}</p>;
+  if (!allHoldings.length && snapshot.trackedAssets?.length) {
+    const assets = snapshot.trackedAssets, totals = trackingTotals(assets);
+    return <div className="space-y-5">
+      <section className="rounded-xl border p-6"><h2 className="text-xl font-semibold">Your investments</h2>
+        {Object.entries(totals).map(([code,total]) => <p key={code} className="text-3xl font-semibold mt-3">{formatMoney(total,code)} <small className="text-sm">{code}</small></p>)}
+        <p className="text-slate-500 mt-3">Based on saved NAVs and dated valuations. Values may differ from today's market.</p>
+      </section>
+      <section className="rounded-xl border p-6"><h2 className="text-xl font-semibold">Holdings</h2><div className="overflow-auto"><table className="w-full text-left mt-4"><thead><tr>{['Asset','Units','Cost per unit','NAV / value per unit','Current value','Valuation date'].map(h=><th key={h} className="p-3">{h}</th>)}</tr></thead>
+        <tbody>{assets.map(a=><tr key={a.id} className="border-t"><td className="p-3">{a.asset_name || a.ticker}<small className="block text-slate-500">{a.asset_type?.replaceAll('_',' ')}</small></td><td className="p-3">{a.quantity}</td><td className="p-3">{formatMoney(a.average_cost,a.currency)}</td><td className="p-3">{formatMoney(a.manual_value,a.currency)}</td><td className="p-3">{formatMoney(assetValue(a),a.currency)}</td><td className="p-3">{a.valuation_date || 'Unavailable'}<small className="block">{a.valuation_source}</small></td></tr>)}</tbody></table></div>
+      </section>
+      <FundAdvisor snapshot={snapshot} />
+      <Link className="text-blue-700 underline" to="/dashboard/portfolio">Manage holdings and update NAVs</Link>
+    </div>;
+  }
   if (!allHoldings.length) return <div className="rounded-2xl border border-gray-800 p-8 text-center text-gray-300"><Briefcase className="mx-auto mb-3 h-10 w-10" /><h2 className="text-xl font-semibold">Start with your holdings</h2><p className="mt-2">Add positions in My Holdings or record transactions. A watchlist alone is not an owned portfolio.</p></div>;
   if (pricing.loading || loading) return <div className="space-y-5">{currencyControls}<div className="flex items-center gap-3 text-gray-300"><Loader2 className="h-6 w-6 animate-spin" />{pricing.loading ? 'Loading the latest available quotes...' : 'Analyzing current market-value weights...'}</div></div>;
   if (!request) return <div className="space-y-4">{currencyControls}<div className="rounded-2xl border border-amber-600/40 p-6 text-gray-300"><h2 className="font-semibold">Complete pricing is required for analysis</h2><p className="mt-2">{pricing.error || (!['INR', 'USD'].includes(currency) ? 'Analysis currently supports INR and USD portfolios.' : 'Some positions have unavailable or mismatched prices. Recorded costs are available in My Holdings; they are not used as substitute prices.')}</p><ul className="mt-3 list-disc pl-5">{group?.missing.map((item, index) => <li key={index}>{item.ticker}: {item.reason}</li>)}</ul></div></div>;
@@ -105,17 +122,56 @@ const PortfolioDashboard = ({ advisor = false }) => {
 
   const allocation = data.personalized_allocation;
   const biggestRisk = riskContrib.reduce((largest, row) => !largest || row.percentage_contribution_to_risk > largest.percentage_contribution_to_risk ? row : largest, null);
-  if (advisor) return <div className="space-y-5">{currencyControls}
-    {allocation ? <section className="rounded-2xl border p-5 space-y-4">
-      <h2 className="text-xl font-semibold">Your suggested allocation</h2>
-      <p>{allocation.applied_profile} · {allocation.objective_used.replaceAll('_', ' ')} · maximum position {(allocation.max_weight_cap * 100).toFixed(1)}%</p>
-      {allocation.success ? <AllocationComparison data={data} /> : <p role="status">{allocation.reason}</p>}
-      {allocation.success && preview === 'saved' && !combined && <Link className="inline-block font-semibold text-indigo-600" to="/dashboard/chat" state={{allocationCurrency: currency, portfolioId: snapshot.portfolioId}}>Ask the advisor about this allocation</Link>}
-      {allocation.feasibility_floor_applied && <p>The position cap uses the minimum feasible weight for this number of stocks.</p>}
-      {allocation.target_return_adjusted && <p>The return target was lowered to fit the position cap.</p>}
-    </section> : <p role="status">Profile allocation unavailable.</p>}
-    <details><summary className="cursor-pointer font-semibold">Compare other models and review recommendations</summary>{renderRecommendations()}</details>
-  </div>;
+  if (advisor) {
+    const actions = (Array.isArray(recommendations) ? recommendations : []).filter(rec => rec && !dismissedRecommendations.includes(rec.id));
+    const priorityActions = ['reduce_position', 'de-risk', 'add_diversification', 'rebalance'];
+    const ordered = [...actions].sort((a,b) => {
+      const rank = rec => {const i = priorityActions.indexOf(rec.action); return i < 0 ? priorityActions.length : i;};
+      return rank(a) - rank(b);
+    });
+    const horizon = allocation?.investment_horizon_years ?? request.investment_horizon_years;
+    return <div className="space-y-6 text-slate-900">
+      <header className="flex flex-wrap items-start justify-between gap-4">
+        <div><p className="text-xs font-semibold uppercase tracking-widest text-blue-600">Your portfolio advisor</p>
+        <h2 className="mt-2 text-3xl font-semibold">A clearer plan for your investments</h2>
+        <p className="mt-2 text-sm text-slate-500">Review the risks, understand the suggestions, then decide what to change.</p></div>
+        <Link to="/dashboard/settings" className="rounded-lg border border-blue-200 px-4 py-2 text-sm text-blue-600">Edit investment preferences</Link>
+      </header>
+      <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">{currencyControls}</div>
+      {preview !== 'saved' && <p role="status" className="rounded-lg bg-amber-50 p-3 text-sm text-amber-800">Scenario preview only. Your saved preferences and holdings have not changed.</p>}
+      <div className="grid gap-4 sm:grid-cols-3">
+        <section className="rounded-xl border border-slate-200 p-5"><p className="text-sm text-slate-500">Investment approach</p><p className="mt-2 text-xl font-semibold capitalize">{allocation?.applied_profile || request.risk_preference}</p></section>
+        <section className="rounded-xl border border-slate-200 p-5"><p className="text-sm text-slate-500">Planning horizon</p><p className="mt-2 text-xl font-semibold">{horizon == null ? 'Not set' : Number(horizon).toFixed(1) + ' years'}</p></section>
+        <section className="rounded-xl border border-slate-200 p-5"><p className="text-sm text-slate-500">Portfolio reviewed</p><p className="mt-2 text-xl font-semibold">{formatMoney(group.market, currency)}</p><p className="mt-1 text-xs text-slate-500">{data.tickers.length} stocks / {currency}</p></section>
+      </div>
+      <section className="rounded-xl border border-blue-200 bg-blue-50 p-5">
+        <h3 className="font-semibold">What this review covers</h3>
+        <p className="mt-2 text-sm text-slate-600">Suggestions use your stock holdings and latest available market prices. Cash, mutual funds, property and other manually valued assets are tracked in net worth but are not included in this optimization.</p>
+      </section>
+      <AdvisorAnalytics data={data} currency={currency} />
+      <section id="advisor-next-steps" className="space-y-3 scroll-mt-24">
+        <div className="flex items-center justify-between gap-3"><h3 className="text-xl font-semibold">Your next steps</h3><span className="text-sm text-slate-500">{ordered.length} suggestions</span></div>
+        <p className="text-sm text-slate-500">Concentration and risk reviews appear first, followed by diversification and rebalancing.</p>
+        {ordered.length ? <div className="grid gap-4 xl:grid-cols-3">{ordered.slice(0,3).map((rec,index) => <article key={rec.id || index} className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="flex items-center gap-3"><span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-600">{index+1}</span><h4 className="font-semibold capitalize">{String(rec.action || 'Review portfolio').replaceAll('_',' ')}{rec.asset ? ' / ' + rec.asset : ''}</h4></div>
+          <p className="mt-3 text-sm leading-relaxed text-slate-600">{String(rec.reason || rec.description || '')}</p>
+          {rec.expected_impact && <p className="mt-3 rounded-lg bg-slate-50 p-3 text-sm"><strong>Why consider it: </strong>{String(rec.expected_impact)}</p>}
+          {Array.isArray(rec.supporting_models) && <p className="mt-3 text-xs text-slate-500">Based on: {rec.supporting_models.join(', ')}</p>}
+        </article>)}</div> : <p role="status" className="rounded-xl border p-5 text-sm text-slate-600">{['FAILED','UNAVAILABLE'].includes(data.stages?.recommendations?.status) ? 'Recommendations are unavailable. Refresh analysis to retry.' : 'No additional recommendations were returned for this analysis. Review the allocation and your preferences below.'}</p>}
+        {ordered.length > 3 && <p className="text-sm text-slate-500">{ordered.length-3} more suggestions are available in the detailed review below.</p>}
+      </section>
+      {allocation ? <section className="rounded-xl border border-slate-200 p-5 space-y-4">
+        <h3 className="text-xl font-semibold">Current holdings vs suggested allocation</h3>
+        <p className="text-sm text-slate-600">{String(allocation.objective_used || 'Unavailable').replaceAll('_',' ')} / Maximum position: {Number.isFinite(allocation.max_weight_cap) ? (allocation.max_weight_cap*100).toFixed(1)+'%' : 'Unavailable'}</p>
+        {allocation.success ? <div className="overflow-x-auto"><AllocationComparison data={data}/></div> : <p role="status" className="rounded-lg bg-amber-50 p-3 text-amber-800">{allocation.reason || 'No feasible allocation is available.'}</p>}
+        {allocation.feasibility_floor_applied && <p className="text-sm">The position cap uses the minimum feasible weight for this number of stocks.</p>}
+        {allocation.target_return_adjusted && <p className="text-sm">The return target was lowered to fit the position cap.</p>}
+        <p className="text-xs text-slate-500">Model estimates before trading costs and taxes. No trades are placed by this page.</p>
+        {allocation.success && preview === 'saved' && !combined && <Link className="inline-block rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white" to="/dashboard/chat" state={{allocationCurrency:currency,portfolioId:snapshot.portfolioId}}>Discuss this allocation with AI chat</Link>}
+      </section> : <p role="status">Profile allocation unavailable.</p>}
+      <details className="rounded-xl border border-slate-200 p-5"><summary className="cursor-pointer font-semibold">Detailed model comparisons and all recommendations</summary><div className="mt-5">{renderRecommendations()}</div></details>
+    </div>;
+  }
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
@@ -162,6 +218,22 @@ const PortfolioDashboard = ({ advisor = false }) => {
   function renderOverview() {
     const allocationRows = group.tickers.map((ticker, index) => ({ ticker, market: group.marketByTicker[ticker], weight: group.weights[index] }));
     return <div className="space-y-5">
+      <div className="assessment-banner"><div><h2>Review your portfolio assessment</h2><p>See your largest risks and allocation suggestions based on your investment profile.</p></div><Link to={`/dashboard/advisor?currency=${currency}&mixed=${combined ? 1 : 0}`}>See assessment →</Link></div>
+      <div className="portfolio-overview-grid">
+        <section className="holdings-map-panel">
+          <h2>Your holdings at a glance</h2><p>{formatMoney(group.market, currency)} · {allocationRows.length} holdings</p>
+          <div className="h-[390px]"><ResponsiveContainer width="100%" height="100%">
+            <Treemap data={allocationRows.filter(r => r.market > 0).map(r => ({...r, name:r.ticker}))} dataKey="market" aspectRatio={1.5} isAnimationActive={false}
+              content={<AllocationTile />} />
+          </ResponsiveContainer></div>
+          <p className="text-xs">Tile area represents current market value. Percentages show portfolio weights.</p>
+        </section>
+        <aside className="portfolio-pulse"><h2>Portfolio pulse</h2>
+          <section><h3>Risk concentration</h3><p>{biggestRisk ? `${biggestRisk.ticker} contributes ${biggestRisk.percentage_contribution_to_risk.toFixed(1)}% of portfolio volatility.` : 'Risk contributions are unavailable.'}</p><button onClick={() => setActiveTab('risk')}>Review risk →</button></section>
+          <section><h3>Your investment plan</h3><p>{allocation?.applied_profile || request.risk_preference} profile · {request.investment_horizon_years == null ? 'Horizon unspecified' : request.investment_horizon_years.toFixed(1) + ' years'}</p><Link to="/dashboard/settings">Update preferences →</Link></section>
+          <section><h3>News and sentiment</h3><p>Explore available headlines and sentiment for the stocks you follow.</p><Link to="/dashboard/sentiment">Read market news →</Link></section>
+        </aside>
+      </div>
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard label="Holdings value" value={formatMoney(group.market, currency)} subtitle="Latest available quotes" />
         <StatCard label="Risk preference" value={allocation?.applied_profile || request.risk_preference} subtitle={request.investment_horizon_years == null ? 'Horizon unspecified' : request.investment_horizon_years.toFixed(1) + ' year horizon'} />
@@ -191,11 +263,11 @@ const PortfolioDashboard = ({ advisor = false }) => {
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={riskContrib} barCategoryGap="30%">
-                <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
                 <XAxis dataKey="ticker" stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
                 <YAxis stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} unit="%" />
-                <Tooltip contentStyle={{ backgroundColor: '#11131a', border: '1px solid #374151', borderRadius: '12px' }} />
-                <Bar dataKey="percentage_contribution_to_risk" name="Risk %" fill="#6366f1" radius={[6, 6, 0, 0]} />
+                <Tooltip contentStyle={{ backgroundColor: '#ffffff', color: '#182230', border: '1px solid #e5e7eb', borderRadius: '12px' }} />
+                <Bar dataKey="percentage_contribution_to_risk" name="Risk %" fill="#1668ce" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -618,6 +690,14 @@ const RecommendationCard = ({ rec, onDismiss }) => {
     </div>
   );
 };
+
+function AllocationTile({x, y, width, height, name, weight}) {
+  if (!width || !height || !name) return null;
+  return <g><rect x={x + 2} y={y + 2} width={Math.max(0, width - 4)} height={Math.max(0, height - 4)} rx={3} fill="#ecf5ff" stroke="#d5e3f2" />
+    <title>{name} · {(weight * 100).toFixed(1)}% of portfolio</title>
+    {width > 65 && height > 45 && <text x={x + width / 2} y={y + height / 2} textAnchor="middle" fill="#18283c" fontSize={14} fontWeight={600}>{name}<tspan x={x + width / 2} dy={23} fill="#53667d" fontSize={12}>{(weight * 100).toFixed(1)}%</tspan></text>}
+  </g>;
+}
 
 export function AllocationComparison({ data }) {
   const allocation = data.personalized_allocation;

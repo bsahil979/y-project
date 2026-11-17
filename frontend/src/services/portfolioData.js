@@ -1,3 +1,4 @@
+import { isTrackedAsset } from './assetTracking.js';
 import { supabase } from './supabaseClient';
 import { normalizeInvestorProfile } from './investorProfile.js';
 export {
@@ -11,6 +12,7 @@ import { createEmptyWorkspace, createId, isUuid, normalizeWorkspace, safeParse }
 export { createEmptyWorkspace, createId, ensureSelectedPortfolio, selectPortfolio } from './portfolioWorkspace.js';
 export { getPortfolioSnapshot } from './portfolioSnapshot.js';
 const workspaceKey = (userId) => `smart_advisor_workspace_${userId}`;
+const pendingKey = (userId) => `smart_advisor_pending_${userId}`;
 const legacyWatchlistKey = (userId) => `smart_portfolio_${userId}`;
 
 const readLocalWorkspace = (userId) => {
@@ -47,11 +49,16 @@ export const PortfolioDataService = {
     const localWorkspace = { ...readLocalWorkspace(userId), investorProfile: this.getInvestorProfile(userId) };
     if (!isUuid(userId)) return { workspace: localWorkspace, status: 'local-only' };
 
+    // Failed writes remain authoritative until explicitly saved successfully.
+    const pending = safeParse(localStorage.getItem(pendingKey(userId)), null);
+    if (pending) return { workspace: normalizeWorkspace(pending), status: 'sync-failed',
+      error: new Error('Unsynced local changes retained. Save again to retry cloud synchronization.') };
+
     try {
       const results = await Promise.all([
         supabase.from('portfolios').select('*').eq('user_id', userId),
         supabase.from('accounts').select('*').eq('user_id', userId),
-        supabase.from('holdings').select('*').eq('user_id', userId),
+        supabase.from('holdings').select(localWorkspace.holdings.some(isTrackedAsset) ? '*,manual_value,valuation_date,valuation_source' : '*').eq('user_id', userId),
         supabase.from('transactions').select('*').eq('user_id', userId),
         supabase.from('financial_goals').select('*').eq('user_id', userId),
         supabase.from('watchlists').select('*').eq('user_id', userId),
@@ -96,11 +103,21 @@ export const PortfolioDataService = {
     // cannot satisfy the UUID/RLS foreign keys in Supabase.
     if (!isUuid(userId)) return { status: 'local-only' };
 
+    const pendingJson = JSON.stringify(normalized);
+    localStorage.setItem(pendingKey(userId), pendingJson);
     try {
       const upsertRows = async (table, rows) => {
         const records = rows.map((row) => ({ ...row, user_id: userId }));
-        if (records.length) {
-          const { error } = await supabase.from(table).upsert(records, { onConflict: 'id' });
+        // PostgREST fills missing keys with null in heterogeneous batches.
+        // Keep new rows separate from fetched rows carrying default timestamps.
+        const groups = new Map();
+        for (const record of records) {
+          const shape = Object.keys(record).sort().join(',');
+          if (!groups.has(shape)) groups.set(shape, []);
+          groups.get(shape).push(record);
+        }
+        for (const batch of groups.values()) {
+          const { error } = await supabase.from(table).upsert(batch, { onConflict: 'id', defaultToNull: false });
           if (error) throw error;
         }
       };
@@ -128,6 +145,9 @@ export const PortfolioDataService = {
       }
       for (const index of [2, 3, 4, 5, 1, 0]) {
         await deleteStaleRows(tables[index][0], tables[index][1], remote[index].data || []);
+      }
+      if (localStorage.getItem(pendingKey(userId)) === pendingJson) {
+        localStorage.removeItem(pendingKey(userId));
       }
       return { status: 'synced' };
     } catch (error) {

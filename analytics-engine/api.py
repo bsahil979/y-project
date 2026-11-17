@@ -56,6 +56,11 @@ def get_currency_symbol(currency_map: dict) -> str:
     return symbols.get(dominant, "$")
 
 app = FastAPI()
+from services.upstox_connection import router as upstox_router
+app.include_router(upstox_router)
+from services.fund_nav import router as fund_nav_router
+from services import fund_advisor  # registers NAV analytics on the fund router
+app.include_router(fund_nav_router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -164,30 +169,37 @@ def get_quotes(req: QuotesRequest):
             continue
 
         try:
-            ticker = yf.Ticker(symbol)
-            fast_info = ticker.fast_info
-            current_value = fast_info.get("last_price")
-            current = float(current_value) if current_value is not None else 0
-            previous = fast_info.get("previous_close")
-            previous = float(previous) if previous is not None else None
-            history = ticker.history(period="60d", interval="1d", auto_adjust=False)
-            pct_change_30d = _pct_change_30d(history)
-            session = pd.Timestamp(history.index[-1]).date().isoformat() if history is not None and not history.empty else None
-            price_source = "yahoo_provider_quote"
-            if not current or current <= 0:
-                current, previous, price_source, session = _fallback_quote(symbol)
-                if history is None or history.empty:
-                    history = yf.download(symbol, period="60d", interval="1d", auto_adjust=False)
+            provider_currency = ""
+            history = None
+            pct_change_30d = None
+            try:
+                ticker = yf.Ticker(symbol)
+                fast_info = ticker.fast_info
+                current_value = fast_info.get("last_price")
+                current = float(current_value) if current_value is not None else 0
+                previous_value = fast_info.get("previous_close")
+                previous = float(previous_value) if previous_value is not None else None
+                provider_currency = str(fast_info.get("currency") or "").upper()
+                if not np.isfinite(current) or current <= 0:
+                    raise ValueError("No current price returned")
+                price_source = "yahoo_provider_quote"
+                session = None
+                try:
+                    history = ticker.history(period="60d", interval="1d", auto_adjust=False)
                     pct_change_30d = _pct_change_30d(history)
+                    session = pd.Timestamp(history.index[-1]).date().isoformat() if history is not None and not history.empty else None
+                except Exception:
+                    logging.getLogger(__name__).warning("Quote history unavailable for %s", symbol)
+            except Exception:
+                current, previous, price_source, session = _fallback_quote(symbol)
             if pct_change_30d is None and previous is not None and previous > 0:
                 pct_change_30d = _fallback_pct_change_from_previous(current, previous)
             if pct_change_30d is None:
                 pct_change_30d = 0.0
-            provider_currency = str(fast_info.get("currency") or "").upper()
             suffix_currency = "INR" if symbol.endswith((".NS", ".BO")) else ("USD" if "." not in symbol else "UNKNOWN")
             currency = provider_currency or suffix_currency
 
-            if not current or current <= 0:
+            if not np.isfinite(current) or current <= 0:
                 raise ValueError("No current price returned")
             quote = {
                 "ticker": symbol,
@@ -2271,11 +2283,19 @@ def evaluate_ticker_betterment(req: TickerEvaluateRequest):
         prices_df = data.get("prices")
         if prices_df is not None:
             s_target = _price_series_for_ticker(prices_df, sym)
-    except Exception:
-        pass
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"Could not retrieve overlapping price history for {', '.join(all_syms)}. Retry the data provider later; no simulated prices were used.") from exc
 
-    if s_target is None or len(s_target) < 100 or prices_df is None:
-        raise HTTPException(status_code=503, detail=f"Enough recent market history is unavailable for {sym}; no simulated prices were used")
+    if s_target is None or s_target.empty:
+        raise HTTPException(status_code=503, detail=f"No closing prices were returned for {sym}. Check the exchange symbol or retry later.")
+    if len(s_target) < 100:
+        return {
+            "status": "limited_history", "ticker": sym, "currency": currency,
+            "price_observations": len(s_target), "required_observations": 100,
+            "first_price_date": s_target.index[0].date().isoformat(),
+            "price_as_of": s_target.index[-1].date().isoformat(),
+            "spot_price": round(float(s_target.iloc[-1]), 2),
+        }
     if pd.Timestamp(s_target.index[-1]).date() < (datetime.date.today() - datetime.timedelta(days=10)):
         raise HTTPException(status_code=503, detail=f"Market history for {sym} is stale; no current recommendation was generated")
     missing = [ticker for ticker in curr_clean if ticker not in prices_df.columns]

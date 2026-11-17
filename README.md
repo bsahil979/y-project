@@ -100,3 +100,13 @@ Open [SmartPortfolio](http://localhost:5173) and choose **Try Demo** for local a
 
 ---
 *Disclaimer: This tool is for educational and research purposes only. Always perform your own due diligence before trading.*
+
+## Additional asset tracking
+
+Manage holdings supports dated valuations for Indian mutual funds, real estate, private equity, cash, other assets, and liabilities. Apply supabase/multi_asset_schema.sql after the base schema to enable cloud persistence of valuation fields. Local valuations remain available if that migration is missing; the sync status reports failure.
+
+Indian mutual funds use an AMFI scheme code, units and NAV. Fetch latest NAV reads AMFI's published NAV file, with manual dated entry available when the provider is unavailable. Recorded assets contribute to tracked net worth per currency on the holdings page. Liabilities reduce this total.
+
+The mutual fund advisor computes historical NAV returns, volatility, drawdown, correlation and rule-based profile recommendations. AMFI scheme identity and MFapi history were verified with live data during development. These metrics replay current units and are not personal XIRR or forecasts. Stock optimization remains separate; fund target-weight optimization, underlying-stock overlap and transaction-based fund performance are not implemented. Real estate and private equity values are user estimates.
+
+Broker imports support a live Upstox connection and labeled CSV accounts for other brokers. Imported accounts can share a portfolio or use separate portfolios. See [broker setup and coverage](analytics-engine/docs/upstox-import.md). Broker tokens are currently held in server memory and require reconnection after restart; this is not production-ready persistent connection storage.

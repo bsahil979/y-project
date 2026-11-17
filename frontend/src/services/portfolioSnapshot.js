@@ -1,3 +1,4 @@
+import { isTrackedAsset } from './assetTracking.js';
 import { derivePortfolioFromTransactions } from './portfolioLedger.js';
 import { valuePortfolio, analysisRequest } from './portfolioValuation.js';
 
@@ -20,7 +21,8 @@ function revisionFor(value) {
 export function getPortfolioSnapshot(workspace, selectedPortfolioId = workspace.selectedPortfolioId, { quotes = {}, asOf = new Date().toISOString() } = {}) {
   const portfolio = workspace.portfolios.find((row) => row.id === selectedPortfolioId);
   const belongs = (row) => Boolean(portfolio) && row.portfolio_id === portfolio.id;
-  const openingHoldings = workspace.holdings.filter(belongs);
+  const trackedAssets = workspace.holdings.filter(row => belongs(row) && isTrackedAsset(row));
+  const openingHoldings = workspace.holdings.filter(row => belongs(row) && !isTrackedAsset(row));
   const transactions = workspace.transactions.filter(belongs);
   const accountIds = new Set([...openingHoldings, ...transactions].map((row) => row.account_id).filter(Boolean));
   const accounts = workspace.accounts.filter((row) => accountIds.has(row.id));
@@ -35,11 +37,11 @@ export function getPortfolioSnapshot(workspace, selectedPortfolioId = workspace.
     : [{ message: 'Selected portfolio does not exist.' }];
   return {
     portfolioId: portfolio?.id || null,
-    portfolioRevision: revisionFor({ portfolio: portfolio || null, accounts, openingHoldings, transactions }),
+    portfolioRevision: revisionFor({ portfolio: portfolio || null, accounts, openingHoldings, transactions, trackedAssets }),
     asOf, baseCurrency: portfolio?.base_currency || null,
     investorProfile: workspace.investorProfile,
     goals: (workspace.goals || []).filter(goal => !goal.portfolio_id || goal.portfolio_id === selectedPortfolioId),
-    accounts, holdings: valuation.positions, openingHoldings, transactions,
+    trackedAssets, accounts, holdings: valuation.positions, openingHoldings, transactions,
     valuation, summary: ledger.summary, errors, valid: errors.length === 0,
   };
 }

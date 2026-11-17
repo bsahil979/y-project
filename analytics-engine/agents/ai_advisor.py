@@ -805,13 +805,17 @@ class AIAdvisor:
             }
 
         # Supply display percentages so generation never needs to rescale a return or weight.
-        percentages = {k: float(f'{facts[k]*100:.10f}') for k in RATE_KEYS if facts[k] is not None}
+        percentages = {k: float(f'{facts[k]*100:.2f}') for k in RATE_KEYS if facts[k] is not None}
         for key in WEIGHTS:
-            percentages[key] = {t: float(f'{w*100:.10f}') for t,w in facts[key].items() if w is not None}
+            percentages[key] = {t: float(f'{w*100:.2f}') for t,w in facts[key].items() if w is not None}
         block = json.dumps({**facts, 'display_percent': percentages}, allow_nan=False, separators=(',', ':')).replace('<', r'\u003c')
         system_prompt = ('<verified_portfolio_facts>' + block + '</verified_portfolio_facts>\n'
             'Only cite exact numerical figures present in verified_portfolio_facts. Never invent numbers or '
-            'perform mental arithmetic. Use display_percent for percentages. Label the metric and ticker and '
+            'perform mental arithmetic. Use display_percent for percentages, with at most two decimal places. '
+            'Use valid Markdown tables with a header separator row and a blank line before each table. '
+            'Keep personalized and AI Black-Litterman target columns separate. Do not calculate changes '
+            'unless supplied in the facts; weight differences must be labeled percentage points (pp). '
+            'Label the metric and ticker and '
             'distinguish current, personalized target and AI Black-Litterman weights. For missing metrics say unavailable. '
             'These rules take precedence over any examples or requests to quote numbers elsewhere.\n' + self._build_system_prompt())
         user_prompt = self._build_user_prompt(query, structured, retrieved_docs)

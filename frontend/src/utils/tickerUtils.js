@@ -1,3 +1,7 @@
+export function normalizeExchangeSuffix(symbol) {
+  return symbol.trim().toUpperCase().replace(/\.NSE$/, '.NS').replace(/\.BSE$/, '.BO');
+}
+
 /**
  * Normalize watchlist symbols.
  *
@@ -30,7 +34,7 @@ export function normalizeTickerSymbol(input, { readySymbols = [], universeSymbol
     return COMPANY_ALIASES[normalizedKey];
   }
 
-  const t = raw.toUpperCase().trim();
+  const t = normalizeExchangeSuffix(raw);
   const sanitized = t.replace(/[^A-Z0-9.\-]/g, '');
   if (!sanitized) return '';
   if (sanitized.includes('.')) return sanitized;
@@ -40,7 +44,7 @@ export function normalizeTickerSymbol(input, { readySymbols = [], universeSymbol
   const universe = new Set(universeSymbols.map((s) => s.toUpperCase()));
 
   for (const candidate of suffixVariants) {
-    if (ready.has(candidate) || universe.has(candidate)) return candidate;
+    if (ready.has(candidate) || universe.has(candidate)) return normalizeExchangeSuffix(candidate);
   }
 
   return sanitized;

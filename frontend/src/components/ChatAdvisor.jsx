@@ -18,7 +18,7 @@ import { PortfolioService, ChatService } from '../services/api';
 import { advisorPortfolioContext } from '../services/portfolioSnapshot';
 import { holdingAnswer } from '../services/advisorHolding';
 import { conversationReply } from '../services/advisorConversation';
-import ReactMarkdown from 'react-markdown';
+import AdvisorMarkdown from './AdvisorMarkdown';
 import { chatHistoryKey, readChatHistory, writeChatHistory, readChatSessions, sessionHistoryKey, createChatSession } from '../services/advisorHistory';
 
 const STOPWORDS = new Set([
@@ -651,15 +651,15 @@ const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers 
             </div>
 
             <div
-              className={`max-w-[75%] p-5 rounded-2xl text-sm leading-relaxed shadow-sm ${
+              className={`min-w-0 w-full max-w-full md:max-w-[90%] p-5 rounded-2xl text-sm leading-relaxed shadow-sm ${
                 m.role === 'assistant'
-                  ? 'bg-slate-100 text-slate-900 border-l-4 border-indigo-600 whitespace-pre-wrap'
+                  ? 'bg-slate-100 text-slate-900 border-l-4 border-indigo-600 min-w-0 max-w-full'
                   : 'bg-indigo-700 text-[#ffffff]  font-medium ml-12 rounded-tr-none'
               }`}
             >
               {m.grounding_check?.status === 'verified' && <small className="block text-xs text-slate-600">Labeled figures verified against Quant Engine</small>}
               {m.grounding_check?.status === 'mismatch_detected' && <small className="block text-xs text-amber-700">Quant Engine corrections included</small>}
-              {m.role === 'assistant' ? <div className="[&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_strong]:font-semibold"><ReactMarkdown skipHtml>{m.text}</ReactMarkdown></div> : m.text}
+              {m.role === 'assistant' ? <AdvisorMarkdown>{m.text}</AdvisorMarkdown> : m.text}
             </div>
           </div>
         ))}
@@ -681,8 +681,8 @@ const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers 
             <div className="w-10 h-10 rounded-xl bg-indigo-700 text-[#ffffff]  flex items-center justify-center shrink-0 shadow-lg">
               <Bot className="w-6 h-6" />
             </div>
-            <div className="bg-slate-100 p-5 rounded-2xl text-sm leading-relaxed shadow-sm border-l-4 border-indigo-600 whitespace-pre-wrap">
-              <ReactMarkdown skipHtml>{streamingText}</ReactMarkdown>
+            <div className="bg-slate-100 p-5 rounded-2xl text-sm leading-relaxed shadow-sm border-l-4 border-indigo-600 min-w-0 max-w-full">
+              <AdvisorMarkdown>{streamingText}</AdvisorMarkdown>
               <span className="inline-block w-2 h-4 bg-indigo-400 animate-pulse ml-0.5" />
             </div>
           </div>

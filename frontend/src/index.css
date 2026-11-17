@@ -79,3 +79,83 @@ a {
   .portfolio-app > aside { position: static; width: 100%; height: auto; }
   .portfolio-app > div.ml-\[270px\] { margin-left: 0; }
 }
+
+/* Portfolio workspace navigation and overview. */
+.portfolio-app { --pp-accent: #1266cf; background: #fff; }
+.workspace-topbar { min-height: 70px; display:flex; justify-content:space-between; align-items:center; gap:20px; border-bottom:1px solid #e4e7ec; }
+.workspace-tabs, .workspace-actions { display:flex; align-items:center; gap:24px; }
+.workspace-tabs a { padding:23px 8px; font-weight:600; border-bottom:3px solid transparent; }
+.workspace-tabs a.selected { color:#1266cf; border-color:#1266cf; }
+.workspace-actions a { border:1px solid #cbd9ea; padding:9px 15px; border-radius:8px; color:#1266cf; }
+.workspace-sidebar { box-shadow:none; border-color:#e4e7ec; }
+.workspace-sidebar a, .workspace-sidebar button { border-radius:8px; }
+.workspace-sidebar > div { box-shadow:none; border-radius:8px; }
+.assessment-banner { background:#1765c7; color:#fff; padding:23px; border-radius:10px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.assessment-banner h2 { font-weight:650; margin-bottom:5px; }
+.assessment-banner p { font-size:14px; max-width:650px; }
+.assessment-banner a { flex-shrink:0; padding:11px 16px; background:white; color:#1266cf; border-radius:6px; font-weight:600; }
+.portfolio-overview-grid { display:grid; grid-template-columns:minmax(0, 2.4fr) minmax(240px, 1fr); gap:20px; }
+.holdings-map-panel, .portfolio-pulse { border:1px solid #e1e5eb; border-radius:10px; padding:20px; background:white; }
+.holdings-map-panel h2, .portfolio-pulse h2 { font-size:19px; font-weight:650; margin-bottom:8px; }
+.holdings-map-panel > p { color:#617084; margin-bottom:15px; }
+.portfolio-pulse section { padding:20px 0; border-bottom:1px solid #e4e7ec; }
+.portfolio-pulse section:last-child { border:0; }
+.portfolio-pulse h3 { font-weight:600; margin-bottom:8px; }
+.portfolio-pulse p { color:#667085; font-size:14px; line-height:1.65; margin-bottom:10px; }
+.portfolio-pulse a, .portfolio-pulse button { color:#1266cf; font-size:13px; font-weight:600; }
+@media(max-width:1100px) { .portfolio-overview-grid { grid-template-columns:1fr; } .workspace-topbar { flex-wrap:wrap; padding-bottom:12px; } }
+@media(max-width:900px) { .workspace-main { margin-left:0; } .workspace-sidebar { position:relative; width:100%; height:auto; } .assessment-banner { align-items:flex-start; flex-direction:column; } .workspace-tabs { gap:10px; } }
+
+/* Reference palette, scoped to the signed-in workspace. */
+.portfolio-app { --pp-accent:#1668ce; --pp-border:#e5e7eb; --pp-ink:#182230; --pp-muted:#697586; }
+.portfolio-app [class*="shadow-"] { box-shadow:none; }
+.portfolio-app [class*="rounded-2xl"], .portfolio-app [class*="rounded-[24px]"] { border-radius:10px; }
+.portfolio-app [class*="text-indigo-"], .portfolio-app [class*="text-violet-"], .portfolio-app [class*="text-purple-"] { color:#1668ce; }
+.portfolio-app [class*="border-indigo-"], .portfolio-app [class*="border-violet-"] { border-color:#c8dcf7; }
+.portfolio-app [class*="bg-indigo-"], .portfolio-app [class*="bg-violet-"], .portfolio-app [class*="bg-purple-"] { background-color:#edf4fd; background-image:none; }
+.portfolio-app button[class*="bg-indigo-6"], .portfolio-app button[class*="bg-indigo-7"],
+.portfolio-app a[class*="bg-indigo-6"], .portfolio-app a[class*="bg-indigo-7"],
+.portfolio-app [class*="bg-[#5b3df5]"] { background:#1668ce; color:#fff !important; }
+.portfolio-app [class*="bg-indigo-6"]:hover, .portfolio-app [class*="bg-indigo-7"]:hover { background-color:#1258b0; }
+.portfolio-app .bg-blue-600 { background:#1668ce; color:#fff !important; }
+.portfolio-app select, .portfolio-app input:not([type="checkbox"]):not([type="radio"]), .portfolio-app textarea { background-color:#fff; border-color:#d4d8df; color:#182230; }
+.portfolio-app :focus-visible { outline:2px solid #1668ce; outline-offset:3px; }
+.portfolio-app .assessment-banner { background:#1668ce; }
+.portfolio-app .workspace-sidebar { background:#fff; }
+.portfolio-app .workspace-sidebar [class*="bg-slate-100"] { background:#f7f8fa; }
+.portfolio-app .workspace-sidebar [class*="shadow-"] { box-shadow:none; }
+.portfolio-app .recharts-default-tooltip { background:#fff !important; border-color:#e5e7eb !important; color:#182230 !important; }
+
+.holdings-page { max-width:1080px; margin:0 auto; padding-bottom:40px; }
+.holdings-heading { text-align:center; padding:15px 0 20px; }
+.holdings-heading h1 { font-size:22px; font-weight:600; margin-bottom:14px; }
+.holdings-totals { display:flex; justify-content:center; flex-wrap:wrap; gap:24px 60px; }
+.holdings-totals span { display:block; font-size:13px; color:#697586; margin-bottom:5px; }
+.holdings-totals strong { display:block; font-size:30px; font-weight:650; }
+.holdings-account-card { border:1px solid #cfd4dc; border-radius:10px; overflow:hidden; background:white; }
+.holdings-account-card > header { display:flex; gap:24px; align-items:center; padding:24px 28px; border-bottom:1px solid #d5d9df; }
+.holdings-account-card > header svg { color:#1668ce; flex-shrink:0; }
+.holdings-account-card h2 { font-size:21px; font-weight:600; }
+.holdings-account-card header p, .holdings-account-row > div > p { color:#697586; font-size:14px; margin-top:5px; }
+.holdings-account-row { display:flex; align-items:center; gap:24px; padding:24px 28px; border-bottom:1px solid #e5e7eb; flex-wrap:wrap; }
+.holdings-account-row h3 { font-size:18px; font-weight:550; }
+.holdings-account-values { margin-left:auto; text-align:right; }
+.holdings-account-values span { color:#697586; font-size:12px; }
+.holdings-account-row a { color:#1668ce; font-size:14px; }
+.holdings-account-card footer { display:flex; flex-wrap:wrap; gap:14px; align-items:center; padding:20px; }
+.holdings-account-card footer a, .holdings-account-card footer button { display:inline-flex; align-items:center; gap:8px; border:1px solid #b5d1f6; border-radius:7px; color:#1668ce; padding:10px 16px; background:white; font-size:14px; }
+.holdings-account-card button:disabled { opacity:.5; }
+#holding-entry { scroll-margin-top:24px; }
+@media(max-width:600px) { .holdings-account-row, .holdings-account-card > header { padding:18px; } .holdings-account-values { margin-left:0; text-align:left; } }
+
+.account-import-dialog { width:min(940px,94vw); max-height:90vh; margin:auto; padding:28px; border:1px solid #e5e7eb; border-radius:16px; color:#182230; background:#fff; }
+.account-import-dialog::backdrop { background:rgb(0 0 0 / .5); }
+.account-import-dialog header { display:flex; justify-content:space-between; align-items:center; }
+.account-import-dialog h2 { font-size:23px; font-weight:650; }
+.account-import-dialog h3 { font-size:20px; margin:24px 0; }
+.account-import-dialog h4 { font-weight:650; margin-bottom:8px; }
+.account-import-dialog section { border:1px solid #d8dfe9; border-radius:9px; padding:20px; margin:18px 0; }
+.account-import-dialog button { color:#1668ce; border:1px solid #b5d1f6; border-radius:7px; padding:8px 14px; }
+.account-import-dialog button:disabled { opacity:.45; }
+.account-import-dialog input, .account-import-dialog select { margin:8px; padding:8px; border:1px solid #d8dfe9; border-radius:6px; max-width:100%; }
+.account-import-dialog td, .account-import-dialog th { padding:9px; text-align:left; border-bottom:1px solid #e5e7eb; }

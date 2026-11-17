@@ -19,7 +19,6 @@ const PortfolioBuilderView = ({ tickers, setTickers }) => {
       setTickers(tickers.filter((t) => t !== sym));
     } else {
       setTickers([...tickers, sym]);
-      navigate('/dashboard/portfolio');
     }
   };
 
@@ -36,7 +35,6 @@ const PortfolioBuilderView = ({ tickers, setTickers }) => {
     }
     setTickers([...tickers, sym]);
     setLiveTickerInput('');
-    navigate('/dashboard/portfolio');
   };
 
   /** Full curated universe — not only symbols with on-disk models (fresh installs had an empty list before). */
@@ -285,11 +283,11 @@ const PortfolioBuilderView = ({ tickers, setTickers }) => {
 
           <button
             type="button"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/dashboard/forecast')}
             disabled={tickers.length === 0}
             className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-700 text-[#ffffff] py-3 text-xs font-bold  transition hover:bg-indigo-800 disabled:opacity-30"
           >
-            Go to Dashboard <ArrowRight className="h-4 w-4" />
+            Explore selected stocks <ArrowRight className="h-4 w-4" />
           </button>
         </div>
       </div>

@@ -1,10 +1,12 @@
+import { securitiesAccountGroups } from '../services/accountSummary';
 import React, { useEffect, useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { PortfolioService } from '../services/api';
 import { formatMoney } from '../services/portfolioValuation';
 import usePortfolioSnapshot from '../hooks/usePortfolioSnapshot';
-import { LineChart, Sparkles } from 'lucide-react';
+import { assetCategories, assetValue, trackingTotals } from '../services/assetTracking';
+import { LineChart, Pencil, CircleHelp, ListChecks, Plus } from 'lucide-react';
 
 const primary = [
   ['My Portfolio', '/dashboard'],
@@ -30,6 +32,15 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const [connected, setConnected] = useState(null);
   const valuation = snapshot.valuation;
+  const assets = snapshot.trackedAssets || [];
+  const totals = trackingTotals(assets);
+  const currencies = [...new Set([...valuation.currencies, ...Object.keys(totals)])];
+  const securitiesAccounts = securitiesAccountGroups(snapshot);
+  const netValue = currency => {
+    const group = valuation.groups[currency];
+    if (!snapshot.valid || (group && (pricing.loading || !group.complete)) || totals[currency] === null) return null;
+    return (group?.market || 0) + (totals[currency] || 0);
+  };
 
   useEffect(() => {
     let active = true;
@@ -47,7 +58,7 @@ export default function Sidebar() {
       className={({ isActive }) => 
         'group flex items-center justify-between rounded-2xl px-4 py-3 text-sm transition ' + 
         (isActive 
-          ? 'bg-[#eeeaff] font-bold text-[#5b3df5] shadow-[inset_3px_0_0_#5b3df5]' 
+          ? 'bg-blue-50 font-bold text-blue-700'
           : 'text-slate-500 hover:bg-white hover:text-slate-900')
       }
     >
@@ -59,40 +70,53 @@ export default function Sidebar() {
   );
 
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-screen w-[270px] flex-col border-r border-slate-200/80 bg-[#f8f9fc] px-4 py-5">
+    <aside className="workspace-sidebar fixed left-0 top-0 z-40 flex h-screen w-[270px] flex-col border-r border-slate-200/80 bg-white px-4 py-5">
       <Link to="/dashboard" className="mb-7 flex items-center gap-3 px-3 py-2 text-[18px] font-black tracking-tight text-slate-950">
-        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#5b3df5] text-white shadow-[0_8px_16px_rgba(91,61,245,0.25)]">
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-[0_8px_16px_rgba(91,61,245,0.25)]">
           <LineChart className="h-5 w-5" />
         </span>
         SmartPortfolio
       </Link>
 
-      <div className="my-1 space-y-3 rounded-[22px] border border-slate-200 bg-white p-4 shadow-[0_8px_22px_rgba(15,23,42,0.04)]">
-        <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">Selected portfolio</p>
-        {portfolios.length > 0 && (
-          <select 
-            aria-label="Selected portfolio" 
-            value={snapshot.portfolioId || ''} 
-            onChange={(event) => selectPortfolio(event.target.value)} 
-            className="w-full rounded-lg border border-slate-200 bg-white p-1 text-sm"
-          >
-            {portfolios.map((portfolio) => <option key={portfolio.id} value={portfolio.id}>{portfolio.name}</option>)}
-          </select>
-        )}
+      <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+      <section aria-label="Portfolio assets" className="py-1 mb-5">
+        <select aria-label="Selected portfolio" value={snapshot.portfolioId || ''}
+          onChange={event => selectPortfolio(event.target.value)}
+          className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm">
+          {!portfolios.length && <option value="">My Portfolio</option>}
+          {portfolios.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+        </select>
+        <div className="grid grid-cols-3 gap-2 py-3 text-slate-500">
+          {[[Pencil,'Edit','/dashboard/portfolio'],[CircleHelp,'Recs','/dashboard/advisor'],[ListChecks,'Activity','/dashboard/portfolio/transactions']].map(([Icon,label,to]) =>
+            <Link key={label} to={to} className="flex flex-col items-center gap-1 text-xs hover:text-blue-600"><Icon size={19}/>{label}</Link>)}
+        </div>
         {!snapshot.valid && <p role="alert" className="text-xs text-amber-700">Portfolio history needs correction.</p>}
-        {!valuation.currencies.length && <p className="text-sm text-slate-500">Add your first holding</p>}
-        {valuation.currencies.map((currency) => (
-          <div key={currency}>
-            <p className="text-xs text-slate-500">{currency}</p>
-            <p className="text-lg font-bold text-slate-900">
-              {!snapshot.valid ? 'Unavailable' : pricing.loading ? 'Loading prices...' : formatMoney(valuation.groups[currency].market, currency)}
-            </p>
+        <div className="flex items-center justify-between mt-3 mb-1">
+          <Link to="/dashboard/portfolio" className="text-sm font-semibold">Securities</Link>
+          <Link to="/dashboard/portfolio" aria-label="Add securities" className="p-1 text-blue-600"><Plus size={16}/></Link>
+        </div>
+        {securitiesAccounts.map(account => <Link key={account.key} to="/dashboard/portfolio" className="flex justify-between gap-2 rounded-md bg-slate-50 px-2 py-1 text-xs">
+          <span className="truncate">{account.name}</span><span className="shrink-0">{formatMoney(!snapshot.valid || pricing.loading ? null : account.market,account.currency)} <small>{account.currency}</small></span>
+        </Link>)}
+        {assetCategories.map(([category,label]) => <div key={category} className="mt-4">
+          <div className="flex items-center justify-between">
+            <Link to="/dashboard/portfolio" className="text-sm font-semibold">{label}</Link>
+            <Link to={'/dashboard/portfolio?addAsset=' + category} aria-label={'Add ' + label.toLowerCase()} className="p-1 text-blue-600"><Plus size={16}/></Link>
           </div>
-        ))}
-        <p className="text-[11px] leading-5 text-slate-400">Currencies shown separately. Quotes may be delayed.</p>
-      </div>
+          {assets.filter(row => row.asset_type === category).map(row => <Link key={row.id} to="/dashboard/portfolio" className="flex justify-between gap-2 px-2 py-1 text-xs hover:bg-slate-50 rounded-md">
+            <span className="truncate" title={row.asset_name}>{row.asset_name}</span>
+            <span className="shrink-0">{formatMoney(assetValue(row),row.currency)} <small>{row.currency}</small></span>
+          </Link>)}
+        </div>)}
+        <div className="mt-4 border-t border-dashed border-slate-300 pt-3">
+          <Link to="/dashboard/portfolio" className="text-sm font-semibold">Net worth ›</Link>
+          {currencies.map(currency => <div key={currency} className="flex justify-between mt-2 text-sm"><span className="text-slate-500">{currency}</span><strong>{formatMoney(netValue(currency),currency)}</strong></div>)}
+          {!currencies.length && <p className="mt-2 text-xs text-slate-500">Add assets to track net worth.</p>}
+          <p className="mt-2 text-[10px] text-slate-400">Currencies shown separately. Asset values are dated estimates.</p>
+        </div>
+      </section>
 
-      <nav aria-label="Main navigation" className="min-h-0 flex-1 overflow-y-auto space-y-1">
+      <nav aria-label="Main navigation" className="space-y-1">
         {primary.map(navLink)}
         <details className="mt-5 border-t border-slate-200 pt-4">
           <summary className="cursor-pointer px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-400">
@@ -102,6 +126,7 @@ export default function Sidebar() {
           {experiments.map(navLink)}
         </details>
       </nav>
+      </div>
 
       <div className="space-y-3 border-t border-slate-200 pt-4">
         {user && (
