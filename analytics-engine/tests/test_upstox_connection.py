@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from services import upstox_connection as broker
 import pytest
+import secrets
 
 @pytest.fixture
 def client(monkeypatch):
@@ -29,7 +30,9 @@ def test_connected_holdings_are_bound_to_verified_user(client):
 @pytest.fixture
 def oauth(client, monkeypatch):
     for key, value in {
-        'UPSTOX_CLIENT_ID': 'test-client', 'UPSTOX_CLIENT_SECRET': 'test-secret',
+        # Ephemeral dummy credentials; all token exchange requests are mocked.
+        'UPSTOX_CLIENT_ID': secrets.token_urlsafe(16),
+        'UPSTOX_CLIENT_SECRET': secrets.token_urlsafe(32),
         'UPSTOX_REDIRECT_URI': 'http://127.0.0.1:8000/brokers/upstox/callback',
         'FRONTEND_ORIGIN': 'http://127.0.0.1:5173',
     }.items():
