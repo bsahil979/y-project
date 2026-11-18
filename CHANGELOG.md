@@ -4,10 +4,23 @@
 
 ### Features
 
+- Review a device-saved rebalance draft for each portfolio and currency in Advisor. Personalized and AI Black–Litterman targets translate to account-level estimated units at the current snapshot prices.
+- Mutual fund analysis compares supported growth plans with matching-date total-return indices. Published AMC comparisons provide a dated fallback for covered plans. Dated expense ratios and disclosed top-holding overlap appear where matching data exists.
+
 - Connect Zerodha to preview and import equity and Coin mutual fund holdings. Review positions, SIPs, recent fund orders and margins separately. If a fund lacks a dated NAV, the importer checks the AMFI publication. [Zerodha setup and import guide](analytics-engine/docs/zerodha-import.md)
 - Import broker holdings into the selected portfolio by default. Use **Combine all into My Portfolio** to bring previously separate portfolios together while retaining broker accounts, manual holdings and transaction history.
 
 ### Fixes
+
+- Prefer a populated portfolio on first login when no portfolio selection is saved. Display saved-record counts and links from empty portfolios to populated ones.
+- Compute chat totals before shortening model context, separate cash from funds, withhold unsupported monetary claims, and require a successful engine result for suggested allocations.
+- Use the conversational LLM path for general questions and follow-ups without rerunning the full analytics pipeline. Preserve readable tables and saved chats in the assistant drawer.
+
+### Validation
+
+- Latest targeted checks: 91 frontend tests and 18 advisor/context/budget tests passed; production frontend build passed. Live synthetic chat returned the expected separate stock, fund, cash and net-worth totals. These checks do not establish predictive accuracy.
+
+- Include fund-only brokerage accounts in the selected portfolio snapshot. Fund analysis is accessible in portfolios containing both stocks and mutual funds.
 
 - Recognize a Zerodha authorization response sent to the older Upstox callback URL. The Zerodha handler still checks the signed-in user's single-use authorization state.
 - Look up `HFCL-BE.NS` as `HFCL.NS` for quotes and historical analysis while preserving the original symbol in the ledger.

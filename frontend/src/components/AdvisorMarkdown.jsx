@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 // Presentation-only rounding; stored responses and grounding evidence stay intact.
@@ -10,6 +11,9 @@ export function readableCell(children) {
   });
 }
 const components = {
+ a: ({href, children}) => href?.startsWith('/dashboard')
+   ? <Link className="text-blue-700 underline" to={href}>{children}</Link>
+   : <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline">{children}</a>,
  table: ({children}) => <div className="my-4 max-w-full overflow-x-auto rounded-lg border border-slate-300"><table className="w-full border-collapse text-left text-sm">{children}</table></div>,
  th: ({children}) => <th className="border-b border-slate-300 bg-blue-50 px-4 py-3 font-semibold whitespace-normal">{children}</th>,
  td: ({children}) => <td className="border-b border-slate-200 px-4 py-3 align-top whitespace-normal">{readableCell(children)}</td>,

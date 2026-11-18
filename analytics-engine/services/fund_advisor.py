@@ -9,6 +9,8 @@ import pandas as pd
 import requests
 from fastapi import HTTPException
 from pydantic import BaseModel, Field
+from services.fund_disclosures import disclosure_for, disclosed_overlaps
+from services.fund_benchmarks import compare_benchmark
 from services.fund_nav import router, parse_nav
 
 _cache = {}
@@ -104,6 +106,10 @@ def analyze_funds(request):
     portfolio = metrics(portfolio_values)
     funds = [{**info[k], 'identifier':k, 'units':quantities[k], 'nav':float(prices[k].iloc[-1]),
               'value':float(amounts[k]), 'weight':float(weights[k]), **metrics(prices[k])} for k in quantities]
+    benchmark_cache = {}
+    for fund in funds:
+        fund['disclosure'] = disclosure_for(fund['name'])
+        fund['benchmark'] = compare_benchmark(fund['name'], prices[fund['identifier']], benchmark_cache)
     cap = {'conservative':.25, 'moderate':.35, 'aggressive':.45}[request.risk_preference]
     short = request.investment_horizon_years is not None and request.investment_horizon_years <= 2
     if short: cap -= .05
@@ -125,15 +131,15 @@ def analyze_funds(request):
             value = correlation.loc[a,b]
             if np.isfinite(value): pairs.append({'first':info[a]['name'], 'second':info[b]['name'], 'correlation':float(value)})
     if any(p['correlation'] >= .85 for p in pairs):
-        recommendations.append({'kind':'diversification', 'message':'Some funds have historical return correlation of at least 0.85. Multiple fund names may provide limited diversification; underlying-stock overlap has not been measured.'})
+        recommendations.append({'kind':'diversification', 'message':'Some funds have historical return correlation of at least 0.85. Multiple fund names may provide limited diversification.'})
     if not recommendations:
         recommendations.append({'kind':'review', 'message':'No configured concentration or category rule triggered. This is not a suitability guarantee; review your goal horizon and ability to absorb the historical drawdown.'})
     return {'status':'ok', 'base_currency':'INR', 'portfolio_value':float(amounts.sum()), 'metrics':portfolio,
-            'funds':funds, 'correlations':pairs, 'recommendations':recommendations,
+            'funds':funds, 'disclosed_overlaps':disclosed_overlaps(funds), 'correlations':pairs, 'recommendations':recommendations,
             'profile':{'risk_preference':request.risk_preference,'investment_horizon_years':request.investment_horizon_years,'concentration_review_threshold':cap},
             'period':{'start':str(prices.index[0].date()),'end':str(prices.index[-1].date()),'observations':len(prices)},
             'methodology':'Historical constant-unit replay of current holdings on common NAV dates. Not personal XIRR or a forecast. Sharpe assumes 0% risk-free rate. Recommendations are deterministic rules, not a trained prediction model.',
-            'limitations':['No benchmark comparison yet','No underlying-stock overlap data','No tax, exit-load, or expense-ratio evaluation','No optimized target weights or buy/sell execution']}
+            'limitations':['Overlap uses only published top holdings with the same disclosure date','Fees require a matching plan disclosure. Taxes and exit loads are excluded','No optimized target weights or buy/sell execution']}
 
 
 @router.post('/funds/analyze')

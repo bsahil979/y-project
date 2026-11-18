@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def regime_study_results():
     original = ROOT / 'research/regime_holdout_2026-09-27_v2'
     replay = ROOT / 'research/regime_reproduction_2026-10-12'
-    current = ROOT / 'research/regime_phase4_2026-11-15'
+    current = ROOT / 'research/regime_evaluation_2026-11-17'
     manifest = json.loads((current / 'manifest.json').read_text())
     changed = [name for name, digest in manifest['source_sha256'].items()
                if not (ROOT/name).exists() or hashlib.sha256((ROOT/name).read_bytes()).hexdigest() != digest]

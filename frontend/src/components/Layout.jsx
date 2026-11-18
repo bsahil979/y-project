@@ -3,7 +3,7 @@ import {useAuth} from '../contexts/AuthContext';
 import {Search} from 'lucide-react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 
-export default function Layout({ children, syncStatus }) {
+export default function Layout({ children, syncStatus, onOpenAssistant }) {
   const { pathname } = useLocation();
   const {user} = useAuth();
   const firstName = (user?.user_metadata?.full_name || user?.name || '').trim().split(' ')[0];
@@ -21,7 +21,7 @@ export default function Layout({ children, syncStatus }) {
         {[['Track', '/dashboard'], ['Plan', '/dashboard/planning/goals'], ['Improve', '/dashboard/advisor'], ['Explore', '/dashboard/manage']].map(([label, path]) => <NavLink key={path} to={path} end className={({isActive}) => isActive ? 'selected' : ''}>{label}</NavLink>)}
       </div>
       <div className="workspace-search"><Search size={17}/><input aria-label="Find a portfolio tool" placeholder="Find holdings, analysis & more..." value={query} onChange={e=>setQuery(e.target.value)} />{query.trim() && <div className="workspace-search-results">{destinations.filter(([label])=>label.toLowerCase().includes(query.toLowerCase().trim())).map(([label,to])=><Link key={to} to={to} onClick={()=>setQuery('')}>{label}</Link>)}{!destinations.some(([label])=>label.toLowerCase().includes(query.toLowerCase().trim())) && <p>No matching tool</p>}</div>}</div>
-      <div className="workspace-actions"><Link to="/dashboard/portfolio">+ Add asset</Link><Link to="/dashboard/chat">Assistant</Link></div>
+      <div className="workspace-actions"><Link to="/dashboard/portfolio">+ Add asset</Link><button type="button" onClick={onOpenAssistant}>Assistant</button></div>
     </nav>
     <header className="workspace-page-heading mb-6 pt-6 flex flex-wrap items-center justify-between gap-4">
       <div><p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">SmartPortfolio</p><p className="mt-1 text-2xl font-black tracking-tight text-slate-950">{isTrack ? `${greeting}${firstName ? ', ' + firstName : ''}.` : title}{isTrack && <span className="workspace-greeting-note"> Here’s where you stand.</span>}</p><p className="mt-1 text-xs font-medium text-slate-500">{syncLabels[syncStatus] || 'Your investing dashboard'}</p></div>

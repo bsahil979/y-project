@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Building2, Loader2, TrendingUp, ShieldCheck, Activity, DollarSign, Link2, AlertTriangle, ChevronDown } from 'lucide-react';
 import { PortfolioService } from '../services/api';
+import { normalizeExchangeSuffix } from '../utils/tickerUtils';
 
 const formatNumber = (value, decimals = 2) => {
   if (value === null || value === undefined || Number.isNaN(value)) return 'N/A';
@@ -14,6 +15,14 @@ const formatNumber = (value, decimals = 2) => {
 const formatPercent = (value) => {
   if (value === null || value === undefined || Number.isNaN(value)) return 'N/A';
   return `${(Number(value) * 100).toFixed(2)}%`;
+};
+
+const formatAmount = (value, currency, decimals = 0) => {
+  if (value == null || !Number.isFinite(value)) return 'N/A';
+  if (!/^[A-Z]{3}$/.test(currency || '')) return formatNumber(value, decimals);
+  return new Intl.NumberFormat(undefined, {
+    style: 'currency', currency, minimumFractionDigits: decimals, maximumFractionDigits: decimals,
+  }).format(value);
 };
 
 const MetricCard = ({ label, value, hint, accent = 'indigo' }) => {
@@ -33,12 +42,20 @@ const MetricCard = ({ label, value, hint, accent = 'indigo' }) => {
 };
 
 const FundamentalsView = ({ tickers = [] }) => {
-  const defaultTicker = tickers[0] || 'AAPL';
+  const defaultTicker = normalizeExchangeSuffix(tickers[0] || 'AAPL');
   const [ticker, setTicker] = useState(defaultTicker);
   const [customTicker, setCustomTicker] = useState('');
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [attempt, setAttempt] = useState(0);
+
+  const submitTicker = () => {
+    const symbol = normalizeExchangeSuffix(customTicker);
+    if (!symbol) return;
+    if (symbol === ticker) setAttempt(value => value + 1);
+    else setTicker(symbol);
+  };
 
   const normalizedTickers = useMemo(() => {
     const base = tickers.length > 0 ? [...tickers] : [defaultTicker];
@@ -47,21 +64,23 @@ const FundamentalsView = ({ tickers = [] }) => {
   }, [tickers, defaultTicker, ticker]);
 
   useEffect(() => {
+    let active = true;
     const load = async () => {
       try {
         setLoading(true);
         setError(null);
         const res = await PortfolioService.getFundamentals(ticker);
-        setData(res);
+        if (active) setData(res);
       } catch (err) {
-        setError(err?.response?.data?.detail || err.message || 'Failed to load fundamentals.');
+        if (active) setError(err?.response?.data?.detail || err.message || 'Failed to load fundamentals.');
       } finally {
-        setLoading(false);
+        if (active) setLoading(false);
       }
     };
 
     load();
-  }, [ticker]);
+    return () => { active = false; };
+  }, [ticker, attempt]);
 
   const company = data?.company || {};
   const valuation = data?.valuation || {};
@@ -80,7 +99,7 @@ const FundamentalsView = ({ tickers = [] }) => {
           </div>
           <h1 className="mt-3 text-3xl font-black tracking-tight text-slate-900">Stock Fundamentals</h1>
           <p className="mt-2 text-sm text-slate-600 max-w-2xl leading-relaxed">
-            Review valuation, profitability, growth, and balance-sheet strength. Any US or India symbol (e.g. WMT, INFY.NS) — no ML training required.
+            Review valuation, profitability, growth, and balance-sheet data where available. Use WMT for Walmart or SBIN.NS for State Bank of India.
           </p>
         </div>
 
@@ -107,13 +126,13 @@ const FundamentalsView = ({ tickers = [] }) => {
                 type="text"
                 value={customTicker}
                 onChange={(e) => setCustomTicker(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && customTicker.trim() && setTicker(customTicker.toUpperCase().trim())}
+                onKeyDown={(e) => e.key === 'Enter' && submitTicker()}
                 placeholder="WMT, INFY.NS..."
                 className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-3 text-sm text-slate-900 uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
               />
               <button
                 type="button"
-                onClick={() => customTicker.trim() && setTicker(customTicker.toUpperCase().trim())}
+                onClick={submitTicker}
                 className="px-4 py-3 bg-indigo-700 text-[#ffffff] hover:bg-indigo-800 rounded-xl text-xs font-bold "
               >
                 Go
@@ -134,10 +153,12 @@ const FundamentalsView = ({ tickers = [] }) => {
           <div>
             <p className="text-sm font-bold text-slate-900">Fundamentals data unavailable</p>
             <p className="text-xs text-slate-600 mt-1">{error}</p>
+            <button type="button" onClick={() => setAttempt(value => value + 1)} className="mt-3 text-sm text-indigo-700 underline">Retry</button>
           </div>
         </div>
       ) : (
         <>
+          {data?.available_sections?.length === 0 && <p role="status" className="text-sm text-amber-800">Quotes are available, but the data provider did not return financial metrics for this listing.</p>}
           <section className="grid grid-cols-1 lg:grid-cols-3 gap-5">
             <div className="lg:col-span-2 rounded-3xl border border-slate-200 bg-white backdrop-blur-xl p-6 shadow-xl">
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-5">
@@ -146,11 +167,12 @@ const FundamentalsView = ({ tickers = [] }) => {
                     <Building2 className="w-4 h-4" /> Company Profile
                   </div>
                   <h2 className="mt-3 text-2xl font-black text-slate-900">{company.name || ticker}</h2>
+                  {data?.ticker && <p className="mt-1 text-sm text-slate-600">{data.ticker}</p>}
                   <p className="mt-2 text-sm text-slate-600 leading-relaxed max-w-2xl">{company.website_summary || 'Company summary unavailable.'}</p>
                 </div>
                 <div className="grid grid-cols-2 gap-3 min-w-[260px]">
-                  <MetricCard label="Market Price" value={company.market_price ? `$${formatNumber(company.market_price, 2)}` : 'N/A'} hint={`Currency: ${company.currency || 'USD'}`} accent="emerald" />
-                  <MetricCard label="Market Cap" value={company.market_cap ? `$${formatNumber(company.market_cap, 0)}` : 'N/A'} hint={company.country || 'Global market'} />
+                  <MetricCard label="Market Price" value={formatAmount(company.market_price, company.currency, 2)} hint={company.currency || 'Currency unavailable'} accent="emerald" />
+                  <MetricCard label="Market Cap" value={formatAmount(company.market_cap, company.currency, 0)} hint={company.country || 'Global market'} />
                 </div>
               </div>
             </div>
@@ -161,7 +183,7 @@ const FundamentalsView = ({ tickers = [] }) => {
               </div>
               <p className="mt-4 text-sm text-slate-900 leading-relaxed">
                 {company.market_cap
-                  ? `${company.name || ticker} is currently trading at ${company.market_price ? `$${formatNumber(company.market_price, 2)}` : 'an unavailable price'} with a ${valuation.trailing_pe ? `trailing P/E of ${formatNumber(valuation.trailing_pe, 2)}` : 'limited valuation data'}.`
+                  ? `${company.name || ticker} is currently trading at ${company.market_price != null ? formatAmount(company.market_price, company.currency, 2) : 'an unavailable price'} with a ${valuation.trailing_pe ? `trailing P/E of ${formatNumber(valuation.trailing_pe, 2)}` : 'limited valuation data'}.`
                   : 'Fundamental snapshot unavailable for this symbol.'}
               </p>
             </div>
@@ -202,9 +224,9 @@ const FundamentalsView = ({ tickers = [] }) => {
                 <Link2 className="w-4 h-4" /> Balance Sheet
               </div>
               <div className="mt-5 space-y-3">
-                <MetricCard label="Total Cash" value={balanceSheet.total_cash ? `$${formatNumber(balanceSheet.total_cash, 0)}` : 'N/A'} />
-                <MetricCard label="Total Debt" value={balanceSheet.total_debt ? `$${formatNumber(balanceSheet.total_debt, 0)}` : 'N/A'} />
-                <MetricCard label="Debt / Assets" value={balanceSheet.total_debt && balanceSheet.total_assets ? formatNumber(balanceSheet.total_debt / balanceSheet.total_assets, 2) : 'N/A'} />
+                <MetricCard label="Total Cash" value={formatAmount(balanceSheet.total_cash, company.financial_currency, 0)} />
+                <MetricCard label="Total Debt" value={formatAmount(balanceSheet.total_debt, company.financial_currency, 0)} />
+                <MetricCard label="Debt / Assets" value={balanceSheet.total_debt != null && balanceSheet.total_assets > 0 ? formatNumber(balanceSheet.total_debt / balanceSheet.total_assets, 2) : 'N/A'} />
               </div>
             </div>
           </section>
@@ -213,19 +235,19 @@ const FundamentalsView = ({ tickers = [] }) => {
             <div className="rounded-3xl border border-slate-200 bg-white backdrop-blur-xl p-6">
               <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Income Statement</h3>
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <MetricCard label="Revenue" value={income.total_revenue ? `$${formatNumber(income.total_revenue, 0)}` : 'N/A'} />
-                <MetricCard label="Gross Profit" value={income.gross_profit ? `$${formatNumber(income.gross_profit, 0)}` : 'N/A'} />
-                <MetricCard label="Operating Income" value={income.operating_income ? `$${formatNumber(income.operating_income, 0)}` : 'N/A'} />
-                <MetricCard label="Net Income" value={income.net_income ? `$${formatNumber(income.net_income, 0)}` : 'N/A'} />
+                <MetricCard label="Revenue" value={formatAmount(income.total_revenue, company.financial_currency, 0)} />
+                <MetricCard label="Gross Profit" value={formatAmount(income.gross_profit, company.financial_currency, 0)} />
+                <MetricCard label="Operating Income" value={formatAmount(income.operating_income, company.financial_currency, 0)} />
+                <MetricCard label="Net Income" value={formatAmount(income.net_income, company.financial_currency, 0)} />
               </div>
             </div>
 
             <div className="rounded-3xl border border-slate-200 bg-white backdrop-blur-xl p-6">
               <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Cash Flow</h3>
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <MetricCard label="Operating Cash Flow" value={cashFlow.operating_cash_flow ? `$${formatNumber(cashFlow.operating_cash_flow, 0)}` : 'N/A'} />
-                <MetricCard label="Free Cash Flow" value={cashFlow.free_cash_flow ? `$${formatNumber(cashFlow.free_cash_flow, 0)}` : 'N/A'} />
-                <MetricCard label="Capital Expenditure" value={cashFlow.capital_expenditure ? `$${formatNumber(cashFlow.capital_expenditure, 0)}` : 'N/A'} />
+                <MetricCard label="Operating Cash Flow" value={formatAmount(cashFlow.operating_cash_flow, company.financial_currency, 0)} />
+                <MetricCard label="Free Cash Flow" value={formatAmount(cashFlow.free_cash_flow, company.financial_currency, 0)} />
+                <MetricCard label="Capital Expenditure" value={formatAmount(cashFlow.capital_expenditure, company.financial_currency, 0)} />
               </div>
             </div>
           </section>

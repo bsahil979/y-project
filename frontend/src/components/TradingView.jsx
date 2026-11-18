@@ -12,13 +12,19 @@ import { useTrainedUniverse } from '../contexts/TrainedUniverseContext';
 
 const COLORS = ['#6366f1', '#10b981', '#f59e0b', '#ef4444'];
 
+const DEFAULT_TICKERS = ['RELIANCE.NS', 'TCS.NS', 'HDFCBANK.NS', 'INFY.NS', 'NVDA', 'AAPL'];
+
 const TradingView = ({ tickers = [] }) => {
+  const activeTickers = React.useMemo(() => {
+    return (tickers && tickers.length > 0) ? tickers : DEFAULT_TICKERS;
+  }, [tickers]);
+
   const { isReady, canRunMl } = useTrainedUniverse();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [isThinking, setIsThinking] = useState(false);
-  const [selectedAsset, setSelectedAsset] = useState(tickers[0] || '');
+  const [selectedAsset, setSelectedAsset] = useState(activeTickers[0] || 'RELIANCE.NS');
 
   const fetchTradingDecision = useCallback(async (targetTicker) => {
     const sym = targetTicker || selectedAsset;
@@ -43,10 +49,10 @@ const TradingView = ({ tickers = [] }) => {
   }, [selectedAsset]);
 
   useEffect(() => {
-    if (tickers.length > 0 && !tickers.includes(selectedAsset)) {
-      setSelectedAsset(tickers[0]);
+    if (activeTickers.length > 0 && !activeTickers.includes(selectedAsset)) {
+      setSelectedAsset(activeTickers[0]);
     }
-  }, [tickers, selectedAsset]);
+  }, [activeTickers, selectedAsset]);
 
   useEffect(() => {
     if (!selectedAsset) return;
@@ -96,7 +102,7 @@ const TradingView = ({ tickers = [] }) => {
 
       {/* Asset Selector */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2">
-        {tickers.map(ticker => (
+        {activeTickers.map(ticker => (
           <button
             key={ticker}
             onClick={() => setSelectedAsset(ticker)}

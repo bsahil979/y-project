@@ -9,7 +9,7 @@ def portfolio_documents(context):
     if currency not in ('INR', 'USD'):
         raise ValueError('Select INR or USD holdings for analysis.')
     documents = []
-    for category in ('holdings', 'transactions'):
+    for category in ('holdings', 'transactions', 'tracked_assets'):
         for index, record in enumerate(context.get(category, [])):
             if record.get('currency') != currency:
                 raise ValueError('Portfolio context cannot mix currencies.')

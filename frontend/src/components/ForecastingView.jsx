@@ -40,6 +40,12 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
   const [data, setData] = useState(null);
   const [addedSuccess, setAddedSuccess] = useState(false);
   const requestId = useRef(0);
+  const comparableGroup = useMemo(() => {
+    const currency = /\.(NS|BO)$/.test(selectedTicker) ? 'INR' : 'USD';
+    const group = valued?.groups?.[currency];
+    return snapshot?.valid && group?.complete && group.tickers?.length && group.weights?.length
+      ? group : null;
+  }, [selectedTicker, valued, snapshot?.valid]);
 
   const fetchEvaluation = useCallback(async (sym, weight) => {
     if (!sym) return;
@@ -51,35 +57,18 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
 
     try {
       const currency = sym.endsWith('.NS') || sym.endsWith('.BO') ? 'INR' : 'USD';
-      const group = valued?.groups?.[currency];
-      if (!snapshot?.valid || !group?.complete || !group?.tickers?.length || !group?.weights?.length) {
-        throw new Error(`Add a priced ${currency} holding before comparing this stock with your portfolio.`);
-      }
+      const group = comparableGroup;
       const payload = {
         ticker: sym.toUpperCase().trim(),
         proposed_weight: weight,
-        current_tickers: group.tickers,
-        current_weights: group.weights,
-        portfolio_value: group.market,
+        current_tickers: group?.tickers ?? [],
+        current_weights: group?.weights ?? [],
+        portfolio_value: group?.market ?? 0,
         currency,
         horizon: 30,
       };
 
-      let res;
-      if (typeof PortfolioService?.evaluateTicker === 'function') {
-        res = await PortfolioService.evaluateTicker(payload);
-      } else {
-        const resp = await fetch('http://localhost:8000/ticker/evaluate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        if (!resp.ok) {
-          const errData = await resp.json().catch(() => ({}));
-          throw new Error(errData.detail || `Evaluation failed with status ${resp.status}`);
-        }
-        res = await resp.json();
-      }
+      const res = await PortfolioService.evaluateTicker(payload);
       if (currentRequest === requestId.current) setData(res);
     } catch (err) {
       console.error('Ticker evaluation failed:', err);
@@ -88,7 +77,7 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
     } finally {
       if (currentRequest === requestId.current) setLoading(false);
     }
-  }, [valued, snapshot?.valid]);
+  }, [comparableGroup]);
 
   useEffect(() => {
     fetchEvaluation(selectedTicker, proposedWeight);
@@ -157,7 +146,7 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
               Stock Estimate & Portfolio Comparison
             </h1>
             <p className="text-xs text-gray-400 leading-relaxed">
-              Select a stock to see an experimental 30-session price estimate and compare a position size with your same-currency holdings. The comparison uses historical returns to estimate changes in <strong>Sharpe ratio</strong>, <strong>volatility</strong>, and <strong>correlation</strong>.
+              Enter a ticker to see an experimental 30-session forecast. Use the exchange suffix for Indian listings, such as BHARTIARTL.NS (NSE) or BHARTIARTL.BO (BSE). With priced holdings in the same currency, you can also compare allocations.
             </p>
           </div>
 
@@ -205,7 +194,7 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
       </div>
 
       {/* Allocation Slider Control */}
-      <div className="rounded-2xl border border-gray-800 bg-[#11131a]/90 p-5 shadow-sm">
+      {comparableGroup && <div className="rounded-2xl border border-gray-800 bg-[#11131a]/90 p-5 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-xl bg-indigo-600/10 border border-indigo-500/20 text-indigo-400">
@@ -238,7 +227,7 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
             <span className="text-xs text-gray-500 font-semibold">25%</span>
           </div>
         </div>
-      </div>
+      </div>}
 
       {/* Error or Loading State */}
       {loading && !data && (
@@ -257,6 +246,16 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
           <div>
             <div className="font-bold">Evaluation Notice:</div>
             <div>{error}</div>
+            {/^[A-Z][A-Z0-9-]*$/.test(selectedTicker) && error.includes('Check the exchange symbol') && (
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                <span>Looking for an Indian listing?</span>
+                {['.NS', '.BO'].map(suffix => (
+                  <button key={suffix} type="button" className="underline" onClick={() => handleQuickSelect(selectedTicker + suffix)}>
+                    Try {selectedTicker + suffix}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -266,11 +265,13 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
         <section role="status" className="rounded-xl border border-blue-200 bg-blue-50 p-5 text-slate-900">
           <h3 className="font-semibold">{data.ticker} · Limited price history</h3>
           <p className="mt-2">Last available close: {currencySymbol}{data.spot_price.toLocaleString()} on {data.price_as_of}.</p>
-          <p className="mt-2 text-sm">Your comparison has {data.price_observations} shared trading dates from {data.first_price_date} to {data.price_as_of}. The forecast and portfolio comparison require {data.required_observations}.</p>
+          <p className="mt-2 text-sm">This stock has {data.price_observations} daily closes from {data.first_price_date} to {data.price_as_of}. The forecast requires {data.required_observations}.</p>
         </section>
       )}
       {data && data.status !== 'limited_history' && (
         <>
+          {data.comparison_reason && <p role="status" className="text-sm text-slate-600">{data.comparison_reason}</p>}
+          {data.portfolio_impact && <>
           {/* 1. Prominent AI Betterment Verdict Banner */}
           <div className={`relative overflow-hidden rounded-3xl border bg-white p-6 shadow-xl ${
             data.verdict_type === 'positive'
@@ -303,6 +304,7 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
                 <p className="text-sm text-gray-300 max-w-3xl leading-relaxed">
                   {data.headline}
                 </p>
+                {data.comparison_start && <p className="mt-2 text-xs text-slate-500">Shared history: {data.comparison_start} to {data.comparison_end}</p>}
               </div>
 
               {/* Action Buttons */}
@@ -423,6 +425,7 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
             </div>
           </div>
 
+          </>}
           {/* 3. Ticker Price Prediction Chart & Signals */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
@@ -553,13 +556,13 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
                   {/* Market Regime */}
                   <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-gray-400">HMM Market Regime</span>
+                      <span className="text-gray-400">HMM Stock Regime</span>
                       <span className="font-bold text-indigo-400 uppercase tracking-wider">{data.regime}</span>
                     </div>
                     <div className="text-[11px] text-gray-500 mt-1">
                       {data.regime === 'Unavailable'
-                        ? 'Market-state estimate is currently unavailable.'
-                        : "A market state does not predict this stock's return."}
+                        ? (data.regime_reason || 'Stock regime estimate is currently unavailable.')
+                        : `Estimated from ${data.ticker}'s recent daily returns.`}
                     </div>
                   </div>
                 </div>
@@ -578,7 +581,7 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
           </div>
 
           {/* 4. Strategic AI Betterment Insights (4 Cards) */}
-          <div className="space-y-3">
+          {data.insights?.length > 0 && <div className="space-y-3">
             <h3 className="text-sm font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
               What Drives This Comparison
@@ -606,7 +609,7 @@ const ForecastingView = ({ tickers = [], setTickers }) => {
                 </div>
               ))}
             </div>
-          </div>
+          </div>}
         </>
       )}
 

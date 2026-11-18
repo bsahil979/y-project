@@ -15,6 +15,8 @@ const DashboardLayout = ({ tickers, setTickers, syncStatus, workspace }) => {
   const location = useLocation();
   const { snapshot, syncError, retrySync } = React.useContext(PortfolioContext);
   const advisorVisible = location.pathname.replace(/\/$/, '') === '/dashboard/chat';
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const [advisorVisited, setAdvisorVisited] = useState(advisorVisible);
   useEffect(() => {
     if (advisorVisible) setAdvisorVisited(true);
@@ -37,13 +39,13 @@ const DashboardLayout = ({ tickers, setTickers, syncStatus, workspace }) => {
       <div className="portfolio-app min-h-screen bg-[#f5f6fa] text-slate-900 font-sans selection:bg-violet-500/20">
 
         <Sidebar tickers={tickers} workspace={workspace} />
-        <Layout tickers={tickers} setTickers={setTickers} syncStatus={syncStatus}>
+        <Layout tickers={tickers} setTickers={setTickers} syncStatus={syncStatus} onOpenAssistant={() => { setDrawerOpen(true); setAdvisorVisited(true); }}>
           <div className="animate-in fade-in duration-500">
             {syncStatus === 'sync-failed' && <section role="alert" className="rounded-xl border border-amber-300 bg-amber-50 p-4 mb-5 text-slate-900"><strong>Cloud sync needs attention</strong><p>Your local copy is retained. {syncError}</p><button className="mt-3 rounded-lg border border-blue-500 px-4 py-2 text-blue-700" onClick={retrySync}>Retry cloud sync</button></section>}
             {/* Preserve the advisor instance and its in-flight request across routes. */}
-            {(advisorVisited || advisorVisible) && (
-              <div hidden={!advisorVisible}>
-                <ChatAdvisor key={`${userId}:${snapshot?.portfolioId || ''}`} userId={userId} portfolioSnapshot={snapshot} />
+            {(advisorVisited || advisorVisible || drawerOpen) && (
+              <div hidden={!advisorVisible && !drawerOpen} className={drawerOpen ? `assistant-drawer ${expanded ? 'assistant-expanded' : ''}` : ''}>
+                <ChatAdvisor key={`${userId}:${snapshot?.portfolioId || ''}`} userId={userId} portfolioSnapshot={snapshot} docked={drawerOpen} expanded={expanded} onExpand={() => setExpanded(value => !value)} onClose={() => setDrawerOpen(false)} />
               </div>
             )}
             {!advisorVisible && <Outlet />}

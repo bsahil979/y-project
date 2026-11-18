@@ -81,9 +81,11 @@ export const normalizeWorkspace = (workspace) => {
     }
   }
   const requestedId = source.selectedPortfolioId ? ensureId(source.selectedPortfolioId) : null;
+  const recordCount = id => [...sourceHoldings, ...sourceTransactions].filter(row =>
+    (row.portfolio_id ? ensureId(row.portfolio_id) : legacyPortfolioId) === id).length;
   // Default selection is made once at the workspace boundary, never by consumers.
   const selectedPortfolioId = portfolios.some((p) => p.id === requestedId) ? requestedId
-    : [...portfolios].sort((a, b) => a.id.localeCompare(b.id))[0]?.id || null;
+    : [...portfolios].sort((a, b) => recordCount(b.id) - recordCount(a.id) || a.id.localeCompare(b.id))[0]?.id || null;
   return {
     ...empty,
     ...source,

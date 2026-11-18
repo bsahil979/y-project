@@ -17,6 +17,13 @@ dist/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.*
+!.env.example
+*.pem
+*.key
+VALIDATION_CHECKPOINT_2026-11-18.md
+document_build/*.png
+analytics-engine/trading_memory.json
 
 npm-debug.log*
 yarn-debug.log*
@@ -47,7 +54,6 @@ coverage.xml
 *.json
 !package.json
 !composer.json
-!trading_memory.json
 !analytics-engine/docs/midterm_analysis.json
 !analytics-engine/research/regime_results/manifest.json
 !analytics-engine/research/regime_results/decisions.json

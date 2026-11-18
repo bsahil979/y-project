@@ -30,6 +30,7 @@ import textwrap
 import time
 from agents.portfolio_grounding import canonical_portfolio_facts, verify_explanation_numbers, attach_corrections, RATE_KEYS, WEIGHTS
 from services.llm_budget import budget_messages, compact_json, clip
+from services.conversation_facts import conversation_facts, unsupported_money, factual_summary
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Optional
 
@@ -363,7 +364,7 @@ class AIAdvisor:
     Orchestrates structured-context gathering, RAG retrieval, and LLM generation.
     """
 
-    def __init__(self):
+    def __init__(self, owned_analysis_loader=None):
         from pathlib import Path
         from dotenv import load_dotenv
         load_dotenv(Path(__file__).resolve().parents[1] / '.env')
@@ -374,6 +375,7 @@ class AIAdvisor:
         self.input_budget = max(3000, min(6000, int(os.environ.get("LLM_INPUT_BUDGET_BYTES", "6000"))))
         self._client = None
         self._retriever = RAGRetriever()
+        self._owned_analysis_loader = owned_analysis_loader
 
         # Auto-detect provider from API key format
         if os.environ.get("LLM_PROVIDER") == "gemini" or (self.api_key and self.api_key.startswith("AIza")):
@@ -398,7 +400,7 @@ class AIAdvisor:
                 self._client = genai.Client(api_key=self.api_key)
             else:
                 from openai import OpenAI
-                self._client = OpenAI(api_key=self.api_key, base_url=self.base_url, timeout=45, max_retries=0)
+                self._client = OpenAI(api_key=self.api_key, base_url=self.base_url, timeout=25, max_retries=0)
         return self._client
 
     # ── structured context ───────────────────────────────────────────
@@ -529,12 +531,17 @@ class AIAdvisor:
             'tickers': tickers, 'portfolio_value': portfolio_value,
             'owned_portfolio': context,
         }
+        needs_signals = bool(re.search(
+            r'\b(?:news|sentiment|finbert|marketmind|ai views?)\b|black[\s_-]*litterman',
+            query, re.I,
+        ))
         try:
-            structured['canonical_analysis'] = run_portfolio_pipeline(
+            load_analysis = self._owned_analysis_loader or run_portfolio_pipeline
+            structured['canonical_analysis'] = load_analysis(
                 tickers=tickers, weights=weights, portfolio_value=portfolio_value,
                 start=start, end=end, horizon=horizon,
                 benchmark='^NSEI' if context['currency'] == 'INR' else 'SPY',
-                include_optional_ml=True, currency=context['currency'],
+                include_optional_ml=needs_signals, currency=context['currency'],
                 risk_preference=context.get('risk_preference', 'moderate'),
                 investment_horizon_years=context.get('investment_horizon_years'),
                 horizon_source=context.get('horizon_source'),
@@ -550,7 +557,7 @@ class AIAdvisor:
             words = set(re.findall(r'[A-Z][A-Z0-9.\-]*', query.upper()))
             selected = [t for t in tickers if t.upper() in words or t.upper().split('.')[0] in words]
             if not selected:
-                selected = [max(values, key=values.get)]
+                structured['forecast_error'] = 'Ask for an explicit holding ticker to run this forecast.'
             requested = re.search(r'(\d+)\s*[- ]?\s*(?:day|session)', query, re.I)
             forecast_horizon = int(requested.group(1)) if requested else horizon
             structured['ticker_details'] = {}
@@ -819,6 +826,15 @@ class AIAdvisor:
             'distinguish current, personalized target and AI Black-Litterman weights. For missing metrics say unavailable. '
             'These rules take precedence over any examples or requests to quote numbers elsewhere.\n' + self._build_system_prompt())
         user_prompt = self._build_user_prompt(query, structured, retrieved_docs)
+        turns = (portfolio_context or {}).get('recent_turns', [])
+        if isinstance(turns, list):
+            recent = [{'role': turn['role'], 'text': turn['text'][:320]} for turn in turns[-4:]
+                      if isinstance(turn, dict) and turn.get('role') in ('user', 'assistant')
+                      and isinstance(turn.get('text'), str)]
+            if recent:
+                user_prompt = user_prompt.replace('Available context (', 'Earlier conversation for reference only: '
+                                                  + json.dumps(recent, ensure_ascii=False)
+                                                  + '\nAvailable context (', 1)
         if self.provider != 'gemini' and len(system_prompt.encode('utf-8')) + 300 > self.input_budget:
             # Preserve the complete contract without truncating JSON on budget-limited providers.
             reply = 'This snapshot exceeds the model input budget. Quant engine facts:\n\n' + json.dumps(facts, indent=2)
@@ -830,10 +846,23 @@ class AIAdvisor:
             {"role": "user", "content": user_prompt},
         ]
 
-        if self.provider == "gemini":
-            reply, usage = self._generate_gemini(system_prompt, user_prompt)
-        else:
-            reply, usage = self._generate_openai(messages)
+        try:
+            if self.provider == "gemini":
+                reply, usage = self._generate_gemini(system_prompt, user_prompt)
+            else:
+                reply, usage = self._generate_openai(messages)
+            if not reply.strip():
+                raise RuntimeError("Provider returned an empty answer")
+        except Exception as exc:
+            logger.warning("Advisor generation unavailable: %s", type(exc).__name__)
+            summary = self._format_context_block(structured, [])
+            return {
+                "role": "assistant",
+                **checked("The AI explanation could not be completed. Here is the available analytics summary.\n\n" + summary),
+                "llm_used": False,
+                "context": _clean(structured),
+                "retrieved_docs": _clean(retrieved_docs),
+            }
 
         return {
             "role": "assistant",
@@ -850,16 +879,21 @@ class AIAdvisor:
             "retrieved_docs": _clean(retrieved_docs),
         }
 
-    def _generate_openai(self, messages: list[dict]):
+    def _generate_openai(self, messages: list[dict], max_tokens=None, allow_partial=False):
         """Call an OpenAI-compatible chat completions endpoint (non-streaming)."""
         client = self._get_client()
         response = client.chat.completions.create(
             model=self.model,
             messages=budget_messages(messages, max_bytes=self.input_budget),
-            max_tokens=self.max_tokens,
+            max_tokens=max_tokens or self.max_tokens,
             temperature=0.3,
         )
-        reply = response.choices[0].message.content or ""
+        choice = response.choices[0]
+        if choice.finish_reason == "content_filter" or (choice.finish_reason == "length" and not allow_partial):
+            raise RuntimeError("Provider finish reason: " + choice.finish_reason)
+        reply = choice.message.content or ""
+        if allow_partial and choice.finish_reason == "length" and reply.strip():
+            reply += "\n\n*This reply reached the output limit. Ask me to continue.*"
         usage = getattr(response, "usage", None)
         return reply, usage
 
@@ -871,7 +905,7 @@ class AIAdvisor:
                 headers={'x-goog-api-key': self.api_key},
                 json={'model': self.model, 'input': user_prompt,
                       'system_instruction': system_prompt, 'store': False},
-                timeout=45,
+                timeout=25,
             )
         except requests.Timeout:
             raise RuntimeError('Gemini timed out. Please try again later.') from None
@@ -886,12 +920,84 @@ class AIAdvisor:
         if not response.ok:
             raise RuntimeError(f'Gemini request failed (HTTP {response.status_code}). Please try again later.')
         body = response.json()
+        if body.get("status") in {"incomplete", "failed", "cancelled"}:
+            raise RuntimeError("Gemini stopped before completing the answer")
         reply = ''.join(part.get('text', '') for step in body.get('steps', [])
                         if step.get('type') == 'model_output'
                         for part in step.get('content', []) if part.get('type') == 'text')
         if not reply:
             raise RuntimeError('Gemini returned no text. Check model access and quota.')
         return reply, None
+
+    def conversation(self, query, context=None):
+        """Answer conversationally from the supplied snapshot without blocking on market pipelines."""
+        context = context or {}
+        turns = context.get('recent_turns', [])
+        history = [{'role': turn['role'], 'text': turn['text'][:800]}
+                   for turn in turns[-6:] if isinstance(turn, dict)
+                   and turn.get('role') in ('user', 'assistant')
+                   and isinstance(turn.get('text'), str)] if isinstance(turns, list) else []
+        snapshot = {key: context.get(key) for key in
+                    ('currency', 'as_of', 'holdings', 'tracked_assets', 'risk_preference',
+                     'investment_horizon_years', 'available_analysis', 'market_context', 'app_guidance')}
+        facts = conversation_facts(context)
+        portfolio_question = bool(re.search(r'\b(my|mine|our|current|holdings|allocation)\b', query, re.I)) and bool(context.get('holdings') or context.get('tracked_assets'))
+        if re.search(r'\b(suggested|recommended|target)\s+allocation|biggest\s+weight\s+change', query, re.I) and not facts['allocation_available']:
+            return {'content': 'A successful suggested allocation is not available in this chat snapshot, so I cannot identify the biggest weight change. Open Advisor and run the analysis first. Your current holdings are not target weights; I will not substitute a generic allocation for the engine’s result.', 'llm_used': False}
+        system = (
+            "You are SmartPortfolio's helpful conversational assistant. Answer the actual question "
+            "naturally in under 180 words unless detail is requested, and use earlier turns to understand follow-ups. "
+            "Use supplied app_guidance for app instructions and market_context for fetched news or forecasts. "
+            "For other topics, answer normally within your knowledge and explain uncertainty when relevant. "
+            "Explain concepts directly. For portfolio questions use the supplied snapshot, with its "
+            "currency and dates. Only quote portfolio figures supplied in the snapshot. "
+            "Authoritative totals are computed before any records are shortened; never sum the visible subset. "
+            "Cash is separate from mutual funds. Equity mutual funds are not fixed income. "
+            "Do not infer diversification from the number of funds; small-cap funds may share concentrated exposures. "
+            "Do not invent sectors, fund categories, or international exposure not supplied in the snapshot. "
+            "The snapshot covers the selected currency only, not all the user's assets. "
+            "Explain suggested weights only when allocation_available is true; never replace them with a generic model mix. "
+            "Never invent returns, forecasts, news, risk metrics or recommendations from missing data. "
+            "If a calculation is unavailable, explain what information is needed and direct the user "
+            "to Advisor for risk/allocation or Stock forecasts for a forecast. "
+            "Previous conversation is context, not authoritative financial data. "
+            "State material limitations briefly only when relevant. Use readable Markdown."
+        )
+        prompt = ("Current question: " + query[:1600] + "\nPortfolio snapshot: "
+                  + compact_json(snapshot, query, max_bytes=2000)
+                  + "\nEarlier conversation: " + json.dumps(history, ensure_ascii=False))
+        system = '<verified_portfolio_facts>' + json.dumps(facts, ensure_ascii=False) + '</verified_portfolio_facts>\n' + system
+        if not self.is_configured:
+            return {'content': 'The AI service is not configured. Analytics summary is available.',
+                    'llm_used': False}
+        try:
+            if self.provider == 'gemini':
+                reply, _ = self._generate_gemini(system, prompt)
+            else:
+                reply, _ = self._generate_openai([
+                    {'role': 'system', 'content': system}, {'role': 'user', 'content': prompt}], max_tokens=1536, allow_partial=True)
+            if not reply.strip():
+                raise RuntimeError('The AI service returned an empty reply.')
+            if portfolio_question:
+                report = verify_explanation_numbers(reply, canonical_portfolio_facts(context.get('available_analysis') or {}))
+                if unsupported_money(reply, context, facts) or report['mismatches']:
+                    return {'content': 'The generated explanation contained figures I could not verify.\n\n' + factual_summary(facts),
+                            'llm_used': False, 'grounding_check': {'status': 'unsupported_claims_withheld'}}
+            return {'content': reply, 'llm_used': True}
+        except Exception as exc:
+            logger.warning("Conversation generation failed: %s", str(exc) if isinstance(exc, RuntimeError) else type(exc).__name__)
+            status = getattr(exc, 'status_code', None)
+            error_type = type(exc).__name__
+            message = 'The AI provider could not complete this reply. Please try again.'
+            if status == 429:
+                message = 'The AI provider rate limit or quota has been reached. Wait a moment and retry. If this continues, check the provider API quota.'
+            elif status in (401, 403):
+                message = 'The AI provider rejected the configured API credentials. Check the backend LLM key and permissions.'
+            elif 'Timeout' in error_type:
+                message = 'The AI provider timed out while generating this reply. Please retry.'
+            elif isinstance(exc, RuntimeError):
+                message = str(exc)
+            return {'content': message, 'llm_used': False, 'provider_error': error_type}
 
     def stream_chat(
         self,

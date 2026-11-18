@@ -110,7 +110,9 @@ function AppContent() {
   };
 
   const portfolioState = {
-    snapshot, pricing, portfolios: currentWorkspace.portfolios,
+    snapshot, pricing, portfolios: currentWorkspace.portfolios.map(p => ({ ...p,
+      savedRecordCount: [...currentWorkspace.holdings, ...currentWorkspace.transactions].filter(r => r.portfolio_id === p.id).length,
+    })),
     syncStatus, syncError, retrySync: () => updateWorkspace(currentWorkspace),
     selectPortfolio: (id) => updateWorkspace(selectPortfolio(currentWorkspace, id)),
   };

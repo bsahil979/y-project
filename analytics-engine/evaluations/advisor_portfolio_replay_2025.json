@@ -1,0 +1,119 @@
+{
+  "input_sha256": "07d1d87b7a5e54625a584f3e96077d512116cf78d69654b6d2131326df3c97df",
+  "scope": "Exploratory replay on an already inspected 2025 year. Two convenience baskets, single currency each.",
+  "cost_bps": 10,
+  "min_variance_baseline_max_weight": 0.4,
+  "sentiment_coverage": "unavailable_in_historical_replay",
+  "baskets": {
+    "US": {
+      "tickers": [
+        "AAPL",
+        "MSFT",
+        "JPM",
+        "XOM",
+        "WMT",
+        "UNH"
+      ],
+      "sessions": 250,
+      "metrics": {
+        "Aggressive AI Black-Litterman": {
+          "annualized_return": 0.23553112112705898,
+          "annualized_volatility": 0.1790482536560756,
+          "sharpe": 1.1598948568733232,
+          "max_drawdown": -0.1569107526885043,
+          "mean_rebalance_turnover": 0.39424597250863286
+        },
+        "Aggressive target return": {
+          "annualized_return": 0.161023584199109,
+          "annualized_volatility": 0.19164510464588325,
+          "sharpe": 0.770677359708697,
+          "max_drawdown": -0.21007793164438304,
+          "mean_rebalance_turnover": 0.16472886385648247
+        },
+        "Conservative": {
+          "annualized_return": 0.10976831145863541,
+          "annualized_volatility": 0.17254843151736007,
+          "sharpe": 0.5744245175995758,
+          "max_drawdown": -0.13865482395656814,
+          "mean_rebalance_turnover": 0.07794451031318433
+        },
+        "Equal weight": {
+          "annualized_return": 0.14327620396889817,
+          "annualized_volatility": 0.17484082990031408,
+          "sharpe": 0.7392889374155034,
+          "max_drawdown": -0.14684186502049923,
+          "mean_rebalance_turnover": 0.05931773407929817
+        },
+        "Minimum variance": {
+          "annualized_return": 0.09227159000585905,
+          "annualized_volatility": 0.17039230610537565,
+          "sharpe": 0.48620409351647137,
+          "max_drawdown": -0.15246398743888123,
+          "mean_rebalance_turnover": 0.08242285135828013
+        },
+        "Moderate": {
+          "annualized_return": 0.14748380774297964,
+          "annualized_volatility": 0.189190087730818,
+          "sharpe": 0.7161578123302783,
+          "max_drawdown": -0.20023880515176318,
+          "mean_rebalance_turnover": 0.14124469367029993
+        }
+      }
+    },
+    "India": {
+      "tickers": [
+        "RELIANCE.NS",
+        "TCS.NS",
+        "HDFCBANK.NS",
+        "ITC.NS",
+        "SUNPHARMA.NS",
+        "NTPC.NS"
+      ],
+      "sessions": 249,
+      "metrics": {
+        "Aggressive AI Black-Litterman": {
+          "annualized_return": 0.02915899774116726,
+          "annualized_volatility": 0.11848918531133944,
+          "sharpe": 0.13443200405578848,
+          "max_drawdown": -0.08559053988816778,
+          "mean_rebalance_turnover": 0.4629627416711125
+        },
+        "Aggressive target return": {
+          "annualized_return": -0.07453744895352576,
+          "annualized_volatility": 0.13027986192512536,
+          "sharpe": -0.6815034494685956,
+          "max_drawdown": -0.1340382876693762,
+          "mean_rebalance_turnover": 0.16464162104109176
+        },
+        "Conservative": {
+          "annualized_return": 0.0004199503766448842,
+          "annualized_volatility": 0.11455365571365204,
+          "sharpe": -0.11217398958170523,
+          "max_drawdown": -0.11138099285350478,
+          "mean_rebalance_turnover": 0.0393766235995729
+        },
+        "Equal weight": {
+          "annualized_return": 0.008527175748583193,
+          "annualized_volatility": 0.11649928464533599,
+          "sharpe": -0.039122319687722534,
+          "max_drawdown": -0.10340464835944452,
+          "mean_rebalance_turnover": 0.03376498757562933
+        },
+        "Minimum variance": {
+          "annualized_return": -0.04834118155478129,
+          "annualized_volatility": 0.11125698348104335,
+          "sharpe": -0.5678749157980334,
+          "max_drawdown": -0.12146087736658562,
+          "mean_rebalance_turnover": 0.050798097898034064
+        },
+        "Moderate": {
+          "annualized_return": -0.06032439981707205,
+          "annualized_volatility": 0.12643657893357044,
+          "sharpe": -0.5856395248809414,
+          "max_drawdown": -0.1314403305852767,
+          "mean_rebalance_turnover": 0.15442623661969918
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import AllocationDraft from './AllocationDraft';
 import FundAdvisor from './FundAdvisor';
 import {assetValue, trackingTotals} from '../services/assetTracking';
 import AdvisorAnalytics from './AdvisorAnalytics';
@@ -20,6 +21,11 @@ import usePortfolioSnapshot from '../hooks/usePortfolioSnapshot';
 const COLORS = ['#2343b5', '#1668ce', '#3b7ff5', '#61a2f8', '#df72ef', '#edacf7', '#075b53', '#354256'];
 
 const PortfolioDashboard = ({ advisor = false }) => {
+  const {snapshot} = usePortfolioSnapshot();
+  return <><StockDashboard advisor={advisor}/>{advisor && snapshot.valid && snapshot.holdings.length > 0 && <FundAdvisor snapshot={snapshot}/>}</>;
+};
+
+const StockDashboard = ({ advisor }) => {
   const { search } = useLocation();
   const scope = new URLSearchParams(search);
   const [preview, setPreview] = useState('saved');
@@ -40,7 +46,8 @@ const PortfolioDashboard = ({ advisor = false }) => {
   if (request && advisor && preview !== 'saved') {
     Object.assign(request, { risk_preference: 'aggressive', investment_horizon_years: Number(preview), horizon_source: 'explicit' });
   }
-  if (request) request.include_optional_ml = advisor;
+  // Load the core review first. Advisor can request an AI comparison separately.
+  if (request) request.include_optional_ml = false;
   const requestJson = request ? JSON.stringify(request) : '';
   const analysisKey = (snapshot.portfolioId || '') + ':' + (snapshot.portfolioRevision || '') + ':' + requestJson + ':' + pricing.revision;
   const isStale = Boolean(analysis.data?.portfolio_revision && snapshot.portfolioRevision && analysis.data.portfolio_revision !== snapshot.portfolioRevision);
@@ -170,12 +177,15 @@ const PortfolioDashboard = ({ advisor = false }) => {
       {allocation ? <section className="rounded-xl border border-slate-200 p-5 space-y-4">
         <h3 className="text-xl font-semibold">Current holdings vs suggested allocation</h3>
         <p className="text-sm text-slate-600">{String(allocation.objective_used || 'Unavailable').replaceAll('_',' ')} / Maximum position: {Number.isFinite(allocation.max_weight_cap) ? (allocation.max_weight_cap*100).toFixed(1)+'%' : 'Unavailable'}</p>
+        {allocation.signal_status === 'prior_only' && <p className="text-sm text-slate-600">This allocation uses equilibrium returns. Load the AI comparison below to check for MarketMind and FinBERT views.</p>}
         {allocation.success ? <div className="overflow-x-auto"><AllocationComparison data={data}/></div> : <p role="status" className="rounded-lg bg-amber-50 p-3 text-amber-800">{allocation.reason || 'No feasible allocation is available.'}</p>}
         {allocation.feasibility_floor_applied && <p className="text-sm">The position cap uses the minimum feasible weight for this number of stocks.</p>}
         {allocation.target_return_adjusted && <p className="text-sm">The return target was lowered to fit the position cap.</p>}
         <p className="text-xs text-slate-500">Model estimates before trading costs and taxes. No trades are placed by this page.</p>
+        {preview === 'saved' && !combined && <AllocationDraft data={data} group={localGroup} snapshot={snapshot}/>}
         {allocation.success && preview === 'saved' && !combined && <Link className="inline-block rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white" to="/dashboard/chat" state={{allocationCurrency:currency,portfolioId:snapshot.portfolioId}}>Discuss this allocation with AI chat</Link>}
       </section> : <p role="status">Profile allocation unavailable.</p>}
+      <AdvisorSignalComparison key={analysisKey} request={request} />
       <details className="rounded-xl border border-slate-200 p-5"><summary className="cursor-pointer font-semibold">Detailed model comparisons and all recommendations</summary><div className="mt-5">{renderRecommendations()}</div></details>
     </div>;
   }
@@ -727,6 +737,38 @@ function AllocationTooltip({active,payload}) {
     <p><span>Market value</span><b>{formatMoney(row.market,row.currency)}</b></p>
     <p><span>Unrealized return</span><b style={{color:row.performance == null ? '#626a73' : row.performance >= 0 ? '#008553' : '#c51746'}}>{row.performance == null ? 'Unavailable' : `${row.performance >= 0 ? '+' : ''}${row.performance.toFixed(1)}%`}</b></p>
   </div>;
+}
+
+function AdvisorSignalComparison({ request }) {
+  const [state, setState] = useState({ loading: false, result: null, error: '' });
+  const allocation = state.result?.ai_black_litterman_allocation;
+
+  async function loadSignals() {
+    setState({ loading: true, result: null, error: '' });
+    try {
+      const result = await PortfolioService.getPortfolioAnalysis({ ...request, include_optional_ml: true });
+      if (request.portfolio_revision && result?.portfolio_revision !== request.portfolio_revision) {
+        throw new Error('The AI comparison returned a different portfolio revision.');
+      }
+      setState({ loading: false, result, error: '' });
+    } catch {
+      setState({ loading: false, result: null, error: 'Could not load the AI comparison. Try again.' });
+    }
+  }
+
+  return <section className="space-y-3 rounded-xl border border-slate-200 p-5">
+    <div className="flex flex-wrap items-center justify-between gap-3">
+      <h3 className="text-xl font-semibold">AI Black–Litterman comparison</h3>
+      <button type="button" disabled={state.loading} onClick={loadSignals} className="rounded-lg border border-blue-200 px-4 py-2 text-sm text-blue-700 disabled:opacity-50">
+        {state.loading ? 'Loading AI signals…' : 'Load AI signals'}
+      </button>
+    </div>
+    {state.loading && <p role="status" className="text-sm text-slate-600">Checking for MarketMind and FinBERT views for your holdings.</p>}
+    {state.error && <p role="alert" className="text-sm text-amber-800">{state.error}</p>}
+    {allocation?.signal_status === 'prior_only' && <p role="status" className="text-sm text-slate-600">No usable AI views were returned. The allocation uses equilibrium returns.</p>}
+    {allocation && !allocation.success && <p role="status" className="text-sm text-amber-800">{allocation.reason || 'No feasible allocation is available.'}</p>}
+    {allocation?.success && <div className="overflow-x-auto"><AllocationComparison data={{ ...state.result, personalized_allocation: allocation }} /></div>}
+  </section>;
 }
 
 export function AllocationComparison({ data }) {

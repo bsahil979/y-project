@@ -8,3 +8,18 @@ export function conversationReply(message) {
   if (/^(ok|okay|got it|great|cool)$/.test(text)) return 'Got it!';
   return null;
 }
+
+/** App guidance uses actual SmartPortfolio routes and supported actions. */
+export function appHelpReply(message) {
+  if (/\bgoals?\b/i.test(message) && /\b(section|page|tab|feature|app|how|explain|tell me about)\b/i.test(message)) {
+    return '**Goals** helps you plan toward a target amount by a chosen date.\n\nOpen [Plan → Goals](/dashboard/planning/goals) and enter a name, target amount, current savings, monthly contribution, target date and currency.\n\nThe page runs a Monte Carlo simulation to estimate possible outcomes and the chance of reaching your target. These estimates depend on the simulation assumptions and market history. You can review different goals from the same page.';
+  }
+  if (!/\b(how|where|help|connect|add)\b/i.test(message)) return null;
+  if (/\b(add|record|track)\b.*\breal estate\b/i.test(message)) {
+    return 'Open [Add real estate](/dashboard/portfolio?addAsset=real_estate), enter the property name, currency, value and valuation date, then save. Record any outstanding mortgage separately under Liabilities.';
+  }
+  if (/\b(connect|add|import)\b.*\b(broker|brokerage|account|upstox|zerodha)\b/i.test(message)) {
+    return 'Open [Manage holdings](/dashboard/portfolio) and choose **Add account / Import portfolio**. Select your broker, complete authorization, fetch your holdings and review the import before saving. You can also import a CSV statement there.';
+  }
+  return null;
+}

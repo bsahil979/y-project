@@ -1,52 +1,28 @@
+import './ChatAdvisor.css';
 import { profileForAnalysis } from '../services/investorProfile.js';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import React, { useState, useRef, useEffect } from 'react';
 import {
   MessageSquare,
   Send,
   Bot,
-  User as UserIcon,
-  Sparkles,
-  Info,
   Loader2,
   Zap,
   Globe,
   Brain,
   TrendingUp,
+  X, Maximize2, Minimize2, ThumbsUp, ThumbsDown,
 } from 'lucide-react';
 import { PortfolioService, ChatService } from '../services/api';
 import { advisorPortfolioContext } from '../services/portfolioSnapshot';
+import { assetValue } from '../services/assetTracking';
 import { holdingAnswer } from '../services/advisorHolding';
-import { conversationReply } from '../services/advisorConversation';
+import { portfolioOverview, quickPortfolioAnswer, quickPortfolioIntent } from '../services/advisorQuickAnswer';
+import { conversationReply, appHelpReply } from '../services/advisorConversation';
 import AdvisorMarkdown from './AdvisorMarkdown';
 import { chatHistoryKey, readChatHistory, writeChatHistory, readChatSessions, sessionHistoryKey, createChatSession } from '../services/advisorHistory';
 
-const STOPWORDS = new Set([
-  'THE', 'AND', 'FOR', 'ARE', 'BUT', 'NOT', 'YOU', 'ALL', 'CAN', 'WAS', 'ONE', 'OUR',
-  'OUT', 'DAY', 'GET', 'HAS', 'HIM', 'HIS', 'HOW', 'ITS', 'MAY', 'NEW', 'NOW', 'OLD',
-  'SEE', 'TWO', 'WHO', 'DID', 'LET', 'PUT', 'SAY', 'SHE', 'TOO', 'USE', 'ANY', 'RISK',
-  'GIVE', 'WHAT', 'WHEN', 'WITH', 'FROM', 'THAT', 'THIS', 'YOUR', 'HAVE', 'EACH', 'MANY',
-  'SOME', 'INTO', 'MORE', 'VERY', 'AFTER', 'OVER', 'ALSO', 'BACK', 'ONLY', 'COME', 'EVEN',
-  'WANT', 'WELL', 'MUCH', 'PREDICT', 'FORECAST', 'PRICE', 'NEWS',
-]);
-
-/** Prefer symbols on the user's watchlist, then any plausible ticker token. */
-function extractTicker(userMsg, watchlist) {
-  const mentioned = new Set((userMsg.toUpperCase().match(/[A-Z][A-Z0-9.-]*/g) || []));
-  const ownedMatch = (watchlist || []).find((ticker) => mentioned.has(ticker.toUpperCase()) || mentioned.has(ticker.toUpperCase().replace(/\.(NS|BO)$/, '')));
-  if (ownedMatch) return ownedMatch;
-  const tokens = userMsg.match(/\b[a-z]{1,5}\b/gi);
-  if (!tokens) return watchlist[0] || null;
-  const wl = new Set((watchlist || []).map((t) => t.toUpperCase()));
-  const candidates = tokens
-    .map((t) => t.toUpperCase())
-    .filter((s) => s.length >= 2 && s.length <= 5 && /^[A-Z]+$/.test(s) && !STOPWORDS.has(s));
-
-  for (const c of candidates) {
-    if (wl.has(c)) return c;
-  }
-  return candidates[0] || watchlist[0] || null;
-}
+import { resolveChatSymbol, formatNewsSentiment } from '../services/advisorMarket.js';
 
 function classifyIntents(msgLower) {
   return {
@@ -57,7 +33,7 @@ function classifyIntents(msgLower) {
     sentiment:
       /sentiment|headline|news|bullish|bearish|vader|headlines|media/.test(msgLower),
     regime:
-      /regime|market condition|macro|broad market|spy\b|overall market/.test(msgLower),
+      /regime|market condition|macro|broad market|overall market/.test(msgLower),
     portfolio:
       /portfolio|allocation|rebalance|risk level|\brisk\b|stress|var\b|drawdown|diversif|weight/.test(
         msgLower
@@ -72,8 +48,8 @@ function summarizeDecisionOptions(analysis) {
     const volatility = analysis.risk_budget?.portfolio_volatility;
     if (Number.isFinite(volatility)) lines.push(`Historical annualized portfolio volatility: ${(volatility * 100).toFixed(2)}%.`);
     if (analysis.market_regime?.current_regime) lines.push(`Portfolio market-state estimate: ${analysis.market_regime.current_regime}. Statistical states do not guarantee future returns.`);
-    if (analysis.allocation?.explanation) lines.push(analysis.allocation.explanation);
-    const suggested = analysis.allocation?.weights;
+
+    const suggested = analysis.personalized_allocation?.success && analysis.personalized_allocation.weights;
     if (suggested && typeof suggested === 'object') lines.push(`Suggested allocation: ${Object.entries(suggested).map(([ticker, weight]) => `${ticker} ${(Number(weight) * 100).toFixed(1)}%`).join(', ')}.`);
     return lines.join('\n\n');
   }
@@ -104,18 +80,19 @@ function summarizeDecisionOptions(analysis) {
   return lines.join('\n\n');
 }
 
-async function buildAdvisorReply(userMsg, tickers, ownedContext = null) {
+export async function buildAdvisorReply(userMsg, tickers, ownedContext = null) {
   const msgLower = userMsg.toLowerCase();
   const intents = classifyIntents(msgLower);
-  if (intents.help) {
+  if (intents.help && !intents.forecast && !intents.sentiment) {
     return ownedContext?.error || `Hello! I can help explain your ${ownedContext?.currency || ''} portfolio risk and allocation. Ask "What is my portfolio risk?" or "How can I improve my allocation?" You can also ask about a specific holding's forecast or news sentiment.`;
   }
-  if (ownedContext?.error) return ownedContext.error;
-  const symbol = extractTicker(userMsg, tickers);
+  const marketOnly = (intents.forecast || intents.sentiment) && !intents.portfolio && !intents.regime;
+  if (ownedContext?.error && !marketOnly) return ownedContext.error;
+  const symbol = resolveChatSymbol(userMsg, tickers);
+  if ((intents.forecast || intents.sentiment) && !symbol) return 'Which ticker should I check? Enter one exchange symbol, such as RELIANCE.NS or MSFT.';
   const weights = ownedContext?.weights || (tickers.length ? tickers.map(() => 1 / tickers.length) : []);
 
-  if (!tickers.length && ownedContext?.error) return ownedContext.error;
-  if (!tickers.length) {
+  if (!tickers.length && !marketOnly) {
     const onlyRegime = intents.regime && !intents.forecast && !intents.sentiment;
     if (onlyRegime) {
       try {
@@ -154,7 +131,7 @@ async function buildAdvisorReply(userMsg, tickers, ownedContext = null) {
     // Canonical path: consumes /portfolio/analyze with snapshot identity and market-value weights.
     // Legacy fallback: calls legacy /analyze only for standalone ticker-only callers.
     const analysisPromise = ownedContext?.request
-      ? PortfolioService.getPortfolioAnalysis(ownedContext.request)
+      ? PortfolioService.getPortfolioAnalysis({ ...ownedContext.request, include_optional_ml: intents.sentiment })
       : PortfolioService.getAnalysis(tickers, weights, false, ownedContext?.portfolio_value);
     tasks.push(
       analysisPromise
@@ -219,11 +196,9 @@ async function buildAdvisorReply(userMsg, tickers, ownedContext = null) {
   }
 
   if (sentiment) {
-    parts.push(
-      `${sentiment.ticker} news sentiment: ${sentiment.overall_sentiment} (score ${sentiment.overall_score}, ${sentiment.articles_analyzed} headlines, FinBERT).`
-    );
-  } else if (fetchSentiment && !symbol) {
-    parts.push('Name a ticker for sentiment, or add one to your watchlist.');
+    parts.push(formatNewsSentiment(sentiment, symbol));
+  } else if (fetchSentiment) {
+    parts.push(`The news service could not retrieve sentiment for ${symbol}. Please retry.`);
   }
 
   if (analysis) {
@@ -241,14 +216,15 @@ async function buildAdvisorReply(userMsg, tickers, ownedContext = null) {
   return parts.join('\n\n');
 }
 
-const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers = [] }) => {
+const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers = [], docked = false, expanded = false, onExpand, onClose }) => {
   const location = useLocation();
   const allocationEntry = useRef(null);
   const currencyPreferenceKey = userId && portfolioSnapshot?.portfolioId ? `spa_chat_currency:${JSON.stringify([userId, portfolioSnapshot.portfolioId])}` : null;
   const [selectedCurrency, setSelectedCurrency] = useState(() => {
     try { return currencyPreferenceKey ? localStorage.getItem(currencyPreferenceKey) || '' : ''; } catch { return ''; }
   });
-  const currencies = portfolioSnapshot?.valuation.currencies || [];
+  const trackedAssets = portfolioSnapshot?.trackedAssets || [];
+  const currencies = [...new Set([...(portfolioSnapshot?.valuation.currencies || []), ...trackedAssets.map(asset => asset.currency)])];
   const activeCurrency = currencies.includes(selectedCurrency) ? selectedCurrency : currencies.includes(portfolioSnapshot?.baseCurrency) ? portfolioSnapshot.baseCurrency : currencies[0];
   // Compatibility for old standalone callers only. App always supplies the owned snapshot.
   const tickers = portfolioSnapshot ? [...new Set(portfolioSnapshot.holdings.filter((holding) => holding.currency === activeCurrency).map((holding) => holding.ticker))] : legacyTickers;
@@ -262,6 +238,12 @@ const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers 
   });
   const currentSessions = sessionState.scope === scopeKey ? sessionState.sessions : readChatSessions(scopeKey);
   const activeSession = sessionState.scope === scopeKey ? sessionState.active : 'original';
+  useEffect(() => {
+    if (!docked) return;
+    const closeOnEscape = event => { if (event.key === 'Escape') onClose?.(); };
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, [docked, onClose]);
   const historyKey = sessionHistoryKey(scopeKey, activeSession);
   const [messages, updateMessages] = useState(() => readChatHistory(historyKey));
   const historyRef = useRef({ key: historyKey, messages });
@@ -278,10 +260,10 @@ const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers 
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [chatStarted, setChatStarted] = useState(() => messages.length > 0);
-  const [infoOpen, setInfoOpen] = useState(false);
+  const composerRef = useRef(null);
   const [useLLM, setUseLLM] = useState(true);
-  const [llmConfigured, setLlmConfigured] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
+  const streamController = useRef(null);
   const [streamingText, setStreamingText] = useState('');
   const scrollRef = useRef(null);
   const requestSeq = useRef(0);
@@ -296,7 +278,7 @@ const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers 
     <button type="button" disabled={loading || isStreaming} onClick={() => {
       const next = createChatSession(scopeKey);
       chooseSession(next.session.id, next.sessions);
-    }} className="rounded-lg bg-indigo-700 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50">New chat</button>
+    }} className="rounded-lg bg-blue-700 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50">New chat</button>
     {currentSessions.length > 1 && <select aria-label="Saved chats" disabled={loading || isStreaming} value={activeSession}
       onChange={(event) => chooseSession(event.target.value)} className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-700">
       {currentSessions.map((session) => <option key={session.id} value={session.id}>{session.title}</option>)}
@@ -340,12 +322,6 @@ const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers 
     }
   }, [messages, loading, streamingText, isStreaming]);
 
-  useEffect(() => {
-    ChatService.getAdvisorStatus()
-      .then((status) => setLlmConfigured(status.llm_configured))
-      .catch(() => setLlmConfigured(false));
-  }, []);
-
   const handleSendMessage = async (e) => {
     if (e) e.preventDefault();
     if (!input.trim() || loading || isStreaming) return;
@@ -357,25 +333,87 @@ const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers 
 
     setMessages((prev) => [...prev, { role: 'user', text: userMsg }]);
 
-    const casualReply = conversationReply(userMsg);
-    if (casualReply) {
+    const casualReply = appHelpReply(userMsg) || conversationReply(userMsg);
+    if (!useLLM && casualReply) {
       setMessages((prev) => [...prev, { role: 'assistant', text: casualReply }]);
       return;
     }
 
-    if (useLLM && llmConfigured && ownedContext?.error) {
-      setMessages((prev) => [...prev, { role: 'assistant', text: ownedContext.error }]);
+    const category = /\bmutual funds?\b/i.test(userMsg) ? 'mutual_fund' : /\bcash\b/i.test(userMsg) ? 'cash' : null;
+    if (!useLLM && category && /\b(list|own|have|value|balance|worth)\b/i.test(userMsg)
+        && !/\b(should|recommend|compare|risk|forecast|performance)\b/i.test(userMsg)) {
+      const assets = trackedAssets.filter(asset => asset.currency === activeCurrency && asset.asset_type === category);
+      const money = new Intl.NumberFormat('en-IN', { style: 'currency', currency: activeCurrency || 'INR' });
+      const rows = assets.map(asset => {
+        const value = assetValue(asset);
+        return `- ${asset.name || asset.ticker}: ${value == null ? 'Value unavailable' : money.format(value)}${asset.valuation_date ? ' as of ' + asset.valuation_date : ''}`;
+      });
+      setMessages(prev => [...prev, {role: 'assistant', text: rows.length ? rows.join('\n') : 'No matching assets are recorded in the selected currency.'}]);
       return;
     }
-    if (useLLM && llmConfigured) {
+
+    const quickIntent = !useLLM && ownedContext && quickPortfolioIntent(userMsg);
+    if (quickIntent === 'overview') {
+      setMessages(prev => [...prev, { role: 'assistant', text: portfolioOverview(portfolioSnapshot, activeCurrency) }]);
+      return;
+    }
+    if (quickIntent) {
+      if (ownedContext.error) {
+        setMessages(prev => [...prev, { role: 'assistant', text: ownedContext.error }]);
+        return;
+      }
+      setLoading(true);
+      const request = { ...ownedContext.request, include_optional_ml: false };
+      try {
+        const result = await PortfolioService.getPortfolioAnalysis(request, false, 30000);
+        if (result.portfolio_revision !== request.portfolio_revision) {
+          throw new Error('The analysis returned a different portfolio revision.');
+        }
+        setMessages(prev => [...prev, { role: 'assistant', text: quickPortfolioAnswer(quickIntent, result) }]);
+      } catch {
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          text: 'Portfolio analysis did not finish in time or is unavailable. Open Advisor and refresh the analysis, then try again.',
+        }]);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
+    const intents = classifyIntents(userMsg.toLowerCase());
+    const marketOnly = (intents.sentiment || intents.forecast) && !intents.portfolio && !intents.regime;
+    if (!useLLM && !intents.sentiment && !intents.forecast && !/\b(?:forecast|predict|sentiment|news|suggested|target|recommend|allocation|rebalance|should|too high|too low)\b/i.test(userMsg)
+        && /\b(?:own|ownership|shares|weight|invested|quantity|cost basis|purchase price|market value|profit\/loss)\b/i.test(userMsg)) {
+      const reply = portfolioSnapshot?.valid && holdingAnswer(userMsg, portfolioSnapshot, activeCurrency);
+      if (reply) {
+        setMessages(prev => [...prev, { role: 'assistant', text: reply }]);
+        return;
+      }
+    }
+
+    if (useLLM) {
       setLoading(true);
       setIsStreaming(true);
       setStreamingText('');
       streamingTextRef.current = '';
 
       const weights = tickers.length ? tickers.map(() => 1 / tickers.length) : [];
+      const cachedAnalysis = ownedContext?.request
+        ? PortfolioService.getCachedPortfolioAnalysis(ownedContext.request)
+          || PortfolioService.getCachedPortfolioAnalysis({ ...ownedContext.request, include_optional_ml: false })
+        : null;
+      let marketContext = null;
+      if (marketOnly) {
+        try {
+          marketContext = await buildAdvisorReply(userMsg, tickers, ownedContext);
+        } catch {
+          marketContext = 'Market data could not be loaded for this question.';
+        }
+      }
       const payload = {
         query: userMsg,
+        conversational: true,
         start: ownedContext?.request?.start || '2023-01-01',
         tickers: ownedContext?.tickers || tickers,
         weights: ownedContext?.weights || weights,
@@ -384,24 +422,40 @@ const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers 
         portfolio_revision: portfolioSnapshot?.portfolioRevision || null,
         currency: ownedContext?.currency || 'USD',
         portfolio_context: portfolioSnapshot ? {
+          app_guidance: appHelpReply(userMsg),
+          market_context: marketContext,
           portfolio_id: portfolioSnapshot.portfolioId,
           portfolio_revision: portfolioSnapshot.portfolioRevision,
           as_of: portfolioSnapshot.asOf,
+          available_analysis: cachedAnalysis ? {
+            portfolio_risk: cachedAnalysis.portfolio_risk,
+            personalized_allocation: cachedAnalysis.personalized_allocation,
+            analysis_id: cachedAnalysis.analysis_id,
+          } : null,
+          recent_turns: messages.slice(-6).map(({ role, text }) => ({ role, text: text.slice(0, 800) })),
           ...profileForAnalysis(portfolioSnapshot, activeCurrency),
           currency: activeCurrency,
           holdings: portfolioSnapshot.holdings.filter((holding) => holding.currency === activeCurrency).map((holding) => ({
             ticker: holding.ticker, currency: holding.currency, quantity: holding.quantity,
             average_cost: holding.average_cost, market_value: holding.market_value,
           })),
+          tracked_assets: trackedAssets.filter(asset => asset.currency === activeCurrency).map(asset => ({
+            name: asset.name || asset.ticker, currency: asset.currency, type: asset.asset_type,
+            recorded_value: assetValue(asset), valuation_date: asset.valuation_date,
+          })),
           transactions: portfolioSnapshot.transactions.filter((transaction) => transaction.currency === activeCurrency).map((transaction) => ({
             ticker: transaction.ticker, currency: transaction.currency, transaction_type: transaction.transaction_type,
             quantity: transaction.quantity, price: transaction.price, fees: transaction.fees, transaction_date: transaction.transaction_date,
           })),
-        } : null,
+        } : {
+          recent_turns: messages.slice(-6).map(({role, text}) => ({role, text: text.slice(0, 800)})),
+          app_guidance: appHelpReply(userMsg), market_context: marketContext,
+        },
         top_k: 5,
       };
 
       try {
+        streamController.current = new AbortController();
         await ChatService.sendMessageStream(payload, (chunk, meta) => {
           if (chunk) {
             streamingTextRef.current += chunk;
@@ -428,14 +482,16 @@ const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers 
               }]);
             }
           }
-        });
+        }, streamController.current.signal);
       } catch (error) {
         setIsStreaming(false);
         setLoading(false);
         setStreamingText('');
         setMessages((prev) => [...prev, {
           role: 'assistant',
-          text: error.message || 'Unable to reach the advisor. Check your connection and try again.',
+          text: error.name === 'AbortError' ? 'Reply stopped.' : error.name === 'TimeoutError'
+            ? 'The AI explanation took too long. Try again or switch to Analytics summary.'
+            : error.message || 'Unable to reach the advisor. Try again or switch to Analytics summary.',
         }]);
       }
       return;
@@ -446,7 +502,7 @@ const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers 
     const seq = ++requestSeq.current;
 
     try {
-      const aiResponse = holdingAnswer(userMsg, portfolioSnapshot, activeCurrency) || await buildAdvisorReply(userMsg, tickers, ownedContext);
+      const aiResponse = await buildAdvisorReply(userMsg, tickers, ownedContext);
       if (seq !== requestSeq.current) return;
       setMessages((prev) => [...prev, { role: 'assistant', text: aiResponse }]);
     } catch {
@@ -463,275 +519,71 @@ const ChatAdvisor = ({ portfolioSnapshot, userId = null, tickers: legacyTickers 
     }
   };
 
-  if (!chatStarted) {
-    return (
-      <div className="w-full min-h-[calc(100vh-200px)] bg-gradient-to-b from-white via-indigo-50 to-slate-50 relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl animate-blob" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl animate-blob animation-delay-2000" />
-        </div>
-
-        <div className="relative z-10 max-w-4xl mx-auto px-6 py-12 flex flex-col items-center justify-center min-h-[calc(100vh-200px)]">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600/10 border border-indigo-600/30 rounded-full mb-8 animate-in fade-in duration-500">
-            <Zap className="w-4 h-4 text-indigo-700" />
-            <span className="text-sm font-semibold text-indigo-700">Analytics-backed Q&amp;A</span>
-          </div>
-
-          <h1 className="text-5xl md:text-6xl font-black text-center mb-6 leading-tight animate-in fade-in slide-in-from-bottom-4 duration-700">
-            Ask your{' '}
-            <span className="text-indigo-700">portfolio brain</span>
-          </h1>
-
-          <p className="text-center text-slate-600 text-lg max-w-2xl mb-12 leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
-            Answers are built from the same backend as the rest of SmartPortfolio: <span className="text-slate-900 font-semibold">risk metrics</span>,{' '}
-            <span className="text-slate-900 font-semibold">HMM regime</span>,{' '}
-            <span className="text-slate-900 font-semibold">experimental price forecasts</span>, and{' '}
-            <span className="text-slate-900 font-semibold">FinBERT news sentiment</span> — grounded in your
-            watchlist when you ask. {llmConfigured && 'Toggle the LLM switch for natural-language explanations powered by an AI model on top of the analytics.'}
-          </p>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12 w-full max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-700 delay-200">
-            <div className="text-center text-emerald-700 text-sm font-bold">
-              <Globe className="w-4 h-4 inline mr-1" />
-              Live data
-            </div>
-            <div className="text-center text-emerald-700 text-sm font-bold">
-              <Brain className="w-4 h-4 inline mr-1" />
-              Regime + risk
-            </div>
-            <div className="text-center text-emerald-700 text-sm font-bold">
-              <TrendingUp className="w-4 h-4 inline mr-1" />
-              Forecasts
-            </div>
-            <div className="text-center text-emerald-700 text-sm font-bold">
-              <MessageSquare className="w-4 h-4 inline mr-1" />
-              News sentiment
-            </div>
-          </div>
-
-          <div className="mb-6 flex flex-wrap gap-4">{currencySelector}{chatControls}</div>
-          <form
-            onSubmit={handleSendMessage}
-            className="w-full max-w-2xl animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300"
-          >
-            <div className="relative group">
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl blur opacity-0 group-hover:opacity-30 transition-all duration-500" />
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask anything..."
-                className="relative w-full bg-white border border-slate-200 rounded-2xl py-5 pl-6 pr-16 text-base focus:outline-none focus:ring-2 focus:ring-indigo-600/50 focus:border-transparent transition-all shadow-xl text-slate-900 placeholder-gray-500"
-              />
-              <button
-                type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2.5 bg-indigo-700 text-[#ffffff] hover:bg-indigo-800  rounded-lg flex items-center gap-2 transition-all shadow-lg active:scale-95 disabled:opacity-50 font-semibold text-sm"
-            disabled={loading || isStreaming || !input.trim()}
-              >
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                Ask
-              </button>
-            </div>
-          </form>
-
-          <div className="flex flex-wrap gap-3 mt-8 justify-center max-w-2xl">
-            <button
-              type="button"
-              onClick={() => setInput('Summarize my portfolio risk and regime')}
-              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-100 border border-slate-200 rounded-lg transition-all"
-            >
-              Risk &amp; regime
-            </button>
-            <button
-              type="button"
-              onClick={() => setInput('Give a short price forecast for my top holding')}
-              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-100 border border-slate-200 rounded-lg transition-all"
-            >
-              Forecast
-            </button>
-            <button
-              type="button"
-              onClick={() => setInput('What is the news sentiment on my first ticker?')}
-              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-100 border border-slate-200 rounded-lg transition-all"
-            >
-              Sentiment
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+  const busy = loading || isStreaming;
+  const symbol = tickers[0];
+  const prompts = [
+    [Brain, 'Portfolio risk', 'Which risks matter most in my portfolio?'],
+    [TrendingUp, 'Allocation', 'Explain my suggested allocation and the biggest weight change.'],
+    ...(symbol ? [[Globe, 'Market news', `What is the news sentiment for ${symbol}?`],
+      [Zap, 'Forecast', `Show the experimental 10-session forecast for ${symbol}.`]] : []),
+  ];
+  function selectPrompt(question) {
+    setInput(question);
+    composerRef.current?.focus();
   }
-
-  return (
-    <div className="w-full h-[calc(100vh-200px)] flex flex-col bg-white backdrop-blur-3xl border border-slate-200 rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-500">
-      <div className="p-6 border-b border-slate-200 flex items-center justify-between bg-gradient-to-r from-transparent via-indigo-600/5 to-transparent">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-indigo-700 text-[#ffffff] rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-600/20 ring-4 ring-indigo-600/10">
-            <Bot className="w-7 h-7 text-slate-900" />
-          </div>
-          <div>
-            <h3 className="font-bold text-slate-900 flex items-center gap-2">
-              AI Wealth Advisor
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-            </h3>
-            <p className="text-xs text-indigo-700 font-bold uppercase tracking-widest">
-              Powered by SmartPortfolio analytics APIs
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          {currencySelector}
-          {chatControls}
-          {llmConfigured ? (
-            <>
-              <span className="text-xs text-slate-600">Template</span>
-              <button
-                type="button"
-                onClick={() => setUseLLM((v) => !v)}
-                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${
-                  useLLM ? 'bg-indigo-700 text-[#ffffff]' : 'bg-slate-100'
-                }`}
-                title={useLLM ? 'Switch to template mode' : 'Switch to LLM mode'}
-              >
-                <span
-                  className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform ${
-                    useLLM ? 'translate-x-5' : 'translate-x-1'
-                  }`}
-                />
-              </button>
-              <span className="text-xs text-slate-600">LLM</span>
-            </>
-          ) : (
-            <span
-              className="text-xs text-gray-600"
-              title="LLM not configured on the analytics server. Set LLM_API_KEY to enable."
-            >
-              LLM unavailable — holdings summaries only
-            </span>
-          )}
-          <button
-            type="button"
-            onClick={() => setInfoOpen((o) => !o)}
-            className="p-2.5 rounded-xl hover:bg-slate-100 text-slate-600 transition-all"
-            title="How this works"
-          >
-            <Info className="w-5 h-5" />
-          </button>
-          <span className="p-2.5 rounded-xl text-gray-600">
-            <Sparkles className="w-5 h-5 text-amber-700" />
-          </span>
-        </div>
+  const hasFunds = portfolioSnapshot?.trackedAssets?.some(asset => asset.asset_type === 'mutual_fund');
+  return <section aria-label="Portfolio assistant" className={`portfolio-chat ${docked ? 'is-docked' : ''} mx-auto flex w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white text-slate-900`}>
+    <header className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 px-4 py-4 sm:px-7">
+      <div className="flex items-center gap-3"><div className="rounded-xl bg-blue-50 p-3 text-blue-700"><MessageSquare size={22}/></div>
+        <div><h2 className="text-xl font-semibold">AI Assistant</h2><p className="text-sm text-slate-600">
+          {tickers.length ? `${tickers.length} stock${tickers.length === 1 ? '' : 's'}${activeCurrency ? ' · '+activeCurrency : ''}` : 'No stocks selected'}
+        </p></div></div>
+      <div className="flex flex-wrap items-center gap-3">{currencySelector}{chatControls}
+        {docked && <><button type="button" aria-label={expanded ? 'Restore assistant' : 'Expand assistant'} onClick={onExpand}>{expanded ? <Minimize2 size={18}/> : <Maximize2 size={18}/>}</button><button type="button" aria-label="Close assistant" onClick={onClose}><X size={20}/></button></>}
       </div>
-
-      {infoOpen && (
-        <div className="px-6 py-3 bg-indigo-600/5 border-b border-slate-200 text-xs text-slate-600 leading-relaxed">
-          Template mode stitches together <strong className="text-slate-900">/analyze</strong>,{' '}
-          <strong className="text-slate-900">/market-regime</strong>,{' '}
-          <strong className="text-slate-900">/forecast</strong>, and{' '}
-          <strong className="text-slate-900">/sentiment</strong> via rule-based intent matching.
-          LLM mode sends your question to <strong className="text-slate-900">/chat/stream</strong>,{' '}
-          which gathers the same ML context plus RAG-retrieved news and knowledge-base{' '}
-          <strong className="text-slate-900">documents</strong>, then calls a configured{' '}
-          language model for a natural-language explanation. Not investment advice.
-        </div>
-      )}
-
-      <div
-        ref={scrollRef}
-        className="flex-1 overflow-y-auto p-8 space-y-8 scroll-smooth custom-scrollbar"
-      >
-        {messages.map((m, i) => (
-          <div key={i} className={`flex gap-4 ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
-            <div
-              className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-lg ${
-                m.role === 'assistant' ? 'bg-indigo-700 text-[#ffffff] ' : 'bg-slate-100 text-slate-600'
-              }`}
-            >
-              {m.role === 'assistant' ? <Bot className="w-6 h-6" /> : <UserIcon className="w-6 h-6" />}
-            </div>
-
-            <div
-              className={`min-w-0 w-full max-w-full md:max-w-[90%] p-5 rounded-2xl text-sm leading-relaxed shadow-sm ${
-                m.role === 'assistant'
-                  ? 'bg-slate-100 text-slate-900 border-l-4 border-indigo-600 min-w-0 max-w-full'
-                  : 'bg-indigo-700 text-[#ffffff]  font-medium ml-12 rounded-tr-none'
-              }`}
-            >
-              {m.grounding_check?.status === 'verified' && <small className="block text-xs text-slate-600">Labeled figures verified against Quant Engine</small>}
-              {m.grounding_check?.status === 'mismatch_detected' && <small className="block text-xs text-amber-700">Quant Engine corrections included</small>}
-              {m.role === 'assistant' ? <AdvisorMarkdown>{m.text}</AdvisorMarkdown> : m.text}
-            </div>
-          </div>
-        ))}
-        {loading && (
-          <div className="flex gap-4">
-            <div className="w-10 h-10 rounded-xl bg-indigo-700 text-[#ffffff]  flex items-center justify-center shrink-0 shadow-lg animate-pulse">
-              <Bot className="w-6 h-6" />
-            </div>
-            <div className="bg-slate-100 p-5 rounded-2xl flex items-center gap-3">
-              <Loader2 className="w-4 h-4 text-indigo-500 animate-spin" />
-              <span className="text-xs text-slate-600 font-medium italic">
-                {useLLM && llmConfigured ? 'Gathering ML context + RAG...' : 'Querying analytics...'}
-              </span>
-            </div>
-          </div>
-        )}
-        {isStreaming && streamingText && (
-          <div className="flex gap-4">
-            <div className="w-10 h-10 rounded-xl bg-indigo-700 text-[#ffffff]  flex items-center justify-center shrink-0 shadow-lg">
-              <Bot className="w-6 h-6" />
-            </div>
-            <div className="bg-slate-100 p-5 rounded-2xl text-sm leading-relaxed shadow-sm border-l-4 border-indigo-600 min-w-0 max-w-full">
-              <AdvisorMarkdown>{streamingText}</AdvisorMarkdown>
-              <span className="inline-block w-2 h-4 bg-indigo-400 animate-pulse ml-0.5" />
-            </div>
-          </div>
-        )}
-      </div>
-
-      <form onSubmit={handleSendMessage} className="p-6 bg-white border-t border-slate-200">
-        <div className="relative group">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask anything about your portfolio or the market..."
-            className="w-full bg-white border border-slate-200 rounded-2xl py-5 pl-7 pr-16 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600/40 focus:border-indigo-600/50 transition-all shadow-inner text-slate-900"
-          />
-             <button
-                type="submit"
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-indigo-700 text-[#ffffff] hover:bg-indigo-800  rounded-xl flex items-center justify-center transition-all shadow-lg shadow-indigo-600/20 active:scale-95 disabled:opacity-50"
-                disabled={loading || isStreaming || !input.trim()}
-              >
-            <Send className="w-5 h-5" />
-          </button>
-        </div>
-        <div className="flex flex-wrap gap-4 mt-4">
-          <button
-            type="button"
-            onClick={() => setInput('Summarize my portfolio risk and regime')}
-            className="text-[10px] uppercase tracking-wider font-bold text-slate-600 hover:text-indigo-700 transition-colors"
-          >
-            Risk &amp; regime
-          </button>
-          <button
-            type="button"
-            onClick={() => setInput('Give a short price forecast for my top holding')}
-            className="text-[10px] uppercase tracking-wider font-bold text-slate-600 hover:text-indigo-700 transition-colors"
-          >
-            Forecast
-          </button>
-          <button
-            type="button"
-            onClick={() => setInput('What is the news sentiment on my first ticker?')}
-            className="text-[10px] uppercase tracking-wider font-bold text-slate-600 hover:text-indigo-700 transition-colors"
-          >
-            Sentiment
-          </button>
-        </div>
-      </form>
+    </header>
+    <div ref={scrollRef} className="assistant-messages max-h-[58dvh] min-h-48 overflow-y-auto px-4 py-6 sm:px-8">
+      {!chatStarted ? <div className="mx-auto max-w-3xl">
+        <h3 className="mb-5 text-2xl font-semibold tracking-tight">What would you like to understand?</h3>
+        {ownedContext?.error ? <div className="rounded-lg border bg-slate-50 p-4"><p>{ownedContext.error}</p>
+          <Link className="text-blue-700 underline" to={hasFunds ? '/dashboard/advisor' : '/dashboard/portfolio'}>{hasFunds ? 'Analyze my mutual funds' : 'Review my holdings'}</Link></div>
+          : <div className="grid gap-3 sm:grid-cols-2">{prompts.map(([Icon,label,question])=><button type="button" key={label}
+            onClick={()=>selectPrompt(question)} className="rounded-xl border border-slate-200 p-4 text-left hover:border-blue-400 focus-visible:outline-blue-600">
+            <span className="flex items-center gap-2 text-sm font-semibold text-blue-700"><Icon size={17}/>{label}</span>
+            <span className="mt-2 block text-slate-800">{question}</span></button>)}</div>}
+      </div> : <div className="mx-auto max-w-3xl space-y-5" role="log" aria-label="Conversation">
+        {messages.map((m,i)=><article key={i} className={m.role==='user'?'assistant-question ml-auto w-fit max-w-[90%] rounded-xl bg-blue-50 px-4 py-3':'assistant-answer min-w-0 text-sm leading-7'}>
+          {m.role==='user'?m.text:<><p className="mb-1 flex items-center gap-2 text-sm font-semibold text-blue-700"><Bot size={16}/>SmartPortfolio</p>
+            <AdvisorMarkdown>{m.text}</AdvisorMarkdown>
+            <div className="assistant-feedback" aria-label="Rate this response">{[['helpful', ThumbsUp], ['unhelpful', ThumbsDown]].map(([rating, Icon]) => <button type="button" key={rating} aria-label={rating === 'helpful' ? 'Helpful response' : 'Unhelpful response'} aria-pressed={m.rating === rating} onClick={() => setMessages(rows => rows.map((row, index) => index === i ? {...row, rating: row.rating === rating ? null : rating} : row))}><Icon size={15}/></button>)}</div>
+            {m.grounding_check?.status==='verified' && <small className="text-emerald-800">Labeled figures verified against Quant Engine</small>}
+            {m.grounding_check?.status==='mismatch_detected' && <small className="text-amber-800">Quant Engine corrections included</small>}</>}
+        </article>)}
+        {busy && !streamingText && <p role="status" className="flex items-center gap-2 text-sm text-slate-600"><Loader2 size={16} className="animate-spin"/>{isStreaming ? 'Preparing the AI explanation…' : 'Loading portfolio analytics…'}</p>}
+        {isStreaming && streamingText && <AdvisorMarkdown>{streamingText}</AdvisorMarkdown>}
+      </div>}
     </div>
-  );
+    <div className="assistant-suggestions">
+      <span>Explore your portfolio</span>
+      <div>{['Review my portfolio', 'How do I connect a broker?', 'How do I add real estate?'].map(question => <button key={question} type="button" disabled={busy} onClick={() => selectPrompt(question)}>{question}</button>)}</div>
+    </div>
+    <form onSubmit={handleSendMessage} className="border-t border-slate-200 bg-slate-50 p-4 sm:px-8">
+      <div className="mx-auto max-w-3xl">
+        <div className="flex items-end gap-2 rounded-xl border border-slate-300 bg-white p-2 focus-within:border-blue-600">
+          <textarea ref={composerRef} aria-label="Question for the portfolio assistant" rows={1} value={input}
+            onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==='Enter' && !e.shiftKey && !e.nativeEvent.isComposing){e.preventDefault();e.currentTarget.form.requestSubmit();}}}
+            placeholder="Ask anything…" className="min-w-0 flex-1 resize-y bg-white p-2 text-base outline-none"/>
+          {isStreaming && <button type="button" onClick={() => streamController.current?.abort()} className="text-sm text-blue-700">Stop</button>}
+          <button type="submit" disabled={busy || !input.trim()} aria-label="Send question" className="rounded-lg bg-blue-700 p-3 text-white disabled:opacity-40"><Send size={18}/></button>
+        </div>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm text-slate-600">
+          <label>Answer mode <select disabled={busy} value={useLLM?'ai':'analytics'} onChange={e=>setUseLLM(e.target.value==='ai')}>
+            <option value="ai">AI explanation</option><option value="analytics">Analytics summary</option></select></label>
+          <Link to="/dashboard/advisor" className="text-blue-700">Open portfolio analysis →</Link>
+        </div>
+      </div>
+    </form>
+  </section>;
 };
 
 export default ChatAdvisor;

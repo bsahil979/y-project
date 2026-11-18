@@ -1,0 +1,129 @@
+{
+  "created_at": "2026-11-17T09:16:42.101872+00:00",
+  "status": "completed_chronological_backtest",
+  "config": {
+    "lookback": 504,
+    "min_observations": 126,
+    "max_weight": 0.4,
+    "shrinkage": 0.5,
+    "seed": 42,
+    "rebalance_every": 21,
+    "cost_bps": 10,
+    "risk_free_rate": 0.02,
+    "execution": "Signal at close t; trade at close t+1; earn return through close t+2",
+    "cost_definition": "cost_bps per unit total absolute traded weight; initial purchase included",
+    "final_liquidation": false
+  },
+  "data": {
+    "type": "supplied_csv",
+    "path": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\research\\regime_holdout_2026-09-27_v2\\prices.csv",
+    "input_manifest_sha256": "924120a79f92f682528968cd5de32b1afb3e8953547cb4e00344b2be80227781",
+    "input_data_provenance": {
+      "type": "supplied_csv",
+      "path": "C:\\Users\\Sahil Belchada\\Desktop\\ly project\\smart-portfolio-advisor\\analytics-engine\\research\\regime_data_v1\\prices.csv",
+      "input_manifest_sha256": "c377b0daa5e02c99a3aa1314a49c64cb038623d16c678221e4659e9101f6c2dc",
+      "input_data_provenance": {
+        "status": "input_snapshot_only_no_backtest_run",
+        "tickers": [
+          "RELIANCE.NS",
+          "TCS.NS",
+          "INFY.NS",
+          "HDFCBANK.NS",
+          "ICICIBANK.NS"
+        ],
+        "currency": "INR",
+        "requested_start_inclusive": "2018-01-01",
+        "requested_end_exclusive": "2026-01-01",
+        "provider": "Yahoo Finance",
+        "price_field": "auto-adjusted close (dividends and splits adjusted)",
+        "adjustment_verified": true,
+        "downloaded_at_utc": "2026-09-27T13:51:23.208236+00:00",
+        "price_start": "2018-01-01",
+        "price_end": "2025-12-31",
+        "price_observations": 1976,
+        "dropped_incomplete_rows": 0,
+        "snapshot_sha256": "ed367e3dce5a3c58fb856b02fd2b2ae109286256f1073c56bc4d325dea041ab9"
+      }
+    }
+  },
+  "tickers": [
+    "RELIANCE.NS",
+    "TCS.NS",
+    "INFY.NS",
+    "HDFCBANK.NS",
+    "ICICIBANK.NS"
+  ],
+  "snapshot_sha256": "ed367e3dce5a3c58fb856b02fd2b2ae109286256f1073c56bc4d325dea041ab9",
+  "source_sha256": {
+    "services/hmm_engine.py": "0edf4d6d33b25d053ce5fab0656bb4d92136b0099ebc8655213998864dbd88e3",
+    "services/regime_allocation.py": "fa6b60280c73cace227d7bb1c0b079014a3f46f20918bf58d8f4a3a5fbc74e53",
+    "services/data_fetcher.py": "7df206fb22d25f7d7b8adab7f7732320960dd88cec6d81594bac42c1904dfcee",
+    "research/regime_study.py": "7306ef7df7fdac8224dc6591a44acd219c0824a645fed8376a8469c9560252c4",
+    "research/run_regime_study.py": "6a50a007fe93a846d662b9d7dd7f1766888151ba099bd5f0604fca08d212f7e9"
+  },
+  "python": "3.10.11",
+  "versions": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scipy": "1.15.3",
+    "hmmlearn": "0.3.3"
+  },
+  "price_start": "2018-01-01",
+  "price_end": "2025-12-31",
+  "price_observations": 1976,
+  "holdout": {
+    "start": "2025-01-01",
+    "end": "2025-12-31",
+    "return_observations": 249,
+    "minimum_return_observations": 200,
+    "status": "ready",
+    "primary_metric": "net annualized Sharpe difference: HMM minimum variance minus Minimum variance",
+    "metrics_file": "holdout_metrics.csv",
+    "bootstrap_file": "holdout_sharpe_bootstrap.json",
+    "bootstrap": {
+      "comparison": "HMM minimum variance minus Minimum variance",
+      "metric": "net annualized Sharpe difference",
+      "point_estimate": 0.01598291620823597,
+      "confidence": 0.95,
+      "lower": -0.010547957332955214,
+      "upper": 0.04170265499365712,
+      "method": "paired moving-block bootstrap; non-circular blocks sampled from shared dates",
+      "block_length_sessions": 21,
+      "replicates_requested": 10000,
+      "replicates_valid": 10000,
+      "seed": 20260927,
+      "observation_count": 249,
+      "risk_free_rate_annual": 0.02,
+      "annualization_sessions": 252,
+      "interpretation": "Exploratory uncertainty for one year and one convenience universe; not broad evidence of effectiveness."
+    }
+  },
+  "sensitivity": {
+    "file": "sensitivity.csv",
+    "seed_values": [
+      7,
+      42,
+      123,
+      2026
+    ],
+    "cost_bps_values": [
+      0,
+      10,
+      25
+    ],
+    "scenario_count": 6,
+    "rows": 24,
+    "primary_scenario_included": true
+  },
+  "protocol_id": "regime_allocation_v1_2026-09-27",
+  "protocol_sha256": "27568024a609fea2154dc4e06ef2a384510bdc40f73fd611a9660d5d226e4785",
+  "test_start": "2020-01-24",
+  "test_end": "2025-12-31",
+  "rebalances": 70,
+  "limitations": [
+    "Convenience universe; survivorship/selection bias not eliminated",
+    "One development period and seed; no statistical significance claim",
+    "Fixed cost approximation; no intraday spread or market-impact model",
+    "Adjusted-close research returns, not executable price quotes"
+  ]
+}

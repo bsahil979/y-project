@@ -29,3 +29,12 @@ The browser extension disconnected while opening the local app login. The owner 
 Real cloud login, confirmation-mail delivery and authenticated persistence remain unverified until an app account is available. The project connection is now verified healthy.
 
 Implementation references: [Supabase auth events](https://supabase.com/docs/reference/javascript/auth-onauthstatechange) and [password authentication](https://supabase.com/docs/guides/auth/passwords).
+
+## Two-account staging check
+
+1. In the staging project, apply `portfolio_schema.sql`, `multi_asset_schema.sql`, then `portfolio_relationship_isolation.sql`. The last migration prevents authenticated users from attaching their holdings and transactions to another user's portfolio or brokerage account. It leaves existing records untouched.
+2. Use two confirmed, disposable staging accounts. Set these variables locally or in a private env file outside the repository: `CLOUD_SMOKE_URL`, `CLOUD_SMOKE_PUBLIC_KEY`, `CLOUD_SMOKE_USER_A`, `CLOUD_SMOKE_PASSWORD_A`, `CLOUD_SMOKE_USER_B`, and `CLOUD_SMOKE_PASSWORD_B`. Use a publishable or anon key so row-level security applies.
+3. From the repository root, run `node --env-file="path-to-private-env-file" frontend/scripts/cloud-isolation-check.mjs`. It adds two broker fixtures and a manual buy to a temporary portfolio, signs in again, checks persistence and isolation, then removes the fixtures. It does not contact the brokers.
+4. In the deployed browser app, repeat the import for each configured broker to verify the hosted callback and preview. Verify the manual buy remains visible after both imports and sign-in. The database check and the broker callback check cover different parts of the workflow.
+
+For a local database regression check, run `psql -d <fresh-disposable-database> -f supabase/test_portfolio_relationship_isolation.sql` as the database administrator on a disposable PostgreSQL instance. It creates a local stand-in for the Supabase auth role and checks both users' permissions without real credentials.

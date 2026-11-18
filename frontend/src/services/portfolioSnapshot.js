@@ -24,7 +24,7 @@ export function getPortfolioSnapshot(workspace, selectedPortfolioId = workspace.
   const trackedAssets = workspace.holdings.filter(row => belongs(row) && isTrackedAsset(row));
   const openingHoldings = workspace.holdings.filter(row => belongs(row) && !isTrackedAsset(row));
   const transactions = workspace.transactions.filter(belongs);
-  const accountIds = new Set([...openingHoldings, ...transactions].map((row) => row.account_id).filter(Boolean));
+  const accountIds = new Set([...openingHoldings, ...trackedAssets, ...transactions].map((row) => row.account_id).filter(Boolean));
   const accounts = workspace.accounts.filter((row) => accountIds.has(row.id));
   const ledger = derivePortfolioFromTransactions(transactions, openingHoldings);
   const valuation = valuePortfolio(ledger.holdings, quotes);

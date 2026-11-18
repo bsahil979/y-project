@@ -1,0 +1,27 @@
+.assistant-drawer { position:fixed; z-index:60; top:72px; right:0; bottom:0; width:min(460px,100vw); background:white; box-shadow:-8px 0 28px #17396414; border-left:1px solid #dce6f4; }
+.assistant-drawer.assistant-expanded { width:min(900px,calc(100vw - 24px)); }
+.portfolio-chat { color:#073b7d; }
+.portfolio-chat.is-docked { height:100%; border-radius:0; border:0; max-width:none; }
+.portfolio-chat > header { padding:16px 20px; gap:12px; background:white; }
+.portfolio-chat > header h2 { color:#1655d4; font-size:19px; }
+.portfolio-chat.is-docked > header { flex-shrink:0; }
+.portfolio-chat.is-docked > header > div { gap:8px; }
+.portfolio-chat.is-docked > header label { flex-wrap:wrap; font-size:12px; }
+.portfolio-chat.is-docked > header label > span { display:none; }
+.portfolio-chat .assistant-messages { background-color:#fff; background-image:radial-gradient(#dceaff 1px,transparent 1px); background-size:13px 13px; padding:24px; min-height:280px; }
+.portfolio-chat.is-docked .assistant-messages { flex:1; min-height:0; max-height:none; }
+.portfolio-chat .assistant-question { background:#07377c; color:white; border-radius:14px 14px 4px 14px; font-size:15px; line-height:1.55; }
+.portfolio-chat .assistant-answer { color:#073b7d; font-size:15px; line-height:1.65; }
+.portfolio-chat .assistant-answer > p { font-size:12px; }
+.portfolio-chat .assistant-answer p, .portfolio-chat .assistant-answer li { color:inherit; }
+.portfolio-chat .assistant-feedback { display:flex; gap:10px; margin-top:10px; color:#718096; }
+.portfolio-chat .assistant-feedback button[aria-pressed=true] { color:#1264dc; }
+.portfolio-chat .assistant-suggestions { padding:12px 16px; border-top:1px solid #dce6f4; background:white; }
+.portfolio-chat .assistant-suggestions > span { color:#607b9b; font-size:12px; }
+.portfolio-chat .assistant-suggestions > div { display:flex; flex-wrap:wrap; gap:7px; margin-top:8px; }
+.portfolio-chat .assistant-suggestions button { background:#d9edff; border-radius:20px; padding:6px 10px; color:#073b7d; font-size:13px; }
+.portfolio-chat > form { flex-shrink:0; background:#fff; padding:12px 16px; }
+.portfolio-chat > form textarea { font-size:15px; min-height:36px; max-height:130px; }
+.portfolio-chat > form button[type=submit] { background:#07377c; color:white; padding:9px; }
+.portfolio-chat > form > div > div:first-child { border-color:#1768d5; border-radius:12px; }
+@media(max-width:600px) { .assistant-drawer { top:0; width:100vw; z-index:100; } .portfolio-chat.is-docked > header { padding:12px; } }

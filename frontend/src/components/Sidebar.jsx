@@ -84,8 +84,12 @@ export default function Sidebar() {
           onChange={event => selectPortfolio(event.target.value)}
           className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm">
           {!portfolios.length && <option value="">My Portfolio</option>}
-          {portfolios.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
+          {portfolios.map(p => <option key={p.id} value={p.id}>{p.name} · {p.savedRecordCount ?? 0} saved records</option>)}
         </select>
+        {portfolios.length > 1 && !(portfolios.find(p => p.id === snapshot.portfolioId)?.savedRecordCount) && <div className="text-sm p-2 bg-blue-50 rounded-lg">
+          <p>This portfolio is empty. Your other saved portfolios:</p>
+          {portfolios.filter(p => p.savedRecordCount > 0).map(p => <button key={p.id} className="block text-blue-700 underline py-1" onClick={() => selectPortfolio(p.id)}>{p.name} · {p.savedRecordCount} saved records</button>)}
+        </div>}
         <div className="grid grid-cols-3 gap-2 py-3 text-slate-500">
           {[[Pencil,'Edit','/dashboard/portfolio'],[CircleHelp,'Recs','/dashboard/advisor'],[ListChecks,'Activity','/dashboard/portfolio/transactions']].map(([Icon,label,to]) =>
             <Link key={label} to={to} className="flex flex-col items-center gap-1 text-xs hover:text-blue-600"><Icon size={19}/>{label}</Link>)}

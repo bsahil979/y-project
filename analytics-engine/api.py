@@ -28,6 +28,8 @@ import glob
 import json
 import os
 import logging
+from time import monotonic
+from threading import Lock
 
 
 def _model_dir_ready(model_dir: str) -> dict:
@@ -66,11 +68,19 @@ app.include_router(fund_nav_router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=[
+        origin.strip().rstrip("/") for origin in os.getenv(
+            "CORS_ALLOWED_ORIGINS",
+            "http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173,http://127.0.0.1:4173",
+        ).split(",") if origin.strip()
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 class PortfolioRequest(BaseModel):
     base_currency: Literal['INR', 'USD'] | None = None
@@ -247,6 +257,7 @@ class ChatRequest(BaseModel):
     end: str | None = None
     horizon: int = 30
     top_k: int = 5
+    conversational: bool = False
     stream: bool = False
     portfolio_context: dict | None = None
 
@@ -257,8 +268,12 @@ _ai_advisor: Optional[AIAdvisor] = None
 def get_ai_advisor() -> AIAdvisor:
     global _ai_advisor
     if _ai_advisor is None:
-        _ai_advisor = AIAdvisor()
+        _ai_advisor = AIAdvisor(owned_analysis_loader=load_chat_portfolio_analysis)
     return _ai_advisor
+
+
+def load_chat_portfolio_analysis(**kwargs):
+    return portfolio_analyze(PortfolioAnalyzeRequest(**kwargs))
 
 
 def _marketmind_summary_for_ticker(ticker: str) -> dict | None:
@@ -540,6 +555,7 @@ def forecast_ticker(ticker: str, horizon: int = 30, refresh: bool = False):
             "currency": currency,
             "spot_price": spot_price,
             "price_as_of": str(prices.index[-1].date()),
+            "price_metadata": data.get("price_metadata"),
             "model": model_name,
             "requested_model": prediction['requested_model'],
             "fallback_reason": prediction.get('fallback_reason'),
@@ -627,41 +643,67 @@ def marketmind_prediction(ticker: str):
 
 @app.get("/fundamentals/{ticker}")
 def fundamentals_analysis(ticker: str):
-    ticker = ticker.upper().strip()
+    from services.market_symbols import market_data_symbol
+
+    requested_ticker = ticker.upper().strip()
+    ticker = requested_ticker
+    if ticker.endswith(".NSE"):
+        ticker = ticker[:-4] + ".NS"
+    elif ticker.endswith(".BSE"):
+        ticker = ticker[:-4] + ".BO"
+    elif "." not in ticker:
+        universe = load_universe()
+        if not any(item["symbol"] == ticker for item in universe["us"]):
+            candidate = ticker + ".NS"
+            if any(item["symbol"] == candidate for item in universe["india"]):
+                ticker = candidate
+    ticker = market_data_symbol(ticker)
+    failed_sections = []
+
+    def fetch_section(attribute):
+        try:
+            return getattr(stock, attribute)
+        except Exception:
+            failed_sections.append(attribute)
+            logging.getLogger(__name__).warning("Fundamentals %s unavailable for %s", attribute, ticker, exc_info=True)
+            return None
+
     try:
         stock = yf.Ticker(ticker)
-        info = stock.info or {}
-        income_stmt = stock.income_stmt
-        balance_sheet = stock.balance_sheet
-        cash_flow = stock.cash_flow
+        info = fetch_section("info") or {}
+        income_stmt = fetch_section("income_stmt")
+        balance_sheet = fetch_section("balance_sheet")
+        cash_flow = fetch_section("cash_flow")
 
-        def latest_value(frame, label):
-            if frame is None or frame.empty or label not in frame.index:
+        def latest_value(frame, *labels):
+            if frame is None or frame.empty:
                 return None
-            series = frame.loc[label].dropna()
-            if series.empty:
-                return None
-            return float(series.iloc[0])
+            for label in labels:
+                if label in frame.index:
+                    series = frame.loc[label].dropna().sort_index(ascending=False)
+                    if not series.empty:
+                        return safe_number(series.iloc[0])
+            return None
 
         def safe_number(value):
             try:
-                if value is None:
-                    return None
-                if isinstance(value, str) and not value.strip():
-                    return None
-                return float(value)
-            except Exception:
+                number = float(value)
+                return number if np.isfinite(number) else None
+            except (TypeError, ValueError, OverflowError):
                 return None
 
-        return {
+        currency = info.get("currency") or ("INR" if ticker.endswith((".NS", ".BO")) else None)
+        result = {
             "ticker": ticker,
+            "requested_ticker": requested_ticker,
             "company": {
                 "name": info.get("shortName") or info.get("longName") or ticker,
                 "sector": info.get("sector"),
                 "industry": info.get("industry"),
                 "country": info.get("country"),
                 "market_price": safe_number(info.get("currentPrice") or info.get("regularMarketPrice")),
-                "currency": info.get("currency", "USD"),
+                "currency": currency,
+                "financial_currency": info.get("financialCurrency") or currency,
                 "market_cap": safe_number(info.get("marketCap")),
                 "website": info.get("website"),
                 "website_summary": info.get("longBusinessSummary"),
@@ -687,10 +729,10 @@ def fundamentals_analysis(ticker: str):
                 "earnings_quarterly_growth": safe_number(info.get("earningsQuarterlyGrowth")),
             },
             "balance_sheet": {
-                "total_cash": latest_value(balance_sheet, "Cash And Cash Equivalents"),
+                "total_cash": latest_value(balance_sheet, "Cash And Cash Equivalents", "Cash Cash Equivalents And Short Term Investments"),
                 "total_debt": latest_value(balance_sheet, "Total Debt"),
                 "total_assets": latest_value(balance_sheet, "Total Assets"),
-                "total_liabilities": latest_value(balance_sheet, "Total Liab"),
+                "total_liabilities": latest_value(balance_sheet, "Total Liabilities Net Minority Interest", "Total Liab"),
                 "current_assets": latest_value(balance_sheet, "Current Assets"),
                 "current_liabilities": latest_value(balance_sheet, "Current Liabilities"),
             },
@@ -698,7 +740,7 @@ def fundamentals_analysis(ticker: str):
                 "total_revenue": latest_value(income_stmt, "Total Revenue"),
                 "gross_profit": latest_value(income_stmt, "Gross Profit"),
                 "operating_income": latest_value(income_stmt, "Operating Income"),
-                "net_income": latest_value(income_stmt, "Net Income"),
+                "net_income": latest_value(income_stmt, "Net Income", "Net Income Common Stockholders"),
             },
             "cash_flow": {
                 "operating_cash_flow": latest_value(cash_flow, "Operating Cash Flow"),
@@ -706,10 +748,20 @@ def fundamentals_analysis(ticker: str):
                 "capital_expenditure": latest_value(cash_flow, "Capital Expenditure"),
             },
         }
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"Fundamentals error: {str(e)}")
+        groups = ("valuation", "profitability", "growth", "balance_sheet", "income_statement", "cash_flow")
+        available_groups = [key for key in groups if any(value is not None for value in result[key].values())]
+        if not available_groups and all(result["company"][key] is None for key in ("market_price", "market_cap")):
+            raise HTTPException(
+                status_code=503 if failed_sections else 404,
+                detail=f"No fundamentals were returned for {ticker}. Check the exchange symbol or retry later if the data provider is unavailable.",
+            )
+        result["available_sections"] = available_groups
+        return result
+    except HTTPException:
+        raise
+    except Exception:
+        logging.getLogger(__name__).exception("Fundamentals failed for %s", ticker)
+        raise HTTPException(status_code=503, detail=f"Fundamentals data is temporarily unavailable for {ticker}.")
 
 import threading
 from trading_engine.data_manager import get_processed_data
@@ -1098,6 +1150,10 @@ def chat_stream(req: ChatRequest):
 
     def event_stream():
         try:
+            if req.conversational:
+                result = advisor.conversation(req.query, req.portfolio_context)
+                yield 'data: ' + json.dumps({**result, 'done': True}) + '\n\n'
+                return
             yield from advisor.stream_chat(
                 query=req.query,
                 tickers=req.tickers,
@@ -1167,6 +1223,9 @@ class PortfolioAnalyzeRequest(BaseModel):
 
 
 portfolio_analyze_cache = {}
+portfolio_analyze_cache_lock = Lock()
+PORTFOLIO_CACHE_TTL_SECONDS = 900
+PORTFOLIO_CACHE_LIMIT = 64
 
 
 @app.post("/portfolio/analyze")
@@ -1220,16 +1279,23 @@ def portfolio_analyze(req: PortfolioAnalyzeRequest):
         req.risk_free_rate,
         req.include_optional_ml,
         tuple(clean_tickers),
-        tuple(round(w, 6) for w in (req.weights or [])),
-        round(req.portfolio_value, 2),
+        tuple(req.weights or []),
+        req.portfolio_value,
     )
 
-    if not req.force_refresh and req.portfolio_revision and cache_key in portfolio_analyze_cache:
-        cached_result = copy.deepcopy(portfolio_analyze_cache[cache_key])
-        cached_result["cached"] = True
-        if "metadata" in cached_result and isinstance(cached_result["metadata"], dict):
-            cached_result["metadata"]["cached"] = True
-        return _clean_json(cached_result)
+    if not req.force_refresh and req.portfolio_revision:
+        with portfolio_analyze_cache_lock:
+            entry = portfolio_analyze_cache.pop(cache_key, None)
+            if entry is not None and monotonic() - entry[0] < PORTFOLIO_CACHE_TTL_SECONDS:
+                portfolio_analyze_cache[cache_key] = entry
+            else:
+                entry = None
+        if entry is not None:
+            cached_result = copy.deepcopy(entry[1])
+            cached_result["cached"] = True
+            if isinstance(cached_result.get("metadata"), dict):
+                cached_result["metadata"]["cached"] = True
+            return cached_result
 
     try:
         from services.portfolio_pipeline import run_portfolio_pipeline
@@ -1253,7 +1319,11 @@ def portfolio_analyze(req: PortfolioAnalyzeRequest):
         )
         cleaned = _clean_json(result)
         if req.portfolio_revision:
-            portfolio_analyze_cache[cache_key] = copy.deepcopy(cleaned)
+            entry = (monotonic(), copy.deepcopy(cleaned))
+            with portfolio_analyze_cache_lock:
+                portfolio_analyze_cache[cache_key] = entry
+                while len(portfolio_analyze_cache) > PORTFOLIO_CACHE_LIMIT:
+                    portfolio_analyze_cache.pop(next(iter(portfolio_analyze_cache)))
         return cleaned
     except MarketDataUnavailable as e:
         raise HTTPException(status_code=503, detail=str(e))
@@ -2261,8 +2331,8 @@ def evaluate_ticker_betterment(req: TickerEvaluateRequest):
         raise HTTPException(status_code=400, detail="Forecast horizon must be between 1 and 60 sessions")
     if not 0.01 <= req.proposed_weight <= 0.25:
         raise HTTPException(status_code=400, detail="Proposed weight must be between 1% and 25%")
-    if len(req.current_tickers) != len(req.current_weights) or not req.current_tickers:
-        raise HTTPException(status_code=400, detail="Priced portfolio holdings and matching weights are required")
+    if len(req.current_tickers) != len(req.current_weights):
+        raise HTTPException(status_code=400, detail="Portfolio holdings and weights must match")
 
     currency = "INR" if (sym.endswith(".NS") or sym.endswith(".BO")) else "USD"
     if req.currency and req.currency.upper() != currency:
@@ -2272,25 +2342,20 @@ def evaluate_ticker_betterment(req: TickerEvaluateRequest):
         raise HTTPException(status_code=400, detail="Portfolio comparison requires holdings in the same currency")
     if any(not ticker or not math.isfinite(weight) or weight < 0 for ticker, weight in current_pairs):
         raise HTTPException(status_code=400, detail="Portfolio holdings and weights must be valid")
-    if sum(weight for _, weight in current_pairs) <= 0:
+    if current_pairs and sum(weight for _, weight in current_pairs) <= 0:
         raise HTTPException(status_code=400, detail="Portfolio weights must sum to a positive value")
 
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     start = (datetime.datetime.now() - datetime.timedelta(days=365 * 3)).strftime("%Y-%m-%d")
 
-    curr_clean = list(dict.fromkeys(ticker for ticker, _ in current_pairs))
-
-    s_target = None
-    prices_df = None
-    all_syms = [sym] + [ticker for ticker in curr_clean if ticker != sym]
-
     try:
-        data = get_portfolio_data(all_syms, start, today)
-        prices_df = data.get("prices")
-        if prices_df is not None:
-            s_target = _price_series_for_ticker(prices_df, sym)
+        target_prices = get_portfolio_data([sym], start, today)["prices"]
+        s_target = _price_series_for_ticker(target_prices, sym)
     except Exception as exc:
-        raise HTTPException(status_code=503, detail=f"Could not retrieve overlapping price history for {', '.join(all_syms)}. Retry the data provider later; no simulated prices were used.") from exc
+        raise HTTPException(
+            status_code=503,
+            detail=f"Could not retrieve price history for {sym}. Check the exchange symbol or retry the provider later; no simulated prices were used.",
+        ) from exc
 
     if s_target is None or s_target.empty:
         raise HTTPException(status_code=503, detail=f"No closing prices were returned for {sym}. Check the exchange symbol or retry later.")
@@ -2304,10 +2369,6 @@ def evaluate_ticker_betterment(req: TickerEvaluateRequest):
         }
     if pd.Timestamp(s_target.index[-1]).date() < (datetime.date.today() - datetime.timedelta(days=10)):
         raise HTTPException(status_code=503, detail=f"Market history for {sym} is stale; no current recommendation was generated")
-    missing = [ticker for ticker in curr_clean if ticker not in prices_df.columns]
-    if missing:
-        raise HTTPException(status_code=503, detail=f"Market history is unavailable for portfolio holdings: {', '.join(missing)}")
-
     spot_price = round(float(s_target.iloc[-1]), 2)
 
     # 1. AI ML Forecast
@@ -2334,12 +2395,9 @@ def evaluate_ticker_betterment(req: TickerEvaluateRequest):
     delta = s_target.diff()
     gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
     loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
-    rs = gain / loss.replace(0, np.nan)
-    rsi_series = 100 - (100 / (1 + rs))
-    rsi = float(rsi_series.dropna().iloc[-1]) if len(rsi_series.dropna()) > 0 else 50.0
-    if math.isnan(rsi):
-        rsi = 50.0
-    rsi = round(rsi, 1)
+    latest_gain, latest_loss = gain.iloc[-1], loss.iloc[-1]
+    total_move = latest_gain + latest_loss
+    rsi = round(float(100 * latest_gain / total_move), 1) if total_move > 0 else 50.0
 
     daily_ret = s_target.pct_change().dropna()
     vol_20d = float(daily_ret.tail(20).std() * np.sqrt(252) * 100) if len(daily_ret) >= 20 else 22.0
@@ -2347,24 +2405,60 @@ def evaluate_ticker_betterment(req: TickerEvaluateRequest):
         vol_20d = 22.0
     vol_20d = round(vol_20d, 1)
 
-    # 3. Market Regime
+    # 3. Stock regime from the selected ticker's observed returns.
     regime_label = "Unavailable"
+    regime_reason = None
     try:
-        reg = detect_market_regime_hmm()
-        regime_label = reg.get("regime", "Unavailable")
+        regime = detect_market_regime_hmm(daily_ret)
+        if regime["hmm_converged"]:
+            regime_label = regime["current_regime"]
+        elif regime["iterations_used"] > 0:
+            regime_reason = "The regime model did not converge for this stock."
+        else:
+            regime_reason = "The regime model could not fit this stock's return history."
     except Exception:
-        pass
+        logging.getLogger(__name__).exception("Stock regime calculation failed for %s", sym)
+        regime_reason = "The regime model could not calculate a result."
 
-    # Compare the same dated return sample and currency for both allocations.
-    prop_w = float(req.proposed_weight)
-    symbols = list(dict.fromkeys(curr_clean + [sym]))
-    aligned_prices = prices_df[symbols].dropna()
+    result = {
+        "ticker": sym,
+        "currency": currency,
+        "spot_price": spot_price,
+        "price_as_of": str(pd.Timestamp(s_target.index[-1]).date()),
+        "model": model_name,
+        "forecast": forecast,
+        "forecast_pct": forecast_pct,
+        "rsi": rsi,
+        "volatility_20d": vol_20d,
+        "regime": regime_label,
+        "regime_reason": regime_reason,
+        "portfolio_impact": None,
+    }
+
+    # Compare both allocations on shared trading dates after calculating the stock forecast.
+    other_symbols = list(dict.fromkeys(
+        ticker for ticker, weight in current_pairs if ticker != sym and weight > 0
+    ))
+    if not other_symbols:
+        return {**result, "comparison_reason": f"Add a priced {currency} holding other than {sym} to compare allocations."}
+
+    symbols = [sym, *other_symbols]
+    try:
+        comparison_prices = get_portfolio_data(symbols, start, today)["prices"]
+        aligned_prices = comparison_prices[symbols].dropna()
+    except Exception:
+        logging.getLogger(__name__).warning("Comparison history unavailable for %s", symbols, exc_info=True)
+        return {**result, "comparison_reason": "Could not retrieve price history for the portfolio holdings. Retry the comparison later."}
+
     if len(aligned_prices) < 100 or (aligned_prices <= 0).any().any():
-        raise HTTPException(status_code=503, detail="Aligned portfolio market history is insufficient for a comparison")
+        return {**result, "comparison_reason": "The stock and portfolio need at least 100 shared daily closes for a comparison."}
+
+    prop_w = float(req.proposed_weight)
     rets = aligned_prices.pct_change().dropna()
     original_weights = dict.fromkeys(symbols, 0.0)
     for ticker, weight in current_pairs:
-        original_weights[ticker] += weight
+        if weight > 0:
+            original_weights[ticker] += weight
     base_weights = np.array([original_weights[ticker] for ticker in symbols], dtype=float)
     base_weights /= base_weights.sum()
     target_index = symbols.index(sym)
@@ -2400,7 +2494,7 @@ def evaluate_ticker_betterment(req: TickerEvaluateRequest):
         verdict_type = "moderate"
         badge = "Volatility Reducer"
         headline = f"At this weight, {sym} changes historical annualized volatility by {vol_delta:+.1f} percentage points, return by {ret_delta:+.1f} points, and Sharpe by {sharpe_delta:+.2f}."
-    elif sharpe_delta >= 0 and ret_delta >= 0:
+    elif sharpe_delta >= 0.05 and ret_delta > 0:
         verdict = "HISTORICAL RETURN AND SHARPE IMPROVE"
         verdict_type = "moderate"
         badge = "Historical Comparison"
@@ -2414,7 +2508,7 @@ def evaluate_ticker_betterment(req: TickerEvaluateRequest):
         verdict = "HISTORICAL TRADE-OFF AT THIS WEIGHT"
         verdict_type = "negative"
         badge = "Historical Comparison"
-        headline = f"This weight does not improve historical risk-adjusted return in the available sample."
+        headline = f"Historical Sharpe changes by {sharpe_delta:+.2f} at this weight."
 
     insights = [
         {
@@ -2431,7 +2525,7 @@ def evaluate_ticker_betterment(req: TickerEvaluateRequest):
         },
         {
             "title": "Model Price Estimate",
-            "text": f"The {model_name} projects a {forecast_pct:+0.1f}% trajectory over the next 30 trading sessions. 14-day RSI is at {rsi:.1f} ({'Oversold / Value' if rsi < 35 else 'Overbought' if rsi > 70 else 'Neutral'}).",
+            "text": f"The {model_name} projects a {forecast_pct:+0.1f}% trajectory over the next {req.horizon} trading sessions. 14-day RSI is at {rsi:.1f} ({'Oversold / Value' if rsi < 35 else 'Overbought' if rsi > 70 else 'Neutral'}).",
             "positive": forecast_pct >= 0
         },
         {
@@ -2442,16 +2536,9 @@ def evaluate_ticker_betterment(req: TickerEvaluateRequest):
     ]
 
     return _clean_json({
-        "ticker": sym,
-        "currency": currency,
-        "spot_price": spot_price,
-        "price_as_of": str(pd.Timestamp(s_target.index[-1]).date()),
-        "model": model_name,
-        "forecast": forecast,
-        "forecast_pct": forecast_pct,
-        "rsi": rsi,
-        "volatility_20d": vol_20d,
-        "regime": regime_label,
+        **result,
+        "comparison_start": aligned_prices.index[0].date().isoformat(),
+        "comparison_end": aligned_prices.index[-1].date().isoformat(),
         "proposed_weight": prop_w,
         "portfolio_impact": {
             "base_sharpe": base_sharpe,

@@ -13,3 +13,12 @@ it('preserves analytics routing for financial questions even with a greeting', (
     assert.equal(conversationReply(message), null);
   }
 });
+
+it('explains the Goals page using its actual fields and route', async () => {
+  const { appHelpReply } = await import('../src/services/advisorConversation.js');
+  const reply = appHelpReply('tell me about the goal section in this app');
+  assert.match(reply, /monthly contribution/);
+  assert.match(reply, /\/dashboard\/planning\/goals/);
+  assert.match(reply, /Monte Carlo/);
+  assert.equal(appHelpReply('Will I meet my goal of retiring at 40?'), null);
+});

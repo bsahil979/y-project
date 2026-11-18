@@ -1,99 +1,121 @@
-# Does Regime Conditioning Improve Minimum-Variance Allocation?
+# Regime Conditioning for Minimum Variance Allocation
 
-## Evidence from a five-stock Indian equity basket
+Sahil Belchada, Paras Kokate
 
-**Draft status:** Results draft for review. Independent recomputation of the holdout results table is complete. Full-text literature review and school formatting requirements remain to be completed. All reported results are from the frozen protocol and saved run linked below.
+Evaluation manuscript prepared 17 November 2026
 
 ## Abstract
 
-This study tests whether a three-state Gaussian Hidden Markov Model (HMM) can improve the risk-adjusted performance of a long-only minimum-variance portfolio. The HMM conditions covariance estimates on inferred market states; a matched minimum-variance portfolio uses unconditional covariance. Both methods use the same five Indian equities, a 40% position cap, a 504-return rolling training window, delayed execution, and proportional transaction costs. The primary evaluation uses 249 daily returns in 2025, held out from the exploratory period. The HMM portfolio's annualized Sharpe ratio was 0.1510, compared with 0.1331 for the baseline, a difference of 0.0179. A paired 21-session moving-block bootstrap produced a 95% interval from -0.0090 to 0.0442, which includes zero. The HMM portfolio also traded more, and 45 of 70 primary HMM fits reached the iteration limit without meeting the declared likelihood tolerance. The result is a small positive point estimate with substantial uncertainty and a material fitting limitation; it does not establish an HMM advantage.
+We evaluate whether market-state conditioning improves a long-only minimum-variance allocator on five Indian equities. Both methods use a 504-return rolling history, a 40 percent per-asset cap, delayed execution and proportional trading costs. A three-state Gaussian hidden Markov model estimates regimes from the equal-weight basket return. The 2025 evaluation comprises 249 daily returns. The updated HMM allocator achieves net annualized Sharpe 0.1491, compared with 0.1331 for the unconditional baseline. The paired difference is 0.0160, with a 95 percent moving-block bootstrap interval [-0.0105, 0.0417]. All 70 primary fits converged under the stated likelihood criterion. Higher traded notional and an interval spanning zero limit the evidence of benefit. The study provides a reproducible comparison with explicit costs and uncertainty. The updated engine was evaluated retrospectively on an already inspected historical window, which limits confirmatory interpretation.
 
-**Keywords:** portfolio allocation; hidden Markov model; minimum variance; regime switching; backtesting; India
+Keywords — hidden Markov model, minimum variance, Indian equities, regime conditioning, moving-block bootstrap
 
-## 1. Introduction
+## 1 Introduction
 
-Portfolio risk depends on the joint behavior of asset returns, including their covariances, and on the portfolio weights assigned to those assets. Mean-variance portfolio selection provides a standard framework for relating these quantities [1]. In practice, however, covariance estimates are noisy, while return behavior and correlations may change over time. Markov-switching models provide one way to represent unobserved changes in time-series behavior [2]. Prior asset-allocation work has examined regime-dependent volatility and correlation in international equity returns [3]. These ideas motivate testing whether conditioning covariance estimates on inferred market states changes the results of a constrained portfolio optimizer.
+Portfolio risk depends on asset covariance and allocation weights. State-dependent covariance estimates may represent changing market relationships, but the additional estimation can also increase noise. This study asks whether conditioning covariance on a three-state HMM improves net Sharpe relative to an otherwise matched unconditional minimum-variance allocation.
 
-This project compares a three-state Gaussian HMM-conditioned minimum-variance allocation with a matched optimizer that uses unconditional covariance. The question is narrow: **on a fixed five-stock Indian equity basket, does the HMM-conditioned method improve net out-of-sample Sharpe relative to the matched baseline under the same execution and cost rules?** The study is an educational empirical comparison. It does not propose a new HMM or optimizer, and it does not claim the resulting allocations are suitable for investment.
+The contribution is an implemented and reproducible empirical comparison within SmartPortfolio. The application provides a setting for portfolio analytics and explanations. The research evaluates a narrowly defined allocator and its baseline. Its outcome does not validate the application’s other forecasting, sentiment or conversational models.
 
-The 2020-2024 run was treated as exploratory. The primary evaluation was reserved for calendar year 2025. The observed primary Sharpe difference is positive, but its paired bootstrap interval includes zero. Frequent HMM iteration-cap hits and higher turnover further limit interpretation. These outcomes are reported even though the point estimate favors the proposed method.
+## 2 Related work
 
-## 2. Related work
+Markowitz [1] provides the variance-based foundation for portfolio selection. Hamilton [2] and Rabiner [3] provide background on hidden-state models and their estimation. Ang and Bekaert [4] examine regime shifts in asset allocation. Ledoit and Wolf [5] motivate attention to covariance estimation error. Our fixed 50 percent covariance blend is a separate regularization choice. Künsch [6] motivates resampling dependent observations, while White [7] highlights the inferential consequences of data-driven model selection. These works motivate the design and its limitations. The present implementation supplies empirical evidence only for the stated basket and protocol.
 
-Markowitz's portfolio-selection framework motivates the minimum-variance baseline by making portfolio risk a function of the covariance matrix and portfolio weights [1]. The present study fixes the objective to variance minimization and does not estimate expected returns for the optimizer. This helps isolate the effect of conditioning the covariance estimate, although it does not remove estimation error from the covariance matrices.
+## 3 Data and experimental design
 
-Hamilton develops a likelihood-based framework for discrete, unobserved shifts in time-series dynamics [2]. Ang and Bekaert study international asset allocation when equity-return volatilities and correlations vary across regimes [3]. Their setting and portfolio problem differ from this project: the present experiment uses a single equal-weight equity-return proxy, an HMM, and a small Indian-stock universe. Those studies motivate the regime-conditioned question but do not establish that this implementation should outperform its baseline.
+The universe comprises RELIANCE.NS, TCS.NS, INFY.NS, HDFCBANK.NS and ICICIBANK.NS. The frozen Yahoo Finance adjusted-close snapshot has 1,976 common-date observations spanning 2018 through 2025, denominated in INR. Returns are calculated on the intersected observed dates without forward filling. The evaluated path has 1,470 daily returns from January 2020 through December 2025. Calendar year 2025 contributes 249 returns and 11 scheduled allocation decisions.
 
-Covariance estimation is itself a major source of portfolio uncertainty. Ledoit and Wolf study monthly U.S. equity baskets with 60-month covariance histories and a data-driven shrinkage estimate toward a constant-correlation target; their empirical design and active-portfolio objective differ from this project [4]. This project uses a fixed 0.5 blend of state covariance toward unconditional covariance; it is **not** the Ledoit-Wolf estimator. Backtest selection is another concern. Sullivan, Timmermann, and White apply White's Reality Check and a stationary bootstrap to a broad universe of technical rules [5]. Bailey and López de Prado describe how multiple trials and non-normal returns can inflate Sharpe-based claims [6]. This project reports its six predeclared seed/cost combinations and a paired block-bootstrap interval for one optimizer pair, but it does not apply a Reality Check or calculate a selection-adjusted Sharpe statistic. The literature therefore supports methodological caution, not a positive effectiveness claim for this portfolio.
+The universe is a convenience sample with sector concentration and possible selection and survivorship bias. Adjusted prices were downloaded retrospectively. Corporate-action adjustments are not certified as the values available at each historical decision date. The protocol was recorded in September 2026. The updated engine was developed after inspection of the 2025 results, so this is a retrospective causal replay rather than a newly untouched model-selection test.
 
-## 3. Data and methods
+| Setting | Value |
+| --- | --- |
+| History and scheduling | 504 daily returns; rebalance every 21 common sessions |
+| Constraints | Long only; weights sum to one; maximum weight 0.40 |
+| HMM | Three Gaussian states; training-window StandardScaler; seed 42 |
+| Fitting | Maximum 500 iterations; tolerance 0.0001; min_covar 0.001 |
+| Execution | Decision at close t; trade at close t+1; first earned return ends t+2 |
+| Costs | 10 basis points per total absolute change in weights |
+| Risk-free assumption | 2 percent annual rate; effective daily conversion |
+| Bootstrap | 21-session non-circular blocks; 10,000 replicates; seed 20260927 |
 
-### 3.1 Data and universe
+## 4 Covariance estimation and optimization
 
-The universe contains RELIANCE.NS, TCS.NS, INFY.NS, HDFCBANK.NS, and ICICIBANK.NS, with all prices denominated in INR. Daily Yahoo Finance auto-adjusted close prices were downloaded for 2018-01-01 through 2025-12-31. The saved snapshot contains 1,976 complete common-session price rows and no dropped incomplete rows. Returns are close-to-close percentage changes on the common session index; prices are not forward-filled. The exact data snapshot, request dates, source convention, retrieval time, and SHA-256 are recorded in [`regime_data_v1/manifest.json`](./regime_data_v1/manifest.json).
+For each decision date t, let R contain the preceding N daily asset-return vectors. The unconditional estimator C0 is the population sample covariance with divisor N, plus a diagonal ridge. The ridge equals the larger of mean asset variance multiplied by 0.000001 and 0.000000000001. Both strategies minimize wᵀCw subject to sum(w)=1 and 0≤wᵢ≤0.40. SLSQP uses an analytic gradient, an objective scaled by mean diagonal covariance, tolerance 1e−10 and a maximum of 500 iterations.
 
-These five firms are a fixed convenience sample of current large Indian companies, not a point-in-time index membership list. Survivorship and selection bias cannot be ruled out. Adjusted historical closes are useful for historical-return accounting but are not executable quotes.
+The HMM observes the cross-sectional mean return x at each training date. StandardScaler is fitted exclusively on that training window. Full covariance is attempted first, with diagonal fallback when required by sample size or failed convergence. In the univariate study these covariance types each estimate one variance per state, but their initialization differs. Diagonal attempts initialize near-zero state means and distinct variances. Convergence requires finite absolute change in log likelihood below 0.0001 and the monitor convergence flag. Canonical labels sort states by realized volatility, breaking ties by higher mean return.
 
-### 3.2 Strategies and HMM allocation
+## 5 State mixture and trading calculations
 
-Four strategies share the same observations and execution convention: equal-initial-weight buy-and-hold; periodically rebalanced equal weight; long-only minimum variance using unconditional covariance; and HMM-conditioned minimum variance using a forecast mixture of state-conditioned covariance estimates. Both optimizers have nonnegative weights summing to one and a 40% maximum weight per stock. The matched baseline uses the same history and optimizer constraints as the HMM method.
+Training responsibilities are smoothed conditional probabilities γ(s,k)=Pr(z_s=k | x in the complete training window). They can use later observations within the training window. All those observations precede the allocation decision. The responsibility at the final training observation supplies the current state vector. This distinction corrects the filtered-probability notation in the October review draft.
 
-At each allocation decision, the HMM is fit to the equal-weight mean of asset returns, expressed in percentage units, using up to the preceding 504 daily return rows. The Gaussian HMM has three diagonal-covariance states, seed 42, convergence tolerance 1e-4, and a maximum of 200 EM iterations. Posterior responsibilities from the training window estimate state-conditioned asset means and covariance matrices. State covariance is blended 50/50 with unconditional covariance; states with membership mass below two use the unconditional estimates. The last posterior state probabilities are propagated two transitions forward. The resulting covariance mixture includes between-state mean dispersion. The optimizer minimizes variance; it does not maximize estimated expected return.
+For state k, its membership mass is M_k=sum_s γ(s,k). If M_k is at least two, its mean is the responsibility-weighted average of asset returns and its covariance is the weighted outer product of centered returns divided by M_k. The estimator blends this covariance equally with C0 and adds the diagonal ridge. States with lower mass use the unconditional mean and C0.
 
-### 3.3 Execution and accounting
+Let A denote the transition matrix and p the final training state probabilities. The forecast mixture uses q=pA². With m=sum_k q_k m_k, the covariance is C_HMM=sum_k q_k[C_k+(m_k−m)(m_k−m)ᵀ]. The between-state term includes dispersion of state means. This two-session probability projection follows the execution delay, while portfolios may remain invested for about 21 sessions. The mismatch between forecast and holding horizons is a limitation.
 
-Decisions use information available through close *t*. Target weights are executed at close *t+1*, and the first return earned is from close *t+1* to close *t+2*. Equal weight and both optimizers rebalance every 21 common sessions. Buy-and-hold trades only for its initial purchase. Holdings drift between trades. Each strategy pays 10 basis points times the sum of absolute traded-weight changes at each trade, including initial purchases; no final liquidation is charged. This proportional cost approximation excludes bid-ask spread, taxes, market impact, and liquidity constraints.
+Portfolio weights drift with asset returns between rebalances. Trading cost is c=0.001 sum_i |target_i−pretrade_i|. Net return for the recorded day is (1−c)(1+gross return)−1. The experiment charges initial purchases and excludes terminal liquidation. The 2025 slice comes from continuously running strategies, so buy-and-hold has no new initial purchase during that year. Traded notional uses the sum of absolute weight changes, without dividing by two.
 
-The stored run covers 2020-01-24 through 2025-12-31, with 1,470 daily out-of-sample return rows per strategy and 70 allocation decisions. The 2025 holdout contributes 249 daily return rows. The rolling model is refit as new observations become available; no 2025 observation is used in a decision that precedes it.
+## 6 Primary results
 
-### 3.4 Outcomes and uncertainty
+| 2025 outcome | Minimum variance | HMM minimum variance |
+| --- | --- | --- |
+| Total return | 2.875286% | 3.080609% |
+| Net annual return | 2.910428% | 3.118298% |
+| Annualized volatility | 12.591404% | 12.616941% |
+| Net Sharpe | 0.133111 | 0.149094 |
+| Maximum drawdown | -9.637089% | -9.684616% |
+| Annual traded notional | 0.555373 | 0.783410 |
+| Summed cost fraction | 0.000549 | 0.000774 |
 
-The primary outcome is the difference in 2025 net annualized Sharpe ratio, HMM minus minimum variance. The annual risk-free rate is 2%, converted to an effective daily rate, and annualization uses 252 sessions. The paired uncertainty interval resamples shared dates for both optimizers with non-circular moving blocks of 21 sessions, 10,000 replicates, seed 20260927, and a 95% percentile interval. It is descriptive uncertainty for one year and one universe, not proof of general effectiveness.
+The HMM estimate improves Sharpe slightly, while volatility, maximum drawdown and traded notional are slightly higher than the unconditional baseline. Equal weight achieves Sharpe 0.153192 and a total return of 3.1556 percent. Thus the comparison with an additional simple benchmark further limits an argument for HMM superiority. Summed cost fractions represent proportional charged fees across dates and differ from compounded wealth drag.
 
-Secondary outcomes are total and annualized return, annualized volatility, maximum drawdown, annualized traded notional, and estimated costs. Sensitivity analysis uses seeds 7, 42, 123, and 2026 at 10 basis points, plus cost assumptions of 0, 10, and 25 basis points at seed 42. The complete results are in [`sensitivity.csv`](./regime_holdout_2026-09-27_v2/sensitivity.csv).
+## 7 Uncertainty and sensitivity
 
-## 4. Results
+The paired moving-block bootstrap resamples shared dates of the two net-return series. Non-circular blocks preserve local serial dependence and alignment between strategies. The Sharpe difference is 0.015983; its 95 percent percentile interval is [-0.010548, 0.041703]. The interval spans zero and does not establish a positive difference. It also does not establish equivalence. The HMM is not refitted within bootstrap replicates. Resampling 249 realized dates does not add independent market years.
 
-### 4.1 Primary 2025 holdout
+| Seed | Cost in basis points | HMM minus baseline Sharpe |
+| --- | --- | --- |
+| 7 | 10 | +0.018393 |
+| 42 | 0 | +0.017785 |
+| 42 | 10 | +0.015983 |
+| 42 | 25 | +0.013281 |
+| 123 | 10 | +0.025288 |
+| 2026 | 10 | +0.011073 |
 
-| Strategy | Total return | Annualized return | Annualized volatility | Sharpe | Maximum drawdown |
-|---|---:|---:|---:|---:|---:|
-| Buy and hold | 1.53% | 1.55% | 13.66% | 0.036 | -12.83% |
-| Equal weight | 3.16% | 3.19% | 13.52% | 0.153 | -11.70% |
-| Minimum variance | 2.88% | 2.91% | 12.59% | 0.133 | -9.64% |
-| HMM minimum variance | 3.10% | 3.14% | 12.62% | 0.151 | -9.68% |
+These six scenarios share the same universe and evaluation dates. They describe sensitivity to initialization and the assumed trading charge. They provide correlated observations rather than independent replications. Spread, tax, price impact and heterogeneous execution costs are excluded.
 
-The HMM Sharpe point estimate exceeds the matched baseline by 0.0179. The paired bootstrap 95% interval is **[-0.0090, 0.0442]**. Because the interval includes zero, this sample does not resolve whether the difference reflects a repeatable improvement. Annualized volatility is nearly the same for the optimizer pair. The HMM portfolio's total return is slightly higher, while its maximum drawdown is also slightly more negative.
+Across the complete evaluated 2020–2025 path, minimum variance has Sharpe 0.627799 and HMM minimum variance has Sharpe 0.618703. Earlier years include development observations. This longer comparison is descriptive. All 70 primary fits converged in the updated run, compared with 45 iteration-cap failures in the archived 200-iteration implementation. Improved numerical convergence does not establish improved financial performance.
 
-### 4.2 Trading and sensitivity
+## 8 Discussion and limitations
 
-The HMM method's annualized traded notional is 0.763, compared with 0.555 for minimum variance. Its cumulative cost fraction is 0.000754 versus 0.000549. These values indicate the HMM allocation changed its holdings more and incurred higher estimated costs under the shared cost rule.
+The evidence is consistent with a small conditional-allocation benefit in 2025 and also with no benefit under the stated uncertainty procedure. A five-stock universe, sector concentration, one primary year and 11 primary-year decisions limit generalization. Regime labels describe relative risk within each fitted window. They do not guarantee bullish or bearish future returns.
 
-All five non-primary seed/cost variants had positive 2025 HMM-minus-baseline Sharpe differences. Across the six recorded scenarios, including the primary case, the difference ranged from 0.0103 to 0.0254. The full 2020-2025 run gives a different comparison: Sharpe was 0.6114 for HMM minimum variance and 0.6278 for minimum variance. The one-year holdout point estimate should therefore be read in the context of a mixed full-period result and limited sensitivity sample, not as a general performance claim.
+The 2026 revision addresses scaling and convergence after the original outcomes were inspected. It must therefore be presented as a retrospective implementation revision. A stronger next evaluation would reserve later observations, freeze model choices before inspection, broaden the point-in-time universe and examine multiple market environments. The separate personalized and AI Black-Litterman replay in the project is a different experiment and is excluded from this paper’s HMM performance claim.
 
-### 4.3 HMM states, convergence, and allocation concentration
+## 9 Reproducibility and conclusion
 
-Of the 70 primary HMM allocation fits, 45 reached the 200-iteration maximum without meeting the 1e-4 likelihood-change tolerance. Every scheduled fit in 2024 reached the cap. Those fits were used by the preregistered run, so the study does not establish that the HMM parameters were consistently optimized. The ranked lower-, middle-, and higher-return states had mean two-step forecast probabilities of 0.239, 0.483, and 0.278. No state used the low-membership fallback. TCS reached the 40% weight cap in 12 fits and HDFCBANK in six. These state labels are ranked within each rolling fit and should not be interpreted as persistent economic regimes. Full summaries are in [`HMM_DIAGNOSTICS.md`](./HMM_DIAGNOSTICS.md); the saved [`decisions.json`](./regime_holdout_2026-09-27_v2/decisions.json) has per-fit details.
+The current run was regenerated from the frozen adjusted-price CSV using research.run_regime_study. Its output includes prices, daily net-return ledger, equity paths, allocation decisions, metrics, seed and cost sensitivity, convergence diagnostics and the paired bootstrap. The manifest records input hashes, source-file SHA-256 values, package versions and execution conventions. The evaluation artifact directory is research/regime_evaluation_2026-11-17 inside analytics-engine.
 
-## 5. Discussion
+Reproduction command from analytics-engine
 
-The primary point estimate is directionally positive, but small relative to its uncertainty. The bootstrap interval includes zero, and one calendar year from a five-stock convenience universe cannot establish broad effectiveness. The HMM method also traded more, increasing estimated cost, while producing nearly identical volatility and a slightly worse maximum drawdown than its matched baseline. In the longer evaluation path the HMM Sharpe is lower. Taken together, these findings are mixed rather than evidence of a dependable improvement.
+venv/Scripts/python.exe -m research.run_regime_study --prices research/regime_holdout_2026-09-27_v2/prices.csv --output research/new_reproduction
 
-The iteration-cap result weakens confidence in the fitted states and downstream covariance mixtures. A later study may investigate convergence using development data, but any method change must be documented as a new experiment. The completed 2025 holdout must not be used to select a higher iteration count, another state count, or a favorable seed and then be presented as untouched validation.
+Snapshot SHA-256
 
-## 6. Limitations
+ed367e3dce5a3c58fb856b02fd2b2ae109286256f1073c56bc4d325dea041ab9
 
-The universe is small and selected using current firms, so survivorship and selection bias remain. The final holdout is one year. Yahoo Finance adjusted closes and a fixed proportional fee do not capture executable prices, bid-ask spread, taxes, market impact, or liquidity. The model uses one equal-weight return series to infer states; labels are statistical groupings, not verified bull/bear forecasts. The HMM often reached its iteration limit, covariance estimates are uncertain, and the two-session covariance forecast is used to choose weights held for 21 sessions. Seed and cost sensitivities are limited and do not correct for all multiple-testing concerns. The bootstrap interval is exploratory and should not be described as proof or a formal universal significance test.
-
-## 7. Conclusion
-
-In this fixed experiment, the HMM-conditioned minimum-variance portfolio had a 2025 Sharpe ratio 0.0179 above the matched baseline, but the paired bootstrap interval included zero. It traded more, and 45 of 70 primary fits reached the iteration cap without meeting tolerance. The results do not establish an advantage. They show how a transparent, matched comparison can produce a positive point estimate while uncertainty, implementation costs, convergence behavior, and the longer-period result argue for caution.
+For the specified basket, updated HMM conditioning yields a net annualized Sharpe difference of 0.0160 relative to matched minimum variance. Its paired interval spans zero. All primary fits converge, but the higher trading intensity and inconclusive uncertainty limit claims of benefit. The contribution is the controlled implementation, auditable accounting and transparent evaluation of this allocation mechanism.
 
 ## References
 
-1. Markowitz, H. (1952). Portfolio selection. *The Journal of Finance, 7*(1), 77-91. https://doi.org/10.1111/j.1540-6261.1952.tb01525.x
-2. Hamilton, J. D. (1989). A new approach to the economic analysis of nonstationary time series and the business cycle. *Econometrica, 57*(2), 357-384. https://doi.org/10.2307/1912559
-3. Ang, A., & Bekaert, G. (2002). International asset allocation with regime shifts. *The Review of Financial Studies, 15*(4), 1137-1187. https://doi.org/10.1093/rfs/15.4.1137
-4. Ledoit, O., & Wolf, M. (2004). Honey, I shrunk the sample covariance matrix. *The Journal of Portfolio Management, 30*(4), 110-119. https://doi.org/10.3905/jpm.2004.110
-5. Sullivan, R., Timmermann, A., & White, H. (1999). Data-snooping, technical trading rule performance, and the bootstrap. *The Journal of Finance, 54*(5), 1647-1691. https://doi.org/10.1111/0022-1082.00163
-6. Bailey, D. H., & López de Prado, M. (2014). The deflated Sharpe ratio: Correcting for selection bias, backtest overfitting and non-normality. *The Journal of Portfolio Management, 40*(5), 94-107. https://doi.org/10.3905/jpm.2014.40.5.094
+[1] H. Markowitz. Portfolio Selection. The Journal of Finance 7(1), 77–91, 1952. doi:10.1111/j.1540-6261.1952.tb01525.x.
+
+[2] J. D. Hamilton. A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle. Econometrica 57(2), 357–384, 1989. doi:10.2307/1912559.
+
+[3] L. R. Rabiner. A Tutorial on Hidden Markov Models and Selected Applications in Speech Recognition. Proceedings of the IEEE 77(2), 257–286, 1989. doi:10.1109/5.18626.
+
+[4] A. Ang and G. Bekaert. International Asset Allocation With Regime Shifts. The Review of Financial Studies 15(4), 1137–1187, 2002. doi:10.1093/rfs/15.4.1137.
+
+[5] O. Ledoit and M. Wolf. Honey, I Shrunk the Sample Covariance Matrix. Journal of Portfolio Management 30(4), 110–119, 2004. doi:10.3905/jpm.2004.110.
+
+[6] H. R. Künsch. The Jackknife and the Bootstrap for General Stationary Observations. The Annals of Statistics 17(3), 1217–1241, 1989. doi:10.1214/aos/1176347265.
+
+[7] H. White. A Reality Check for Data Snooping. Econometrica 68(5), 1097–1126, 2000. doi:10.1111/1468-0262.00152.

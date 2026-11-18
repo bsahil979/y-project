@@ -26,6 +26,7 @@ export const ConnectionService = {
 };
 
 const ANALYSIS_CACHE_TTL_MS = 15 * 60 * 1000;
+const CHAT_REPLY_TIMEOUT_MS = 40000;
 
 const getCacheKey = (prefix, payload) => {
   try {
@@ -33,6 +34,12 @@ const getCacheKey = (prefix, payload) => {
   } catch {
     return null;
   }
+};
+
+const getPortfolioCacheKey = (payload) => {
+  // Snapshot creation time changes even when positions, quotes and preferences are identical.
+  const scoped = payload.portfolio_id && payload.portfolio_revision;
+  return getCacheKey('portfolioAnalyze', scoped ? { ...payload, snapshot_as_of: null } : payload);
 };
 
 const getFromSessionCache = (key) => {
@@ -61,6 +68,11 @@ const setToSessionCache = (key, data) => {
 };
 
 export const PortfolioService = {
+  evaluateTicker: async (payload) => {
+    const res = await analyticsApi.post(ENDPOINTS.evaluateTicker, payload, { timeout: 60000 });
+    return res.data;
+  },
+
   getQuotes: async (tickers) => {
     const symbols = [...new Set((tickers || []).map((ticker) => String(ticker).toUpperCase().trim()).filter(Boolean))];
     if (symbols.length === 0) return { quotes: {} };
@@ -162,22 +174,22 @@ export const PortfolioService = {
     }
   },
 
-  getPortfolioAnalysis: async (payload, forceRefresh = false) => {
+  getPortfolioAnalysis: async (payload, forceRefresh = false, timeout = 180000) => {
     payload = { ...payload, ...normalizeInvestorProfile(payload) };
-    const cacheKey = getCacheKey('portfolioAnalyze', payload);
+    const cacheKey = getPortfolioCacheKey(payload);
     if (!forceRefresh) {
       const cached = getFromSessionCache(cacheKey);
       if (cached) return { ...cached, cached: true };
     }
     const requestPayload = forceRefresh ? { ...payload, force_refresh: true } : payload;
-    const res = await analyticsApi.post(ENDPOINTS.portfolioAnalyze, requestPayload, { timeout: 180000 });
+    const res = await analyticsApi.post(ENDPOINTS.portfolioAnalyze, requestPayload, { timeout });
     if (res.data) setToSessionCache(cacheKey, res.data);
     return res.data;
   },
 
   getCachedPortfolioAnalysis: (payload) => {
     payload = { ...payload, ...normalizeInvestorProfile(payload) };
-    const cacheKey = getCacheKey('portfolioAnalyze', payload);
+    const cacheKey = getPortfolioCacheKey(payload);
     return getFromSessionCache(cacheKey);
   },
 
@@ -239,11 +251,13 @@ export const ChatService = {
     return res.data;
   },
 
-  sendMessageStream: async (payload, onChunk) => {
+  sendMessageStream: async (payload, onChunk, signal) => {
+    const timeout = AbortSignal.timeout(CHAT_REPLY_TIMEOUT_MS);
     const res = await fetch(`${API_BASE_URL}${ENDPOINTS.chatStream}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
+      signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
     });
     if (!res.ok) throw new Error(`Advisor request failed (${res.status}).`);
     const reader = res.body?.getReader();
@@ -282,24 +296,9 @@ export const ChatService = {
     if (!completed) throw new Error('Advisor stream ended before completing the response.');
   },
 
-  evaluateTicker: async (payload) => {
-    const res = await analyticsApi.post(ENDPOINTS.evaluateTicker, payload, { timeout: 60000 });
-    return res.data;
-  },
-
   getAdvancedLab: async (payload) => {
-    try {
-      const res = await analyticsApi.post(ENDPOINTS.advancedLab, payload, { timeout: 60000 });
-      return res.data;
-    } catch (err) {
-      const direct = await fetch('http://localhost:8000/portfolio/advanced-lab', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (!direct.ok) throw err;
-      return await direct.json();
-    }
+    const res = await analyticsApi.post(ENDPOINTS.advancedLab, payload, { timeout: 60000 });
+    return res.data;
   },
 };
 
